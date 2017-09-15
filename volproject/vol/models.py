@@ -25,11 +25,11 @@ class Site(models.Model):
     added = models.DateField('date added')
 
     def __str__(self):
-        return self.added
+        return self.name
 
 class Job(models.Model):
     title = models.CharField(max_length=200)
-    text = models.CharField(max_length=200)
+    text = models.CharField(max_length=1000)
     labels = models.ManyToManyField(Labels)
     organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE) # One org per job
     site = models.ManyToManyField(Site)                                     # Possibly more sites per job
@@ -40,4 +40,4 @@ class Job(models.Model):
     seen = models.IntegerField(default=0)     # How often someone has looked at job
 
     def __str__(self):
-        return self.text
+        return self.title
