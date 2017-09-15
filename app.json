@@ -1,0 +1,16 @@
+{
+  "name": "Vol",
+  "description": "Vol, a simpler way to find volunteering opportunities.",
+  "image": "heroku/python",
+  "repository": "https://github.com/ojongerius/vol",
+  "keywords": ["volunteering"],
+  "addons": ["heroku-postgresql"],
+  "environments": {
+    "test": {
+      "scripts": {
+        "test-setup": "python manage.py collectstatic --noinput",
+        "test": "python manage.py test"
+      }
+    }
+  }
+}
