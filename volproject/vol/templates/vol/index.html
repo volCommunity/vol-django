@@ -112,17 +112,8 @@
                     if (areas.length < 1) {
                         alert("Please tell us where you are interested in volunteering") // Need more info
                     } else {
-//                        $('#guide p').html('<div uk-spinner></div>'); // Sweet spinner if we really need to do some work
-                        $('#status').remove(); // Clean up
-                        $('#answer').remove(); // Clean up
-                        // Present the results we "found" to our dear users
-
-                        $.getJSON("static/data/opportunities.json", function(json) {
-                            console.log(json);
-                        });
-                        $('#guide p').html('You looked for ' + subject + ' to do ' + interests + ' in ' +
-                            areas + '. We found a great opportunity as <bold> nappy changer </bold> on 8 Apu Cres, Wellington!' +
-                            " <br><br> You're welcome!");
+                        <!-- Redirect to results page -->
+                        location.href='/results/' + subject + '/' + areas + '/' + interests
                     }
                 }
             });
