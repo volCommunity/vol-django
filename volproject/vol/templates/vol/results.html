@@ -1,0 +1,17 @@
+{% extends "vol/base.html" %}
+{% block title %} Results {% endblock %}
+{% block content %}
+
+<!--TODO: make relative links work .. currently would seek all static assets relative to this doco.. -->
+<div class="uk-container uk-container-center uk-margin-top uk-margin-large-bottom uk-link-muted">
+    <!-- TODO: improve presentation -->
+    <p>You looked for {{ subject }} to do {{ interests }} in {{ location }}.</p>
+    <p> Amount of jobs in location found: {{ location_matches }} </p>
+    <p> Amount of jobs matching interest found: {{ interest_matches }} </p>
+    <p> Jobs that matches both: {{ job_count }} </p>
+
+    <!-- TODO: Check queryset, and display results in a nice manner -->
+    Result: {{ jobs }}
+<p>You're welcome!</p>
+</div>
+{% endblock %}
