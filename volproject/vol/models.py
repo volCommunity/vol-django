@@ -37,6 +37,7 @@ class Job(models.Model):
     region = models.CharField(max_length=70)  # TODO: move to region table?
     city = models.CharField(max_length=70)    # TODO: move to city table?
     added = models.DateField('date added')
+    url = models.CharField(max_length=200)
     seen = models.IntegerField(default=0)     # How often someone has looked at job
 
     def __str__(self):
