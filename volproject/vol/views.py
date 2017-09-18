@@ -6,7 +6,10 @@ from django.shortcuts import render
 # Create your views here.
 
 def index(request):
-    return HttpResponse("Hello.")
+    return HttpResponse(render(request, 'vol/index.html'))
+
+def about(request):
+    return HttpResponse(render(request, 'vol/about.html'))
 
 # TODO: add 404 templates
 # TODO: use generated JSON for direct endpoints
