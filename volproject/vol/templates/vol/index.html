@@ -2,7 +2,131 @@
 
 {% block title %} Vol {% endblock %}
 {% block content %}
-<div class="uk-container uk-container-center uk-margin-top uk-margin-large-bottom uk-link-muted">
-  Hello.
-</div>
+    <script>
+    $(function(){
+//    $("#header").load("header.html");
+    $("#footer").load("footer.html");
+    });
+
+    // init ghetto state
+    var s = 0;
+    var subject = [];
+    var areas = [];
+    var interests = [];
+    var results = [];
+
+    $( document ).ready(function() {
+        console.log( "ready!" );
+        console.log(s);
+        $('#guide p').html('Hello friend!<br><br> Are you looking for yourself,  your family or company?');
+    });
+
+    // create event listener that:
+    // updates state
+    // updates attrib for autocomplete
+
+//    $('#guide p').html('Hello there!<br><br> Are you looking for yourself, your company or family?');
+
+    </script>
+    <body>
+     <div class="uk-container uk-container-center uk-margin-top uk-margin-large-bottom" id="guide">
+         <!--TODO: allow selecting multiple options -->
+         <!--TODO: fix minlenght -currently ignored-->
+         <p></p>
+         <!--<div class="uk-link-text" id ="status"></div>-->
+         <div id="fuck_it">
+     <div class="uk-autocomplete uk-form" data-uk-autocomplete="{source:'static/data/user.json'}" id="answer">
+         <input class="uk-form-width-medium" type="text" minlength=4 placeholder="Go on then..">
+         <button class="uk-button uk-button-default" id="next">Next</button>
+     </div>
+         </div>
+         <br>
+        <script>
+
+            // Bind handler on document instead of the element that we'll remove and recreate, see
+            // https://stackoverflow.com/questions/17452924/javascript-event-listener-refresh/17453024#17453024
+//            $("[data-uk-autocomplete]").on("selectitem.uk.autocomplete", function(a, b, c) {
+            $('body').on("selectitem.uk.autocomplete", function(a, b, c) {
+                // TODO: clean up!
+                console.log(b);
+//                subject.push(b.id);
+                if (s == 0) {
+                    console.log("s is " + s)
+                    subject.push(b.value); // TODO: remove duplicates TODO: use id
+//                subject.push(b.text);
+                    $('#status').html("Looking for: " + subject + "<br><br>");
+                    console.log("Subject: " + subject);
+                } else if (s == 1) {
+                    console.log("s is " + s)
+                    interests.push(b.value); // TODO: remove duplicates TODO: use id
+//                subject.push(b.text);
+                    $('#status').html("Interests: " + interests + "<br><br>");
+                    console.log("Interests: " + interests);
+                } else if (s ==2) {
+                    console.log("s is " + s)
+                    areas.push(b.value); // TODO: remove duplicates TODO: use id
+//                subject.push(b.text);
+                    $('#status').html("Areas: " + areas + "<br><br>");
+                    console.log("Areas: " + areas);
+                }
+            })
+
+//            $("#next").click(function(){
+            // Bind handler on document instead of the element that we'll remove and recreate, see
+            // https://stackoverflow.com/questions/17452924/javascript-event-listener-refresh/17453024#17453024
+            $(document).on('click', '.uk-button', function(){ // Register in document,
+                // TODO: check which stage
+                // TODO: validate we have the data
+                if (s == 0) {
+                    if (subject.length < 1) {
+                        alert("Please tell use for who you are looking") // Need more info
+                    } else {
+                        s = 1; // next stage
+                        console.log("Moving to interests");
+                        $('#guide p').html(' Which areas are you keen on? Outdoor / Technology / Social - People / Animals');
+
+                        // Have tried to reload / refresh the autocompleter but it does not reload by just changing the
+                        // attribute. Brute force remove and adding of the elements will do for the prototype
+//                        $('#answer').attr('data-uk-autocomplete', "{source:'static/data/interests.json'}");
+                        $('#answer').remove();
+                        $('#fuck_it').html('<div class="uk-autocomplete uk-form" data-uk-autocomplete="{source:\'static/data/interests.json\'}" id="answer"> \
+                            <input class="uk-form-width-medium" type="text" minlength=4 placeholder="Go on then.."> \
+                            <button class="uk-button uk-button-default" id="next">Next</button>');
+
+                    }
+                } else if (s == 1) {
+                    if (interests.length < 1) {
+                        alert("Please tell in where you'd like to ") // Need more info
+                    } else {
+                        s = 2; // Next stage
+                        console.log("Moving to areas");
+                        $('#guide p').html('Where would you like to do help out?');
+                        // Have tried to reload / refresh the autocompleter but it does not reload by just changing the
+                        // attribute. Brute force remove and adding of the elements will do for the prototype
+                        $('#answer').remove();
+                        $('#fuck_it').html('<div class="uk-autocomplete uk-form" data-uk-autocomplete="{source:\'static/data/areas.json\'}" id="answer"> \
+                            <input class="uk-form-width-medium" type="text" minlength=4 placeholder="Go on then.."> \
+                            <button class="uk-button uk-button-default" id="next">Next</button>');
+                    }
+                } else if (s == 2) {
+                    if (areas.length < 1) {
+                        alert("Please tell us where you are interested in volunteering") // Need more info
+                    } else {
+//                        $('#guide p').html('<div uk-spinner></div>'); // Sweet spinner if we really need to do some work
+                        $('#status').remove(); // Clean up
+                        $('#answer').remove(); // Clean up
+                        // Present the results we "found" to our dear users
+
+                        $.getJSON("static/data/opportunities.json", function(json) {
+                            console.log(json);
+                        });
+                        $('#guide p').html('You looked for ' + subject + ' to do ' + interests + ' in ' +
+                            areas + '. We found a great opportunity as <bold> nappy changer </bold> on 8 Apu Cres, Wellington!' +
+                            " <br><br> You're welcome!");
+                    }
+                }
+            });
+        </script>
+     </div>
+
 {% endblock %}
