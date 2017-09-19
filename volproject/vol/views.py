@@ -13,11 +13,13 @@ def about(request):
 
 def results(request, subject, location, interests):
 
-    # TODO: split others
+    # TODO: split and downcase subject and location
 
-    # Keep filtering down until all interests have been met
+    # Keep filtering down until all interests have been met, this won't be awesome if we have a lot of data
     jobs = Job.objects.filter()
     interests_list = interests.split('+')
+    interests_list = [interest.lower() for interest in interests_list]
+
     matched_interests= []
     unmatched_interests = []
     while interests_list:

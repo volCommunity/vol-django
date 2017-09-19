@@ -113,7 +113,8 @@
                         alert("Please tell us where you are interested in volunteering") // Need more info
                     } else {
                         <!-- Redirect to results page -->
-                        location.href='/results/' + subject + '/' + areas + '/' + interests
+                        target = '/results/' + subject.join('+') + '/' + areas.join('+') + '/' + interests.join('+')
+                        location.href = target
                     }
                 }
             });

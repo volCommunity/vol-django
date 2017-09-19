@@ -25,17 +25,20 @@
     {% endif %}
 
     <h2>Complete matches:</h2>
-    <p> Jobs that matches {% if unmatched_interests_count != 0 %} {{ matched_interests_count }} {% else %} all {% endif %} interests and location: {{ job_count }} </p>
+    {% if matched_interests_count == 0 %} <strong> No complete matches were found!  </strong> Showing you all results in your area instead. {% else %}
+    <p> Jobs that match {% if unmatched_interests_count != 0 %} {{ matched_interests_count }} {% else %} all {% endif %}
+        interests and locations: {{ job_count }} </p>
+    {% endif %}
 
     {% for job in jobs  %}
     <h3> {{ job.title}}</h3>
     <strong>URL</strong>: <a href="{{ job.url }}">{{ job.url }}</a><br>
     <strong>Original URL</strong>: {% for v in job.site.values %} <a href="{{ v.url }}">{{ v.url }}</a> {% endfor %} <br> <!-- Surely a better way to do this-->
     <strong>Organisation</strong> <a href="{{ job.organisation.url }}">{{ job.organisation }}</a> <br> <!-- Include link and logo -->
-    <strong>City</strong> {{ job.city }}<br>
+    <strong>City</strong> {{ job.city }}<br> <!-- URL to query for all in Wellington? -->
     <p> {{ job.text }}</p>
     {% endfor %}
 
-    <p><strong>Go get 'm, tiger!</strong></p>
+    {% if jobs %} <p><strong>Go get 'm, tiger!</strong></p> {% endif %}
 </div>
 {% endblock %}
