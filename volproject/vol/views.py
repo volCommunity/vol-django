@@ -20,10 +20,10 @@ def results(request, subject, location, interests):
     # TODO: another approach, one that we should probably take it to order by things that matched *most* tags
     jobs = Job.objects.filter()
     interests_list = interests.split('+')
-    # interests_list = [interest.lower() for interest in interests_list] # TODO: Solve case insensitive first
+    interests_list = [interest.lower() for interest in interests_list]
 
     locations = location.split('+')
-    # locations = [location.lower() for location in locations] # TODO: Solve case insensitive first
+    locations = [location.lower() for location in locations]
 
     matched_interests= []
     unmatched_interests = []
