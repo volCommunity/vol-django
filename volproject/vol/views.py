@@ -27,6 +27,8 @@ def results(request, subject, location, interests):
 
     matched_interests= []
     unmatched_interests = []
+    matched_intersection = 0
+
     while interests_list:
         # See which interests matches and which did not..
         interest = interests_list.pop()
@@ -44,17 +46,21 @@ def results(request, subject, location, interests):
     while locations:
         q_objects |= Q(city=locations.pop())
 
-    print("Query now: ")
-    print(q_objects)
+    # print("Query now: ")
+    # print(q_objects)
     location_matches = len(Job.objects.filter(q_objects))
 
-    print("Location matches: %s" % location_matches)
+    # print("Location matches: %s" % location_matches)
     # location_matches = len(Job.objects.filter(city=location))
 
+    # TODO: find the intersetion, if there is none, pass all local jobs
+
     # Filter further down on results to find on location
-    print("Jobs # now: %s" % len(jobs))
+    # print("Jobs # now: %s" % len(jobs))
     if len(jobs) > 0:
-        jobs = jobs.filter(q_objects)
+        if jobs.filter(q_objects): # There is an intersection, store it
+            jobs = jobs.filter(q_objects)
+            matched_intersection =len(jobs)
 
     context = {
         'subject': subject,
@@ -65,6 +71,7 @@ def results(request, subject, location, interests):
         'matched_interests': matched_interests,
         'unmatched_interests_count': len(unmatched_interests),
         'unmatched_interests': unmatched_interests,
+        'matched_intersection': matched_intersection,
         'matches': matches,
         'job_count': len(jobs),
         'jobs': jobs

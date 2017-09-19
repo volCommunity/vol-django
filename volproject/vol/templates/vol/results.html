@@ -1,10 +1,8 @@
 {% extends "vol/base.html" %}
 {% block title %} Results {% endblock %}
 {% block content %}
-
-<!--TODO: make relative links work .. currently would seek all static assets relative to this doco.. -->
 <div class="uk-container uk-container-center uk-margin-top uk-margin-large-bottom uk-link-muted">
-    <h2>Interests:</h2>
+    <h2>Interests</h2>
     <p> Amount of matched global interests: {{ matched_interests_count }}</p>
         {% for matched_interest in matched_interests %}
     <li> {{ matched_interest }} </li>
@@ -16,17 +14,19 @@
         {% endfor %}
     </p>
 
-    <h2> Location:</h2>
-    <!-- TODO: If nothing in location, suggest changing it -->
+    <h2>Location</h2>
     {% if location_matches != 0 %}
             <p> Amount of jobs in location found: {{ location_matches }} </p>
     {% else %}
         <p> No jobs found for your location, try widening your search area. Sorry! </p>
     {% endif %}
 
-    <h2>Complete matches:</h2>
-    {% if matched_interests_count == 0 %} <strong> No complete matches were found!  </strong> Showing you all results in your area instead. {% else %}
-    <p> Jobs that match {% if unmatched_interests_count != 0 %} {{ matched_interests_count }} {% else %} all {% endif %}
+    <h2>Results</h2>
+
+    {% if matched_intersection == 0 %}
+        <strong> No complete matches were found!  </strong> Showing you all results in your area instead.
+    {% else %}
+        <p> Jobs that match {% if unmatched_interests_count != 0 %} {{ matched_interests_count }} {% else %} all {% endif %}
         interests and locations: {{ job_count }} </p>
     {% endif %}
 
