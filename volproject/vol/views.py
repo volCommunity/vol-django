@@ -1,5 +1,6 @@
 from django.http import HttpResponse, HttpResponseNotFound
 from .models import Job, Organisation, Site, Labels
+from django.db.models import Q
 from django.template import loader
 from django.shortcuts import render
 
@@ -16,9 +17,13 @@ def results(request, subject, location, interests):
     # TODO: split and downcase subject and location
 
     # Keep filtering down until all interests have been met, this won't be awesome if we have a lot of data
+    # TODO: another approach, one that we should probably take it to order by things that matched *most* tags
     jobs = Job.objects.filter()
     interests_list = interests.split('+')
-    interests_list = [interest.lower() for interest in interests_list]
+    # interests_list = [interest.lower() for interest in interests_list] # TODO: Solve case insensitive first
+
+    locations = location.split('+')
+    # locations = [location.lower() for location in locations] # TODO: Solve case insensitive first
 
     matched_interests= []
     unmatched_interests = []
@@ -33,11 +38,23 @@ def results(request, subject, location, interests):
 
     matches = len(jobs)
 
-    location_matches = len(Job.objects.filter(city=location))
+    # Locations are a little different I guess, we want jobs for all the locations instead of filtering down
+    # Q would be good here: Job.objects.filter(Q(city=city_one) | Q(city=city_two))
+    q_objects = Q()
+    while locations:
+        q_objects |= Q(city=locations.pop())
+
+    print("Query now: ")
+    print(q_objects)
+    location_matches = len(Job.objects.filter(q_objects))
+
+    print("Location matches: %s" % location_matches)
+    # location_matches = len(Job.objects.filter(city=location))
 
     # Filter further down on results to find on location
+    print("Jobs # now: %s" % len(jobs))
     if len(jobs) > 0:
-        jobs = jobs.filter(city=location)
+        jobs = jobs.filter(q_objects)
 
     context = {
         'subject': subject,
