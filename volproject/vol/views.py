@@ -12,44 +12,41 @@ def about(request):
     return HttpResponse(render(request, 'vol/about.html'))
 
 def results(request, subject, location, interests):
-    # Ignoring subject for now, only using one location and interest
-    # TODO: if zero results, did we find any with less tight?
-    # conditions?
-    location_matches = 0
-    interest_matches = 0
 
-    # Try all TODO: how do we build labels?
-    # Is this, sort of, what we are looking for?
-    # https://stackoverflow.com/questions/1841931/how-to-properly-query-a-manytomanyfield-for-all-the-objects-in-a-list-or-anothe
-    # jobs = Job.objects.filter(city=location, labels=interests)
-    jobs = Job.objects.filter(city=location)
+    # TODO: split others
 
-    # If none found, did we find any that matches their interest?
-    print("Amount of jobs %s" %len(jobs))
-    amount_of_jobs = len(jobs)
+    # Keep filtering down until all interests have been met
+    jobs = Job.objects.filter()
+    interests_list = interests.split('+')
+    matched_interests= []
+    unmatched_interests = []
+    while interests_list:
+        # See which interests matches and which did not..
+        interest = interests_list.pop()
+        if jobs.filter(labels__name=interest):
+            matched_interests.append(interest)
+            jobs = jobs.filter(labels__name=interest)
+        else:
+            unmatched_interests.append(interest)
 
-    if amount_of_jobs < 1:
-        jobs = Job.objects.filter(labels=interests)
-        location_matches = len(jobs)
+    matches = len(jobs)
 
-    amount_of_jobs = len(jobs)
-    # Still none? Show them what is in their neighborhood
-    if amount_of_jobs <1: #
-        jobs = Job.objects.filter(city=location)
-        interest_matches = len(jobs)
+    location_matches = len(Job.objects.filter(city=location))
 
-    amount_of_jobs = len(jobs)
-    # Still no dice? Nothing we can do about his
-    if amount_of_jobs < 1:
-        # TODO: add better response here
-        return HttpResponseNotFound('Job not found! Sad panda.')
+    # Filter further down on results to find on location
+    if len(jobs) > 0:
+        jobs = jobs.filter(city=location)
 
     context = {
         'subject': subject,
         'location': location,
         'interests': interests,
         'location_matches': location_matches,
-        'interest_matches': interest_matches,
+        'matched_interests_count': len(matched_interests),
+        'matched_interests': matched_interests,
+        'unmatched_interests_count': len(unmatched_interests),
+        'unmatched_interests': unmatched_interests,
+        'matches': matches,
         'job_count': len(jobs),
         'jobs': jobs
     }

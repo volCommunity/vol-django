@@ -13,6 +13,7 @@ class Organisation(models.Model):
     country = models.CharField(max_length=70)
     region = models.CharField(max_length=70)
     city = models.CharField(max_length=70)
+    url = models.CharField(max_length=200)
     added = models.DateField('date added')
 
     def __str__(self):
