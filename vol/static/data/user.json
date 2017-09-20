@@ -1,0 +1,5 @@
+[
+  {"value":"individual", "title":"Myself", "id": "individual", "text":"Just yourself."},
+  {"value":"company", "title":"Company", "id":"company", "text":"Must be a great place to work!"},
+  {"value":"family", "title":"Family", "id":"family", "text":"My and your family"}
+]
