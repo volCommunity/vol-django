@@ -1,44 +1,60 @@
 {% extends "vol/base.html" %}
 {% block title %} Results {% endblock %}
 {% block content %}
-<div class="uk-container uk-container-center uk-margin-top uk-margin-large-bottom uk-link-muted">
-    <h2>Interests</h2>
-    <p> Amount of matched global interests: {{ matched_interests_count }}</p>
+<div class="container">
+
+    <div class="vol-results-text">
+        <p class="lead">Done! These are your results we hope you like them.
+        Use the location and interest matches to fine tune results, should you
+        have more or less results than you wish for. Enjoy!</p>
+        {% if jobs %} <p><strong>Go get 'm, tiger!</strong></p> {% endif %}
+    </div>
+
+{# TODO: This would do with a nice visau #}
+    <div class="vol-results-text">
+        <p><strong>Interests</strong>:
+        Amount of matched global interests: {{ matched_interests_count }}
         {% for matched_interest in matched_interests %}
-    <li> {{ matched_interest }} </li>
+            <li> {{ matched_interest }} </li>
         {% endfor %}
-    </p>
-    <p> Amount of unmatched interests: {{ unmatched_interests_count }}</p>
+        </p>
+        <p>
+        Amount of unmatched interests: {{ unmatched_interests_count }}
         {% for unmatched_interest in unmatched_interests %}
-    <li>  {{ unmatched_interest }}</li>
+            <li>  {{ unmatched_interest }}</li>
         {% endfor %}
-    </p>
+        </p>
+        <strong>Location:</strong>
+        {% if location_matches != 0 %}
+            Amount of jobs in location found: {{ location_matches }}
+        {% else %}
+            No jobs found for your location, try widening your search area. Sorry!
+        {% endif %}
+        </p>
+        <p>
+        <strong>Results:</strong>
+        {% if matched_intersection == 0 %}
+            <strong> No complete matches were found!  </strong> Showing you all results in your area instead.
+        {% else %}
+            Jobs that match {% if unmatched_interests_count != 0 %} {{ matched_interests_count }} {% else %} all {% endif %}
+                interests and locations: {{ job_count }}
+        {% endif %}
+        </p>
+    </div>
 
-    <h2>Location</h2>
-    {% if location_matches != 0 %}
-            <p> Amount of jobs in location found: {{ location_matches }} </p>
-    {% else %}
-        <p> No jobs found for your location, try widening your search area. Sorry! </p>
-    {% endif %}
 
-    <h2>Results</h2>
-
-    {% if matched_intersection == 0 %}
-        <strong> No complete matches were found!  </strong> Showing you all results in your area instead.
-    {% else %}
-        <p> Jobs that match {% if unmatched_interests_count != 0 %} {{ matched_interests_count }} {% else %} all {% endif %}
-        interests and locations: {{ job_count }} </p>
-    {% endif %}
+        <div class="row vol-results-results">
 
     {% for job in jobs  %}
-    <h3> {{ job.title}}</h3>
+        <div class="col-lg-6">
+        <h4> {{ job.title}}</h4>
     <strong>URL</strong>: <a href="{{ job.url }}">{{ job.url }}</a><br>
     <strong>Original URL</strong>: {% for v in job.site.values %} <a href="{{ v.url }}">{{ v.url }}</a> {% endfor %} <br> <!-- Surely a better way to do this-->
     <strong>Organisation</strong> <a href="{{ job.organisation.url }}">{{ job.organisation }}</a> <br> <!-- Include link and logo -->
     <strong>City</strong> {{ job.city }}<br> <!-- URL to query for all in Wellington? -->
     <p> {{ job.text }}</p>
+        </div>
     {% endfor %}
-
-    {% if jobs %} <p><strong>Go get 'm, tiger!</strong></p> {% endif %}
+        </div>
 </div>
 {% endblock %}
