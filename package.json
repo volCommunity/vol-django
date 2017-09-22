@@ -1,0 +1,17 @@
+{
+  "name": "vol-django",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "ssh://git@bitbucket.org/xzu/vol-django.git",
+  "author": "Otto Jongerius <otto.jongerius@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "4.0.0-beta",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.2.1",
+    "popper.js": "1.11.0",
+    "tether": "^1.4.0",
+    "typeahead.js": "^0.11.1"
+  }
+}

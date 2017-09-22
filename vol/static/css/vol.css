@@ -1,0 +1,31 @@
+body {
+  padding-top: 5rem;
+}
+.vol {
+  padding: 3rem 1.5rem;
+}
+
+
+/* Results */
+.vol-results-text {
+  /*text-align: center;*/
+  border-bottom: .05rem solid #e5e5e5;
+}
+/* Individual results */
+.vol-results-results {
+  margin: 3rem 0;
+}
+.vol-results-results p + h4 {
+  margin-top: 1.5rem;
+}
+
+/* Footer */
+.vol-footer {
+  padding: 3rem 1.5rem;
+  text-align: left;
+}
+
+/* Workaround of bootstrap inputs being shortened when adding typeahead. See https://github.com/bassjobsen/typeahead.js-bootstrap-css/issues/4*/
+.twitter-typeahead > .form-control{
+  width: inherit !important;
+}
