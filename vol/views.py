@@ -17,6 +17,7 @@ def results(request, subject, location, interests):
     # Keep filtering down until all interests have been met, this won't be awesome if we have a lot of data
     # TODO: another approach, one that we should probably take it to order by things that matched *most* tags
     jobs = Job.objects.filter()
+    print("Total jobs: %s" % len(jobs))
     interests_list = interests.split('+')
     interests_list = [interest.lower() for interest in interests_list]
 
@@ -56,9 +57,14 @@ def results(request, subject, location, interests):
     # Filter further down on results to find on location
     # print("Jobs # now: %s" % len(jobs))
     if len(jobs) > 0:
+        print("Found jobs: %s" % len(jobs))
         if jobs.filter(q_objects): # There is an intersection, store it
+            print("Filtering on location of found jobs results in :")
+            print(jobs.filter(q_objects))
             jobs = jobs.filter(q_objects)
-            matched_intersection =len(jobs)
+            if len(matched_interests) > 0: # This is a little ghetto
+                matched_intersection =len(jobs)
+                print("Matched intersection now: %s" % matched_intersection)
 
     context = {
         'subject': subject,
