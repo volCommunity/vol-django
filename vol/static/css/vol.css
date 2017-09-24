@@ -1,14 +1,22 @@
-body {
-    padding-top: 5rem;
+html {
+    position: relative;
+    min-height: 100%;
 }
 
-.vol {
-    padding: 3rem 1.5rem;
+body {
+    padding-top: 10rem;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+}
+
+
+/* Workaround of bootstrap inputs being shortened when adding typeahead. See https://github.com/bassjobsen/typeahead.js-bootstrap-css/issues/4*/
+.twitter-typeahead > .form-control {
+    width: inherit !important;
 }
 
 /* Results */
 .vol-results-text {
-    /*text-align: center;*/
     border-bottom: .05rem solid #e5e5e5;
 }
 
@@ -21,13 +29,24 @@ body {
     margin-top: 1.5rem;
 }
 
-/* Footer */
+/* Sticky Footer */
 .vol-footer {
-    padding: 3rem 1.5rem;
-    text-align: left;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    line-height: 60px; /* Vertically center the text there */
+    /*background-color: #f5f5f5;*/
+    /*padding: 0rem 5rem;*/
+    /*padding: 0rem 5rem;*/
+    /*text-align: center;*/
+    padding-right: 15px;
+    padding-left: 15px;
 }
 
-/* Workaround of bootstrap inputs being shortened when adding typeahead. See https://github.com/bassjobsen/typeahead.js-bootstrap-css/issues/4*/
-.twitter-typeahead > .form-control {
-    width: inherit !important;
+.vol-footer > .container {
+    /* Align with Navbar */
+    padding-right: 15px;
+    padding-left: 15px;
 }
