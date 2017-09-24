@@ -4,13 +4,16 @@
 <div class="container">
 
     <div class="vol-results-text">
-        <p class="lead">Done! These are your results we hope you like them.
-        Use the location and interest matches to fine tune results, should you
+        <p><strong>Done!</strong></p>
+        These are your results, and we hope you like them.
+        <p>Use the location and interest matches to fine tune results, should you
         have more or less results than you wish for. Enjoy!</p>
-        {% if jobs %} <p><strong>Go get 'm, tiger!</strong></p> {% endif %}
     </div>
 
-{# TODO: This would do with a nice visau #}
+<!-- TODO: * Improve visualision
+           * Allow adding and removing of interests and places
+           * Add advice on what would improve amount (more or less)
+-->
     <div class="vol-results-text">
         <p><strong>Interests</strong>:
         Amount of matched global interests: {{ matched_interests_count }}
