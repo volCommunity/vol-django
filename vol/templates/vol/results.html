@@ -11,8 +11,10 @@
 
         {% if matched_intersection == 0 %}
             <p>
-                <strong> No complete matches were found!  </strong> Showing you all {{ jobs|length }} results in your area instead.
-            </p>
+                <strong> No complete matches were found!  </strong>
+                Showing you all jobs matching  {% if matched_interests_count > 0 %} your interests {% else %}
+                    Showing you all jobs matching your areas {% endif %} instead.
+                    </p>
         {% else %}
             <p>
                 Showing {{ job_count }} {% if job_count > 1 %} }} jobs that match {% else %} job that matches{% endif %} {% if unmatched_interests_count != 0 %} {{ matched_interests_count }} {% else %} all {% endif %}
@@ -32,7 +34,7 @@
 
     <!-- These should be 3 little containers, next to each other?-->
     <div class="col-4 col-sm-6">
-        <p><strong>Interests</strong>:
+        <strong>Interests</strong>:
             {% if matched_interests_count != 0 %}
                 <p>
             Amount of matched interests in all areas, globally: {{ matched_interests_count }}
@@ -51,10 +53,10 @@
     </div>
         <div class="col-4 col-sm-6">
         <strong>Locations:</strong>
+        <p>
         {% if location_matches != 0 %}
-            <p>
             Total amount of jobs in your location(s) found: {{ location_matches }}
-        {% else %}git
+        {% else %}
             No jobs found for your location, try widening your search area. Sorry!
         {% endif %}
         </p>
