@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 
 class Labels(models.Model):
@@ -7,6 +8,7 @@ class Labels(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Organisation(models.Model):
     name = models.CharField(max_length=200)
@@ -28,18 +30,19 @@ class Site(models.Model):
     def __str__(self):
         return self.name
 
+
 class Job(models.Model):
     title = models.CharField(max_length=200)
     text = models.CharField(max_length=1000)
     labels = models.ManyToManyField(Labels)
-    organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE) # One org per job
-    site = models.ManyToManyField(Site)                                     # Possibly more sites per job
-    country = models.CharField(max_length=70) # TODO: move to country table?
+    organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE)  # One org per job
+    site = models.ManyToManyField(Site)  # Possibly more sites per job
+    country = models.CharField(max_length=70)  # TODO: move to country table?
     region = models.CharField(max_length=70)  # TODO: move to region table?
-    city = models.CharField(max_length=70)    # TODO: move to city table?
+    city = models.CharField(max_length=70)  # TODO: move to city table?
     added = models.DateField('date added')
     url = models.CharField(max_length=200)
-    seen = models.IntegerField(default=0)     # How often someone has looked at job
+    seen = models.IntegerField(default=0)  # How often someone has looked at job
 
     def __str__(self):
         return self.title

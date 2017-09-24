@@ -4,14 +4,16 @@ from django.db.models import Q
 from django.template import loader
 from django.shortcuts import render
 
+
 def index(request):
     return HttpResponse(render(request, 'vol/index.html'))
+
 
 def about(request):
     return HttpResponse(render(request, 'vol/about.html'))
 
-def results(request, subject, location, interests):
 
+def results(request, subject, location, interests):
     # TODO: split and downcase subject and location
 
     # Keep filtering down until all interests have been met, this won't be awesome if we have a lot of data
@@ -24,7 +26,7 @@ def results(request, subject, location, interests):
     locations = location.split('+')
     locations = [location.lower() for location in locations]
 
-    matched_interests= []
+    matched_interests = []
     unmatched_interests = []
     matched_intersection = 0
 
@@ -58,12 +60,12 @@ def results(request, subject, location, interests):
     # print("Jobs # now: %s" % len(jobs))
     if len(jobs) > 0:
         print("Found jobs: %s" % len(jobs))
-        if jobs.filter(q_objects): # There is an intersection, store it
+        if jobs.filter(q_objects):  # There is an intersection, store it
             print("Filtering on location of found jobs results in :")
             print(jobs.filter(q_objects))
             jobs = jobs.filter(q_objects)
-            if len(matched_interests) > 0: # This is a little ghetto
-                matched_intersection =len(jobs)
+            if len(matched_interests) > 0:  # This is a little ghetto
+                matched_intersection = len(jobs)
                 print("Matched intersection now: %s" % matched_intersection)
 
     context = {
@@ -97,6 +99,7 @@ def job(request, job_id):
     }
     return HttpResponse(render(request, 'vol/job.html', context))
 
+
 def organisation(request, organisation_id):
     try:
         org = Organisation.objects.get(id=organisation_id)
@@ -108,6 +111,7 @@ def organisation(request, organisation_id):
     }
     return HttpResponse(render(request, 'vol/organisation.html', context))
 
+
 def site(request, site_id):
     try:
         site = Site.objects.get(id=site_id)
@@ -118,6 +122,7 @@ def site(request, site_id):
         'site': site,
     }
     return HttpResponse(render(request, 'vol/site.html', context))
+
 
 def label(request, label_id):
     try:

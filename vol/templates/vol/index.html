@@ -7,124 +7,125 @@
 
 
     <body>
-     <div class="container">
+    <div class="container">
 
-            <!--TODO: * move this to center -or not
-                      * consider having 2 or 3 in a row keep it on the same page, possibly even show results below..
-                      * consider using colors for feedback (green: all good, etc, see forms and warning / danger)
-                      * Investigate scrollable dropdown menu, Bloodhound and or prefetching ( https://twitter.github.io/typeahead.js/examples/ )
+        <!--TODO: * move this to center -or not
+                  * consider having 2 or 3 in a row keep it on the same page, possibly even show results below..
+                  * consider using colors for feedback (green: all good, etc, see forms and warning / danger)
+                  * Investigate scrollable dropdown menu, Bloodhound and or prefetching ( https://twitter.github.io/typeahead.js/examples/ )
 
-                      See https://v4-alpha.getbootstrap.com/components/forms/
-                      -->
-         <div class="container">
-             <p> <strong>Welcome</strong></p>
-             Let's try to find you a volunteering opportunity in your area...
-             <p>Tell us your interests plus location below and we'll try to hook you up.</p>
-         </div>
+                  See https://v4-alpha.getbootstrap.com/components/forms/
+                  -->
+        <div class="container">
+            <p><strong>Welcome</strong></p>
+            Let's try to find you a volunteering opportunity in your area...
+            <p>Tell us your interests plus location below and we'll try to hook you up.</p>
+        </div>
 
-     <div class="container">
-             <form class="form-inline">
-                 <div id="interests">
-                     <label class="sr-only" for="interestsInput">Interests</label>
-                     <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0 typeahead" id="interestsInput" placeholder="Interests:Nature">
-                 </div>
+        <div class="container">
+            <form class="form-inline">
+                <div id="interests">
+                    <label class="sr-only" for="interestsInput">Interests</label>
+                    <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0 typeahead" id="interestsInput"
+                           placeholder="Interests:Nature">
+                </div>
 
-                 <label class="sr-only" for="locationInput">Location</label>
-                 <div id="locations" class="input-group mb-0 mr-sm-o mb-sm-0">
+                <label class="sr-only" for="locationInput">Location</label>
+                <div id="locations" class="input-group mb-0 mr-sm-o mb-sm-0">
                     <div class="input-group-addon ">@</div>
-                     <input type="text" class="form-control typeahead"  id="locationInput" placeholder="Wellington, NZ">
-                                             {#  ^^ Needed a workaround in vol.css #}
-                 </div>
+                    <input type="text" class="form-control typeahead" id="locationInput" placeholder="Wellington, NZ">
+                    {#  ^^ Needed a workaround in vol.css #}
+                </div>
 
-{#                  Could be enabled to allow saving settings, but needs storage, and prevents the location redirect #}
-{#                 blocks the form? #}
-{#                 <div class="form-check mb-2 mr-sm-2 mb-sm-0">#}
-{#                     <label class="form-check-label">#}
-{#                         <input class="form-check-input" type="checkbox"> <small>Remember my interests and location</small>#}
-{#                     </label>#}
-{#                 </div>#}
+                {#                  Could be enabled to allow saving settings, but needs storage, and prevents the location redirect #}
+                {#                 blocks the form? #}
+                {#                 <div class="form-check mb-2 mr-sm-2 mb-sm-0">#}
+                {#                     <label class="form-check-label">#}
+                {#                         <input class="form-check-input" type="checkbox"> <small>Remember my interests and location</small>#}
+                {#                     </label>#}
+                {#                 </div>#}
 
-                 <button type="submit" class="btn btn-outline-secondary" id="submit">Submit</button>
-             </form>
-         </div>
+                <button type="submit" class="btn btn-outline-secondary" id="submit">Submit</button>
+            </form>
+        </div>
 
-     </div>
+    </div>
 
-     <script>
-         $(function(){
-         });
-         console.log("running a script")
+    <script>
+        $(function () {
+        });
+        console.log("running a script")
 
-         // init ghetto state
-         {#    var s = 0;#}
-         {#    var subject = [];   // TODO: default to individual?#}
-         {#    var areas = [];     // TODO: default to Geo user has and ask for permission?#}
-         {#    var interests = []; // TODO: Should this default to People?#}
-         {#    var results = [];#}
+        // init ghetto state
+        {#    var s = 0;#}
+        {#    var subject = [];   // TODO: default to individual?#}
+        {#    var areas = [];     // TODO: default to Geo user has and ask for permission?#}
+        {#    var interests = []; // TODO: Should this default to People?#}
+        {#    var results = [];#}
 
-         var substringMatcher = function(strs) {
-             return function findMatches(q, cb) {
-                 var matches, substringRegex;
-                 // an array that will be populated with substring matches
-                 matches = [];
+        var substringMatcher = function (strs) {
+            return function findMatches(q, cb) {
+                var matches, substringRegex;
+                // an array that will be populated with substring matches
+                matches = [];
 
-                 // regex used to determine if a string contains the substring `q`
-                 substrRegex = new RegExp(q, 'i');
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
 
-                 // iterate through the pool of strings and for any string that
-                 // contains the substring `q`, add it to the `matches` array
-                 $.each(strs, function(i, str) {
-                     if (substrRegex.test(str)) {
-                         matches.push(str);
-                     }
-                 });
+                // iterate through the pool of strings and for any string that
+                // contains the substring `q`, add it to the `matches` array
+                $.each(strs, function (i, str) {
+                    if (substrRegex.test(str)) {
+                        matches.push(str);
+                    }
+                });
 
-                 cb(matches);
-             };
-         };
+                cb(matches);
+            };
+        };
 
 
-         var interests = ['Outdoor', 'Nature', 'People'];
+        var interests = ['Outdoor', 'Nature', 'People'];
 
-         var locations = ['Wellington', 'Dunedin', 'Amsterdam', 'Paris'];
+        var locations = ['Wellington', 'Dunedin', 'Amsterdam', 'Paris'];
 
-         $('#interests .typeahead').typeahead({
-                 hint: true,
-                 highlight: true,
-                 minLength: 1
-             },
-             {
-                 name: 'interests',
-                 source: substringMatcher(interests)
-             });
+        $('#interests .typeahead').typeahead({
+                hint: true,
+                highlight: true,
+                minLength: 1
+            },
+            {
+                name: 'interests',
+                source: substringMatcher(interests)
+            });
 
-         $('#locations .typeahead').typeahead({
-                 hint: true,
-                 highlight: true,
-                 minLength: 1
-             },
-             {
-                 name: 'locations',
-                 source: substringMatcher(locations)
-             });
+        $('#locations .typeahead').typeahead({
+                hint: true,
+                highlight: true,
+                minLength: 1
+            },
+            {
+                name: 'locations',
+                source: substringMatcher(locations)
+            });
 
-         $('#interests .input')
+        $('#interests .input')
 
-         $('#submit').on('click', function (e) {
-             console.log("Someone submitted somethning");
-{#             var interestInput = $('#theForm').find('input[name="interestsInput"]').val();#}
-             var interestsInput = $("#interestsInput").val();
-             var locationInput = $("#locationInput").val();
+        $('#submit').on('click', function (e) {
+            console.log("Someone submitted somethning");
+            {#             var interestInput = $('#theForm').find('input[name="interestsInput"]').val();#}
+            var interestsInput = $("#interestsInput").val();
+            var locationInput = $("#locationInput").val();
 
-             console.log("interest input is: " + interestsInput);
-             console.log("location input is" + locationInput);
+            console.log("interest input is: " + interestsInput);
+            console.log("location input is" + locationInput);
 
-{#             target = '/results/' + "notUsedYet" + '/' + locationInput.join('+') + '/' + interestInput.join('+')#}
-             target = '/results/' + "notUsedYet" + '/' + locationInput + '/' + interestsInput
-             location.href = target;
-             return false;
-         });
+            {#             target = '/results/' + "notUsedYet" + '/' + locationInput.join('+') + '/' + interestInput.join('+')#}
+            target = '/results/' + "notUsedYet" + '/' + locationInput + '/' + interestsInput
+            location.href = target;
+            return false;
+        });
 
-     </script>
+    </script>
 
 {% endblock %}

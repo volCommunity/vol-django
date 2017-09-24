@@ -1,86 +1,90 @@
 {% extends "vol/base.html" %}
 {% block title %} Results {% endblock %}
 {% block content %}
-<div class="container">
+    <div class="container">
 
-    <div class="vol-results-text">
-        <p><strong>Done!</strong></p>
-        These are your results, and we hope you like them.
-        <p>Use the location and interest matches to fine tune results, should you
-        have more or less results than you wish for. Enjoy!</p>
+        <div class="vol-results-text">
+            <p><strong>Done!</strong></p>
+            These are your results, and we hope you like them.
+            <p>Use the location and interest matches to fine tune results, should you
+                have more or less results than you wish for. Enjoy!</p>
 
-        {% if matched_intersection == 0 %}
-            <p>
-                <strong> No complete matches were found!  </strong>
-                Showing you all jobs matching  {% if matched_interests_count > 0 %} your interests {% else %}
-                    Showing you all jobs matching your areas {% endif %} instead.
-                    </p>
-        {% else %}
-            <p>
-                Showing {{ job_count }} {% if job_count > 1 %} }} jobs that match {% else %} job that matches{% endif %} {% if unmatched_interests_count != 0 %} {{ matched_interests_count }} {% else %} all {% endif %}
-                interests and locations.
-            </p>
-        {% endif %}
-    </div>
-
-<!-- TODO: * Improve visualision
-           * Allow adding and removing of interests and places
-           * Add advice on what would improve amount (more or less)
--->
-    <div class="row">
-    <div class="col-sm-9">
-    <div class="row">
-
-
-    <!-- These should be 3 little containers, next to each other?-->
-    <div class="col-4 col-sm-6">
-        <strong>Interests</strong>:
-            {% if matched_interests_count != 0 %}
+            {% if matched_intersection == 0 %}
                 <p>
-            Amount of matched interests in all areas, globally: {{ matched_interests_count }}
-        {% for matched_interest in matched_interests %}
-            <li> {{ matched_interest }} </li>
-        {% endfor %}
-        </p>
-        {% elif unmatched_interests_count != 0 %}
-        <p>
-        Amount of unmatched interests, in all areas: {{ unmatched_interests_count }}
-        {% for unmatched_interest in unmatched_interests %}
-            <li>  {{ unmatched_interest }}</li>
-        {% endfor %}
-        {% endif %}
-        </p>
-    </div>
-        <div class="col-4 col-sm-6">
-        <strong>Locations:</strong>
-        <p>
-        {% if location_matches != 0 %}
-            Total amount of jobs in your location(s) found: {{ location_matches }}
-        {% else %}
-            No jobs found for your location, try widening your search area. Sorry!
-        {% endif %}
-        </p>
-        <p>
-    </div>
-    </div>
-    </div>
+                    <strong> No complete matches were found! </strong>
+                    Showing you all jobs matching  {% if matched_interests_count > 0 %} your interests {% else %}
+                    Showing you all jobs matching your areas {% endif %} instead.
+                </p>
+            {% else %}
+                <p>
+                    Showing {{ job_count }} {% if job_count > 1 %} }} jobs that match {% else %} job that
+                    matches{% endif %} {% if unmatched_interests_count != 0 %} {{ matched_interests_count }} {% else %}
+                    all {% endif %}
+                    interests and locations.
+                </p>
+            {% endif %}
+        </div>
 
-        </p>
-    </div>
+        <!-- TODO: * Improve visualision
+                   * Allow adding and removing of interests and places
+                   * Add advice on what would improve amount (more or less)
+        -->
+        <div class="row">
+            <div class="col-sm-9">
+                <div class="row">
+
+
+                    <!-- These should be 3 little containers, next to each other?-->
+                    <div class="col-4 col-sm-6">
+                        <strong>Interests</strong>:
+                        {% if matched_interests_count != 0 %}
+                            <p>
+                                Amount of matched interests in all areas, globally: {{ matched_interests_count }}
+                                {% for matched_interest in matched_interests %}
+                                    <li> {{ matched_interest }} </li>
+                                {% endfor %}
+                            </p>
+                        {% elif unmatched_interests_count != 0 %}
+                            <p>
+                                Amount of unmatched interests, in all areas: {{ unmatched_interests_count }}
+                                {% for unmatched_interest in unmatched_interests %}
+                                    <li>  {{ unmatched_interest }}</li>
+                                {% endfor %}
+                        {% endif %}
+                        </p>
+                    </div>
+                    <div class="col-4 col-sm-6">
+                        <strong>Locations:</strong>
+                        <p>
+                            {% if location_matches != 0 %}
+                                Total amount of jobs in your location(s) found: {{ location_matches }}
+                            {% else %}
+                                No jobs found for your location, try widening your search area. Sorry!
+                            {% endif %}
+                        </p>
+                        <p>
+                    </div>
+                </div>
+            </div>
+
+            </p>
+        </div>
 
 
         <div class="row vol-results-results">
 
-    {% for job in jobs  %}
-        <div class="col-lg-6">
-        <h4> {{ job.title}}</h4>
-    <strong>URL</strong>: <a href="{{ job.url }}">{{ job.url }}</a><br>
-    <strong>Original URL</strong>: {% for v in job.site.values %} <a href="{{ v.url }}">{{ v.url }}</a> {% endfor %} <br> <!-- Surely a better way to do this-->
-    <strong>Organisation</strong> <a href="{{ job.organisation.url }}">{{ job.organisation }}</a> <br> <!-- Include link and logo -->
-    <strong>City</strong> {{ job.city }}<br> <!-- URL to query for all in Wellington? -->
-    <p> {{ job.text }}</p>
+            {% for job in jobs %}
+                <div class="col-lg-6">
+                    <h4> {{ job.title }}</h4>
+                    <strong>URL</strong>: <a href="{{ job.url }}">{{ job.url }}</a><br>
+                    <strong>Original URL</strong>: {% for v in job.site.values %}
+                    <a href="{{ v.url }}">{{ v.url }}</a> {% endfor %} <br> <!-- Surely a better way to do this-->
+                    <strong>Organisation</strong> <a href="{{ job.organisation.url }}">{{ job.organisation }}</a> <br>
+                    <!-- Include link and logo -->
+                    <strong>City</strong> {{ job.city }}<br> <!-- URL to query for all in Wellington? -->
+                    <p> {{ job.text }}</p>
+                </div>
+            {% endfor %}
         </div>
-    {% endfor %}
-        </div>
-</div>
+    </div>
 {% endblock %}
