@@ -4,18 +4,19 @@
     <div class="container">
 
         <div class="vol-results-text">
-            <p><strong>Done!</strong></p>
-            These are your results, and we hope you like them.
-            <p>Use the location and interest matches to fine tune results, should you
-                have more or less results than you wish for. Enjoy!</p>
-
             {% if matched_intersection == 0 %}
                 <p>
-                    <strong> No complete matches were found! </strong>
-                    Showing you all jobs matching  {% if matched_interests_count > 0 %} your interests {% else %}
-                    Showing you all jobs matching your areas {% endif %} instead.
+                    {% if matched_interests_count == 0 and locationmatches == 0 %}
+                        <strong> No matches were found! </strong>
+                        Showing you all jobs instead.
+                    {% else %}
+                        <strong> No complete matches were found! </strong>
+                        Showing you all jobs matching  {% if matched_interests_count > 0 %} your interests {% else %}
+                        your areas instead. {% endif %}
+                    {% endif %}
                 </p>
             {% else %}
+
                 <p>
                     Showing {{ job_count }} {% if job_count > 1 %} }} jobs that match {% else %} job that
                     matches{% endif %} {% if unmatched_interests_count != 0 %} {{ matched_interests_count }} {% else %}
@@ -23,6 +24,8 @@
                     interests and locations.
                 </p>
             {% endif %}
+            <p><i>Not the result you were hoping for? Use the location and interest results below to fine tune
+                results.</i></p>
         </div>
 
         <!-- TODO: * Improve visualision
