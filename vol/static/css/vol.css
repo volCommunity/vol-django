@@ -9,7 +9,6 @@ body {
     margin-bottom: 60px;
 }
 
-
 /* Workaround of bootstrap inputs being shortened when adding typeahead. See https://github.com/bassjobsen/typeahead.js-bootstrap-css/issues/4*/
 .twitter-typeahead > .form-control {
     width: inherit !important;
