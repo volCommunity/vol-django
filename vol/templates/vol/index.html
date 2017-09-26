@@ -4,6 +4,7 @@
 {% block title %} Vol {% endblock %}
 {% block content %}
     <script src="{% static "typeahead.js/dist/typeahead.bundle.min.js" %}"></script>
+    <script src="{% static "typeahead.js/dist/bloodhound.js" %}"></script>
     <div class="container">
         <p><strong>Welcome</strong></p>
         Let's try to find you a volunteering opportunity in your area...
@@ -28,55 +29,69 @@
         </form>
     </div>
     <script>
-        $(function () {
+
+        // From https://github.com/twitter/typeahead.js/blob/master/doc/bloodhound.md
+        // WARNING: While it's possible to get away with it for smaller data sets, prefetched data isn't meant
+        // to contain entire sets of data. Rather, it should act as a first-level cache. Ignoring this warning
+        // means you'll run the risk of hitting local storage limits.
+        var interests = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.whitespace,
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            prefetch: {
+                url: 'static/data/interests.json',
+                cacheKey: 'interests', // Key that data will be stored in local storage under. Defaults to value of url.
+                ttl: 300,              // 5 minutes (vs the default of 1 day)
+            }
         });
-        var substringMatcher = function (strs) {
-            return function findMatches(q, cb) {
-                var matches, substringRegex;
-                // an array that will be populated with substring matches
-                matches = [];
 
-                // regex used to determine if a string contains the substring `q`
-                substrRegex = new RegExp(q, 'i');
+        var locationsFoo = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.whitespace,
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            prefetch:  {
+                url: 'static/data/locations.json',
+                cacheKey: 'locations', // Key that data will be stored in local storage under. Defaults to value of url.
+                ttl: 300,              // 5 minutes (vs the default of 1 day)
+            },
+        });
 
-                // iterate through the pool of strings and for any string that
-                // contains the substring `q`, add it to the `matches` array
-                $.each(strs, function (i, str) {
-                    if (substrRegex.test(str)) {
-                        matches.push(str);
-                    }
-                });
+        function interestsWithDefaults(q, sync) {
+            if (q === '') {
+                console.log(interests.get('Nature', 'People', 'Animals')); // Should return ["Nature"]
+                sync(interests.get('Nature', 'People', 'Animals'));
+            } else {
+                interests.search(q, sync);
+            }
+        }
 
-                cb(matches);
-            };
-        };
-
-
-        var interests = ['Outdoor', 'Nature', 'People'];
-
-        var locations = ['Wellington', 'Dunedin', 'Amsterdam', 'Paris'];
+        function locationsWithDefaults(q, sync) {
+            if (q === '') {
+                console.log(locationsFoo.get('Wellington', 'ChristChurch', 'Auckland')); // Should return ["Wellington"]
+                sync(locationsFoo.get('Wellington', 'ChristChurch', 'Auckland'));
+            } else {
+                locationsFoo.search(q, sync);
+            }
+        }
 
         $('#interests .typeahead').typeahead({
-                hint: true,
-                highlight: true,
-                minLength: 1
+                minLength: 0,
+                highlight: true
             },
             {
                 name: 'interests',
-                source: substringMatcher(interests)
-            });
+                source: interestsWithDefaults
+        });
 
         $('#locations .typeahead').typeahead({
-                hint: true,
-                highlight: true,
-                minLength: 1
+                minLength: 0,
+                highlight: true
             },
             {
-                name: 'locations',
-                source: substringMatcher(locations)
+                name: 'locationsFoo',
+                source: locationsWithDefaults
             });
 
-        $('#interests .input')
+
+
 
         $('#submit').on('click', function (e) {
             console.log("Someone submitted somethning");
