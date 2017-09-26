@@ -1,7 +1,1 @@
-[
-  {"value":"outdoor", "title":"Outdoor", "id": "outdoor", "text":"Outdoor activities"},
-  {"value":"nature", "title":"nature", "id": "nature", "text":"Nature activities"},
-  {"value":"technology", "title":"Technology", "id":"technology", "text":"Technology"},
-  {"value":"social", "title":"Social", "id":"social", "text":"Social",
-   "value": "animals", "title":"Animals", "id": "animals", "text": "Animals"}
-]
+["People", "Animals", "Nature"]
