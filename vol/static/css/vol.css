@@ -62,7 +62,11 @@ span.twitter-typeahead .tt-menu {
     background-color: #fff;
     background-clip: padding-box;
     border: 1px solid rgba(0, 0, 0, 0.15);
-    border-radius: 0.25rem; }
+    border-radius: 0.25rem;
+    /* Scrollable menu */
+    max-height: 250px;
+    overflow-y: auto;
+}
 
 span.twitter-typeahead .tt-suggestion {
     display: block;
