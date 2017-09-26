@@ -44,11 +44,11 @@ $(document).ready(function () {
     $('#interests .typeahead').typeahead({
             minLength: 0,
             highlight: true,
-            limit: 20
 
         },
         {
             name: 'interests',
+            limit: 20,
             source: interestsWithDefaults
         });
 
