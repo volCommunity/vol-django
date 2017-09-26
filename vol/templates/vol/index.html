@@ -44,7 +44,7 @@
             }
         });
 
-        var locationsFoo = new Bloodhound({
+        var locations = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.whitespace,
             queryTokenizer: Bloodhound.tokenizers.whitespace,
             prefetch:  {
@@ -56,7 +56,7 @@
 
         function interestsWithDefaults(q, sync) {
             if (q === '') {
-                console.log(interests.get('Nature', 'People', 'Animals')); // Should return ["Nature"]
+{#                console.log(interests.get('Nature', 'People', 'Animals')); // Should return ["Nature"]#}
                 sync(interests.get('Nature', 'People', 'Animals'));
             } else {
                 interests.search(q, sync);
@@ -65,10 +65,10 @@
 
         function locationsWithDefaults(q, sync) {
             if (q === '') {
-                console.log(locationsFoo.get('Wellington', 'ChristChurch', 'Auckland')); // Should return ["Wellington"]
-                sync(locationsFoo.get('Wellington', 'ChristChurch', 'Auckland'));
+{#                console.log(locations.get('Wellington', 'ChristChurch', 'Auckland')); // Should return ["Wellington"]#}
+                sync(locations.get('Wellington', 'ChristChurch', 'Auckland'));
             } else {
-                locationsFoo.search(q, sync);
+                locations.search(q, sync);
             }
         }
 
@@ -86,7 +86,7 @@
                 highlight: true
             },
             {
-                name: 'locationsFoo',
+                name: 'locations',
                 source: locationsWithDefaults
             });
 
