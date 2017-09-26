@@ -1,9 +1,13 @@
 from django.conf.urls import url
+from django.views.generic.base import RedirectView
 
 from . import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url(r'^favicon.ico$', RedirectView.as_view(url='static/favicon.ico',
+                                               permanent=False), name='favicon'),
+    url('about', views.about, name='about'),
     url('about', views.about, name='about'),
     url(r'^results/(?P<subject>[a-zA-Z0-9+]+)/(?P<location>[a-zA-Z+]+)/(?P<interests>[a-zA-Z+]+)', views.results,
         name='results'),
