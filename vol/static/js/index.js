@@ -64,14 +64,13 @@ $(document).ready(function () {
 
 
     $('#submit').on('click', function (e) {
-        console.log("Someone submitted somethning");
         var interestsInput = $("#interestsInput").val();
         var locationInput = $("#locationInput").val();
 
-        console.log("interest input is: " + interestsInput);
-        console.log("location input is" + locationInput);
+        if (interestsInput == "") interestsInput = "Nature";   // Same values, but less descriptive than the placeholder
+        if (locationInput == "") locationInput = "Wellington"; // TODO: get default location from browser
 
-        target = '/results/' + "notUsedYet" + '/' + locationInput + '/' + interestsInput
+        target = '/results/' + "notUsedYet" + '/' + locationInput + '/' + interestsInput;
         location.href = target;
         return false;
     });
