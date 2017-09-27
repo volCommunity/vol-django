@@ -14,11 +14,6 @@ body {
     width: inherit !important;
 }
 
-/* Results */
-.vol-results-text {
-    border-bottom: .05rem solid #e5e5e5;
-}
-
 /* Individual results */
 .vol-results-results {
     margin: 3rem 0;

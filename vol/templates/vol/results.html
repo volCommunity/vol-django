@@ -2,80 +2,76 @@
 {% block title %}Vol results{% endblock %}
 {% block content %}
     <div class="container">
+        {% if matched_intersection == 0 %}
+            <p>
+                {% if matched_interests_count == 0 and locationmatches == 0 %}
+                    <strong> No matches were found! </strong>
+                    Showing you all jobs instead.
+                {% else %}
+                    <strong> No complete matches were found! </strong>
+                    Showing you all jobs matching  {% if matched_interests_count > 0 %} your interests {% else %}
+                    your areas instead. {% endif %}
+                {% endif %}
+            </p>
+        {% else %}
 
-        <div class="vol-results-text">
-            {% if matched_intersection == 0 %}
-                <p>
-                    {% if matched_interests_count == 0 and locationmatches == 0 %}
-                        <strong> No matches were found! </strong>
-                        Showing you all jobs instead.
-                    {% else %}
-                        <strong> No complete matches were found! </strong>
-                        Showing you all jobs matching  {% if matched_interests_count > 0 %} your interests {% else %}
-                        your areas instead. {% endif %}
-                    {% endif %}
-                </p>
-            {% else %}
-
-                <p>
-                    Showing {{ job_count }} {% if job_count > 1 %} jobs that match {% else %} job that
-                    matches{% endif %} {% if unmatched_interests_count != 0 %} {{ matched_interests_count }} {% else %}
-                    all {% endif %}
-                    interests and locations.
-                </p>
-            {% endif %}
-            <p><i>Not the result you were hoping for? Use the location and interest results below to fine tune
-                results.</i></p>
-        </div>
+            <p>
+                Showing {{ job_count }} {% if job_count > 1 %} jobs that match {% else %} job that
+                matches{% endif %} {% if unmatched_interests_count != 0 %} {{ matched_interests_count }} {% else %}
+                all {% endif %}
+                interests and locations.
+            </p>
+        {% endif %}
+        <p><i>Not the result you were hoping for? Use the location and interest results below to fine tune
+            results.</i></p>
 
         <!-- TODO: * Improve visualision
                    * Allow adding and removing of interests and places
                    * Add advice on what would improve amount (more or less)
+
+    wtf, card-inverse and card-info not available?
         -->
+
         <div class="row">
-            <div class="col-sm-9">
-                <div class="row">
-
-
-                    <!-- These should be 3 little containers, next to each other?-->
-                    <div class="col-4 col-sm-6">
-                        <strong>Interests</strong>:
-                        {% if matched_interests_count != 0 %}
-                            <p>
-                                Amount of matched interests in all areas, globally: {{ matched_interests_count }}
-                                {% for matched_interest in matched_interests %}
-                                    <li> {{ matched_interest }} </li>
-                                {% endfor %}
-                            </p>
-                        {% elif unmatched_interests_count != 0 %}
-                            <p>
-                                Amount of unmatched interests, in all areas: {{ unmatched_interests_count }}
-                                {% for unmatched_interest in unmatched_interests %}
-                                    <li>  {{ unmatched_interest }}</li>
-                                {% endfor %}
-                        {% endif %}
+            <div class="col-sm-6 d-flex  align-self-stretch">
+                <div class="card border-info mb-3">
+                    <div class="card-header">Interests</div>
+                    <div class="card-body">
+                        <p class="card-text text-info">
+                            {% if matched_interests_count != 0 %}
+                                Found {{ matched_interests_count }} matched interests in all locations.
+{#                                {% for matched_interest in matched_interests %}#}
+{#                                    <li> {{ matched_interest }} </li>#}
+{#                                {% endfor %}#}
+                            {% elif unmatched_interests_count != 0 %}
+                                Amount of unmatched interests, in all areas: {{ unmatched_interests_count }}.
+{#                                {% for unmatched_interest in unmatched_interests %}#}
+{#                                    <li>  {{ unmatched_interest }}</li>#}
+{#                                {% endfor %}#}
+                            {% endif %}
+                            <!-- TODO: provide links to show all matches, regardless of your location -->
                         </p>
                     </div>
-                    <div class="col-4 col-sm-6">
-                        <strong>Locations:</strong>
-                        <p>
+                </div>
+            </div>
+            <div class="col-sm-6 d-flex align-self-stretch">
+                <div class="card border-info mb-3">
+                    <div class="card-header">Locations</div>
+                    <div class="card-body">
+                        <p class="card-text text-info">
                             {% if location_matches != 0 %}
-                                Total amount of jobs in your location(s) found: {{ location_matches }}
+                                Found a total of {{ location_matches }} matches in your location.
+                                <!-- TODO: provide link to show all matches in your location -->
                             {% else %}
                                 No jobs found for your location, try widening your search area. Sorry!
                             {% endif %}
                         </p>
-                        <p>
                     </div>
                 </div>
             </div>
-
-            </p>
         </div>
 
-
         <div class="row vol-results-results">
-
             {% for job in jobs %}
                 <div class="col-lg-6">
                     <h4> {{ job.title }}</h4>
