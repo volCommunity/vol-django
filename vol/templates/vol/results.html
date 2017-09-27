@@ -2,7 +2,11 @@
 {% block title %}Vol results{% endblock %}
 {% block content %}
     <div class="container">
-        {% if matched_intersection == 0 %}
+    {% if locations == "all" %}
+        <p> Showing all jobs matching interests for <strong>all</strong> locations.</p>
+    {% elif interests == "all" %}
+        <p> Showing all jobs for all interests matching locations.</p>
+    {% elif matched_intersection == 0 %}
             <p>
                 {% if matched_interests_count == 0 and locationmatches == 0 %}
                     <strong> No matches were found! </strong>
@@ -24,14 +28,6 @@
         {% endif %}
         <p><i>Not the result you were hoping for? Use the location and interest results below to fine tune
             results.</i></p>
-
-        <!-- TODO: * Improve visualision
-                   * Allow adding and removing of interests and places
-                   * Add advice on what would improve amount (more or less)
-
-    wtf, card-inverse and card-info not available?
-        -->
-
         <div class="row">
             <div class="col-sm-6 d-flex  align-self-stretch">
                 <div class="card border-info mb-3">
@@ -49,8 +45,8 @@
 {#                                    <li>  {{ unmatched_interest }}</li>#}
 {#                                {% endfor %}#}
                             {% endif %}
-                            <!-- TODO: provide links to show all matches, regardless of your location -->
                         </p>
+                        <a href="/results/all/{{ interests }}" class="btn btn-outline-secondary">Show interest matches, globally</a>
                     </div>
                 </div>
             </div>
@@ -61,11 +57,12 @@
                         <p class="card-text text-info">
                             {% if location_matches != 0 %}
                                 Found a total of {{ location_matches }} matches in your location.
-                                <!-- TODO: provide link to show all matches in your location -->
+                                </p>
+                                <a href="/results/{{ locations }}/all" class="btn btn-outline-secondary">Show all matches in my location</a>
                             {% else %}
                                 No jobs found for your location, try widening your search area. Sorry!
+                                </p>
                             {% endif %}
-                        </p>
                     </div>
                 </div>
             </div>
@@ -80,7 +77,7 @@
                     <a href="{{ v.url }}">{{ v.url }}</a> {% endfor %} <br> <!-- Surely a better way to do this-->
                     <strong>Organisation</strong> <a href="{{ job.organisation.url }}">{{ job.organisation }}</a> <br>
                     <!-- Include link and logo -->
-                    <strong>City</strong> {{ job.city }}<br> <!-- URL to query for all in Wellington? -->
+                    <strong>City</strong> {{ job.city }}<br>
                     <p> {{ job.text }}</p>
                 </div>
             {% endfor %}

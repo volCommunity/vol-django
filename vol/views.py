@@ -56,7 +56,7 @@ def results(request, location, interests):
                 matched_intersection = len(jobs)
 
     context = {
-        'location': location,
+        'locations': location,
         'interests': interests,
         'location_matches': location_matches,
         'matched_interests_count': len(matched_interests),
