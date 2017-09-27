@@ -70,7 +70,7 @@ $(document).ready(function () {
         if (interestsInput == "") interestsInput = "Nature";   // Same values, but less descriptive than the placeholder
         if (locationInput == "") locationInput = "Wellington"; // TODO: get default location from browser
 
-        target = '/results/' + "notUsedYet" + '/' + locationInput + '/' + interestsInput;
+        target = '/results/' + locationInput + '/' + interestsInput;
         location.href = target;
         return false;
     });

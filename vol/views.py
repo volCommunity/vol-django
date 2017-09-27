@@ -13,13 +13,10 @@ def about(request):
     return HttpResponse(render(request, 'vol/about.html'))
 
 
-def results(request, subject, location, interests):
-    # TODO: split and downcase subject and location
-
+def results(request, location, interests):
     # Keep filtering down until all interests have been met, this won't be awesome if we have a lot of data
     # TODO: another approach, one that we should probably take it to order by things that matched *most* tags
     jobs = Job.objects.filter()
-    print("Total jobs: %s" % len(jobs))
     interests_list = interests.split('+')
     interests_list = [interest.lower() for interest in interests_list]
 
@@ -47,29 +44,18 @@ def results(request, subject, location, interests):
     while locations:
         q_objects |= Q(city=locations.pop())
 
-    # print("Query now: ")
-    # print(q_objects)
     location_matches = len(Job.objects.filter(q_objects))
 
-    # print("Location matches: %s" % location_matches)
-    # location_matches = len(Job.objects.filter(city=location))
 
-    # TODO: find the intersetion, if there is none, pass all local jobs
 
     # Filter further down on results to find on location
-    # print("Jobs # now: %s" % len(jobs))
     if len(jobs) > 0:
-        print("Found jobs: %s" % len(jobs))
         if jobs.filter(q_objects):  # There is an intersection, store it
-            print("Filtering on location of found jobs results in :")
-            print(jobs.filter(q_objects))
             jobs = jobs.filter(q_objects)
             if len(matched_interests) > 0:  # This is a little ghetto
                 matched_intersection = len(jobs)
-                print("Matched intersection now: %s" % matched_intersection)
 
     context = {
-        'subject': subject,
         'location': location,
         'interests': interests,
         'location_matches': location_matches,
