@@ -1,4 +1,5 @@
 {% load static %}
+{% load analytical %}
 
 <!DOCTYPE html>
 <html>
@@ -6,6 +7,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %} {% endblock %} </title>
+    {% analytical_head_top %}
 
     <link rel="stylesheet" href="{% static "font-awesome/css/font-awesome.min.css" %}"/>
     <link rel="stylesheet" href="{% static "bootstrap/dist/css/bootstrap.min.css" %}"/>
@@ -21,9 +23,10 @@
     <!-- No idea why this is not loaded correctly, the cdn link just works .. -->
 
     <script src="{% static "bootstrap/dist/js/bootstrap.min.js" %}"></script>
-
+    {% analytical_head_bottom %}
 </head>
 <body>
+{% analytical_body_top %}
 <nav class="navbar navbar-dark fixed-top" style="background-color: #2c3e50;">
     <div class="container">
         <a class="navbar-brand" href="/" aria-label="Navigate home"><i class="fa fa-recycle" aria-hidden="true" title="Navigate home"></i></a>
@@ -35,5 +38,6 @@
 {% include "vol/footer.html" %}
 
 </div>
+{% analytical_body_bottom %}
 </body>
 </html>
