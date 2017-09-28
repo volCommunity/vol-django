@@ -15,7 +15,11 @@ body {
 }
 
 /* Individual results */
-.vol-results-results {
+.vol-results-intro {
+    margin-bottom: 3rem;
+}
+/* Individual results */
+.vol-results-result {
     margin: 3rem 0;
 }
 
