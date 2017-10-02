@@ -136,8 +136,7 @@ DATABASES['default']['TEST'] = {'NAME': DATABASES['default']['NAME']}
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Redirect to HTTPS if not running in debug mode
-if os.environ.get('DEBUG', False) == 'False':
-    print("Debug is not set")
+if not DEBUG:
     SECURE_SSL_REDIRECT = True
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
