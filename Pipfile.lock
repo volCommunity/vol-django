@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "e05f668dd11150e6dc29d5fabbbc74c8e3c850f3720ee31b37d948157f0262bc"
+            "sha256": "cf4daf1aa0b24c9cd444cc5688602056c09010f65ffd67ebbc86a5b4ad410c43"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -16,7 +16,7 @@
             "python_version": "3.6",
             "sys_platform": "darwin"
         },
-        "pipfile-spec": 3,
+        "pipfile-spec": 6,
         "requires": {},
         "sources": [
             {
@@ -45,6 +45,13 @@
                 "sha256:7978ded39d5dd22e54fcc25e3ffe983f99490604849c5adaf1736bdc71f30d21"
             ],
             "version": "==2.2.2"
+        },
+        "djangorestframework": {
+            "hashes": [
+                "sha256:0f9bfbac702f3376dfb2db4971ad8af4e066bfa35393b1b85e085f7e8b91189a",
+                "sha256:de8ac68b3cf6dd41b98e01dcc92dc0022a5958f096eafc181a17fa975d18ca42"
+            ],
+            "version": "==3.6.4"
         },
         "gunicorn": {
             "hashes": [

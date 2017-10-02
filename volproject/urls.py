@@ -18,5 +18,6 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^', include('vol.urls'))
+    url(r'^api/v0.0.1/', include('api.urls')), # TODO: pull API version out of variable
+    url(r'^', include('vol.urls')),
 ]

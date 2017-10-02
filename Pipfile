@@ -3,9 +3,11 @@ url = "https://pypi.python.org/simple"
 verify_ssl = true
 
 [packages]
+
 django = "*"
-dj-database-url = "*"
+"dj-database-url" = "*"
 gunicorn = "*"
-psycopg2 = "*"
+"psycopg2" = "*"
 whitenoise = "*"
-django-analytical = "*"
+"django-analytical" = "*"
+djangorestframework = "*"
