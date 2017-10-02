@@ -31,7 +31,6 @@ GOOGLE_ANALYTICS_DOMAIN = os.environ.get('GOOGLE_ANALYTICS_DOMAIN')
 GOOGLE_ANALYTICS_SITE_SPEED = True
 
 # Application definition
-
 INSTALLED_APPS = [
     'vol.apps.VolConfig',
     'django.contrib.admin',
@@ -135,6 +134,10 @@ DATABASES['default']['TEST'] = {'NAME': DATABASES['default']['NAME']}
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Redirect to HTTPS if not running in debug mode
+if DEBUG is None:
+    SECURE_SSL_REDIRECT = True
 
 # Allow all host headers
 ALLOWED_HOSTS = ['*']
