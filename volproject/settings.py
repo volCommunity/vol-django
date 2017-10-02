@@ -138,6 +138,10 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # Redirect to HTTPS if not running in debug mode
 if DEBUG is None:
     SECURE_SSL_REDIRECT = True
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+
+
 
 # Allow all host headers
 ALLOWED_HOSTS = ['*']
