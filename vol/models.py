@@ -37,7 +37,7 @@ class Job(models.Model):
     text = models.CharField(max_length=1000)
     labels = models.ManyToManyField(Labels)
     organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE)  # One org per job
-    site = models.ManyToManyField(Site)  # Possibly more sites per job
+    sites = models.ManyToManyField(Site)  # Possibly more sites per job
     country = models.CharField(max_length=70)  # TODO: move to country table?
     region = models.CharField(max_length=70)  # TODO: move to region table?
     city = models.CharField(max_length=70)  # TODO: move to city table?
