@@ -10,6 +10,11 @@ How you could help:
 * Front end or full stack developers with an opinion on how to make things better: feel free to look at or raise issues or PRs.
 
 ## Development
+We serve everything from Django, static assets too, using whitenoise. If speed becomes an issue moving static assets
+to a CDN would be a quick win.
+The current tech stack is Python, Django 1.11, Bootstrap 4, Django REST Framework, and PostgreSQL. All these things
+could change any moment as this is in prototyping stage.
+
 ### Installation
 We use the amazing <a href=https://github.com/kennethreitz/pipenv>Pipenv</a> to manage <a href=http://docs.python-guide.org/en/latest/dev/virtualenvs/>virtualenvs:</a>
 
@@ -20,10 +25,10 @@ pip install pipenv
 
 When Pipenv is available we spawn a shell and install the projects dependencies in our Virtualenv:
 ```shell
-pipenv shell &&pipenv install
+pipenv shell && pipenv install
 ```
 
-We use PostgreSQL, run the Docker image if you do not wish to install it locally:
+We use PostgreSQL. Run the Docker image if you do not wish to install it locally:
 
 ```shell
 docker run -p 5432:5432 --name postgres-db -d postgres:latest
@@ -50,7 +55,7 @@ python manage.py runserver
 
 ### In Heroku
 Assuming you have a Heroku login and installed the CLI, see
-<a href=https://devcenter.heroku.com/articles/getting-started-with-python>Heroku:Getting Started</a> if you have not
+<a href=https://devcenter.heroku.com/articles/getting-started-with-python>Heroku:Getting Started</a> if you have are
 not familiar with Heroku.
 
 Create and configure the app::
