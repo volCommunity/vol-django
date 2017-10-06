@@ -5,8 +5,8 @@ python:
     - "nightly"
 
 install:
-    - pip install -e . --upgrade
-    - pipenv install --dev
+    - pip install pipenv
+    - pipenv install
 
 script:
-    - pipenv run pytest -n 8 tests
+    - pipenv run pytest --flake8
