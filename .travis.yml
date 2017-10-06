@@ -6,8 +6,7 @@ python:
 
 install:
     - pip install pipenv
-    - pipenv install -d --system
+    - pipenv install --dev
 
 script:
-    - pipenv shell
-    - pytest
+    - pipenv run pytest -n 8 tests
