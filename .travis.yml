@@ -1,0 +1,13 @@
+language: python
+python:
+    - "3.6"
+    - "3.6-dev"
+    - "nightly"
+
+install:
+    - pip install pipenv
+    - pipenv install -d --system
+
+script:
+    - pipenv shell
+    - pytest
