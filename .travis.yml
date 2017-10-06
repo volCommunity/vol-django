@@ -5,7 +5,7 @@ python:
     - "nightly"
 
 install:
-    - pip install pipenv
+    - pip install -e . --upgrade
     - pipenv install --dev
 
 script:
