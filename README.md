@@ -2,17 +2,15 @@
 
 Welcome! This project is in very early and experimental stage, and help in the following areas would be greatly appreciated!
 
-This repository contains the site prototype, it's a fairly standard Django setup with Bootstrap.
-
 How you could help:
 * Someone who would like to add support for new countries, or a Python dev who loves crawler the web? We are also looking for help writing crawlers, have a look at <a href="github.com/volCommunity/vol-crawlers">vol-crawlers</a>.
 * Designers: Please help this site look better!
 * Front end or full stack developers with an opinion on how to make things better: feel free to look at or raise issues or PRs.
 
 ## Development
-We serve everything from Django, static assets too, using whitenoise. If speed becomes an issue moving static assets
+We serve everything from Django, static assets too, using Whitenoise. If speed becomes an issue moving static assets
 to a CDN would be a quick win.
-The current tech stack is Python, Django 1.11, Bootstrap 4, Django REST Framework, and PostgreSQL. All these things
+The current tech stack currently consists of Python, Django 1.11, Bootstrap 4, Django REST Framework, Django analytics and PostgreSQL. All these things
 could change any moment as this is in prototyping stage.
 
 ### Installation
