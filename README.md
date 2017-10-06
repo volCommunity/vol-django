@@ -1,3 +1,5 @@
+[![Build status](https://travis-ci.org/volCommunity/vol-django.svg?branch=master)](https://travis-ci.org/volCommunity/vol-django)
+
 # Vol::Django
 
 Welcome! This project is in very early and experimental stage, and help in the following areas would be greatly appreciated!

@@ -1,8 +1,8 @@
-from django.http import HttpResponse, HttpResponseNotFound
-from .models import Job, Organisation, Site, Labels
+from django.http import HttpResponse
+from .models import Job
 from django.db.models import Q
-from django.template import loader
 from django.shortcuts import render
+
 
 def index(request):
     return HttpResponse(render(request, 'vol/index.html'))
@@ -13,8 +13,10 @@ def about(request):
 
 
 def results(request, location, interests):
-    # Keep filtering down until all interests have been met, this won't be awesome if we have a lot of data
-    # TODO: another approach, one that we should probably take it to order by things that matched *most* tags
+    # Keep filtering down until all interests have been met, this won't be awesome if we
+    # have a lot of data
+    # TODO: another approach, one that we should probably take it to order by things that
+    # matched *most* tags
     jobs = Job.objects.filter()
     interests_list = interests.split('+')
     interests_list = [interest.lower() for interest in interests_list]
@@ -37,15 +39,13 @@ def results(request, location, interests):
 
     matches = len(jobs)
 
-    # Locations are a little different I guess, we want jobs for all the locations instead of filtering down
-    # Q would be good here: Job.objects.filter(Q(city=city_one) | Q(city=city_two))
+    # Locations are a little different I guess, we want jobs for all the locations instead of
+    # filtering down
     q_objects = Q()
     while locations:
         q_objects |= Q(city=locations.pop())
 
     location_matches = len(Job.objects.filter(q_objects))
-
-
 
     # Filter further down on results to find on location
     if len(jobs) > 0:
