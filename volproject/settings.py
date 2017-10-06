@@ -166,7 +166,9 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ],
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
-    'DEFAULT_VERSION': 'v0.0.1',  # What we'll use if no version is specified
-    'ALLOWED_VERSIONS': ['v0.0.1'],  # Other versions will receive a 404 with body "Invalid version in URL path."
+    # What we'll use if no version is specified
+    'DEFAULT_VERSION': 'v0.0.1',
+    # Other versions will receive a 404 with body "Invalid version in URL path."
+    'ALLOWED_VERSIONS': ['v0.0.1'],
     'PAGE_SIZE': 10
 }
