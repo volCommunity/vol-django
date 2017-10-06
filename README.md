@@ -48,9 +48,10 @@ python manage.py migrate
 
 ### Running
 #### Locally
-Run the service locally:
+Run the service locally, setting DEBUG to True allows using http instead of https,
+and provides extra debugging output:
 ```shell
-python manage.py runserver
+DEBUG=True python manage.py runserver
 ```
 
 ### In Heroku
@@ -85,19 +86,62 @@ Or start a console:
 heroku run python manage.py shell
 ```
 
+### Creating tokens
+Create them using the admin console, which you will be able to access locally at  <a href=http://localhost:8000/admin/authtoken>localhost:8000/admin/authtoken</a>.
+
 ## API
 We run <a href=http://www.django-rest-framework.org>DRF</a>, which exposes a browesable API:
 <a href="https://www.vol.community/api/">www.vol.community/api</a>.
 
-If you are looking for a client, <a href=https://github.com/core-api>core-api</a> clients do
- a great job at exploring and formatting results, ie:
+Read only access can be accessed without tokens, mutating requires using basic auth or having
+an API token.
+
+Pass tokens by adding an Authorization header like so:
 
 ```shell
- ▶ coreapi get http://127.0.0.1:8000/api
-    {
-        "labels": "http://127.0.0.1:8000/apiv0.0.1/labels",
-        "organisations": "http://127.0.0.1:8000/apiv0.0.1/organisations",
-        "sites": "http://127.0.0.1:8000/apiv0.0.1/sites",
-        "jobs": "http://127.0.0.1:8000/apiv0.0.1/jobs"
-    }
+curl -X DELETE https://www.vol.community/api/v0.0.1/jobs/1 --header "Content-Type: application/json" -H 'Authorization: Token 9b13d4942b24dc0eb12eb77f3eaf37f23b250175'
+```
+
+If you are looking for a client, <a href=https://github.com/core-api>core-api</a> clients do
+ a great job at exploring and formatting results, see http://www.django-rest-framework.org/topics/api-clients for more examples. ie:
+
+```python
+ In [1]: from coreapi import Client
+ In [2]: client = Client()
+ In [3]: client.get('localhost:8000/api')
+ In [4]: client.get('http://localhost:8000/api')
+ Out[4]:
+ OrderedDict([('labels', 'http://localhost:8000/api/v0.0.1/labels'),
+              ('organisations',
+               'http://localhost:8000/api/v0.0.1/organisations'),
+              ('sites', 'http://localhost:8000/api/v0.0.1/sites'),
+              ('jobs', 'http://localhost:8000/api/v0.0.1/jobs')])
+
+ In [5]: client.get('http://localhost:8000/api/v0.0.1/jobs')
+ Out[5]:
+ OrderedDict([('count', 4),
+              ('next', None),
+              ('previous', None),
+              ('results',
+               [OrderedDict([('id', 3),
+                             ('title', 'Companion Volunteer'),
+                             ('text',
+                              'Provide safe companionship and support to the person with dementia for 1-2 hours weekly or fortnightly. This may include (but is not limited to) tasks such as visiting a cafe or library, going for a walk, making a cup of tea, reading the newsp aper together, watching sport etc. Police check required. TRAINING: Initial induction of two 2-hour sessions and ongoing o ptional training throughout the year. How to Apply'),
+                             ('labels', [5]),
+                             ('organisation',
+                              OrderedDict([('id', 2),
+                                           ('name', 'Dementia Canterbury'),
+                                           ('region', 'canterbury'),
+                                           ('city', 'christchurch'),
+                                           ('url',
+                                            'https://www.dementiacanterbury.org.nz/'),
+                                           ('added', '2017-08-01')])),
+                             ('sites', [2]),
+                             ('country', 'new zealand'),
+                             ('region', 'wellington'),
+                             ('added', '2017-09-12'),
+                             ('url',
+                              'https://dogoodjobs.co.nz/jobs/companion-volunteer'),
+                             ('seen', 0)]),
+                <SNIP>
 ```
