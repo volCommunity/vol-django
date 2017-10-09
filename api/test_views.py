@@ -106,6 +106,7 @@ class IndexViewTests(APITestCase):
         client = APIClient()
         response = client.get('%s/labels' % (self.base_url), format='json', secure=True)
         r = json.loads(response.content)
+        print("r: %s" % r)
         self.assertEqual(r['count'], 2)
         self.assertEqual(response.status_code, 200)
 
