@@ -9,4 +9,5 @@ install:
     - pipenv install --dev
 
 script:
-    - pipenv run pytest --flake8
+    #- pipenv run pytest --flake8
+    - pipenv run python manage.py test
