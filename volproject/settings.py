@@ -31,6 +31,9 @@ GOOGLE_ANALYTICS_PROPERTY_ID = os.environ.get('GOOGLE_ANALYTICS_PROPERTY_ID')
 GOOGLE_ANALYTICS_DOMAIN = os.environ.get('GOOGLE_ANALYTICS_DOMAIN')
 GOOGLE_ANALYTICS_SITE_SPEED = True
 
+# Do not default to appending slashes to the end of URLs, please
+APPEND_SLASH = False
+
 # Application definition
 INSTALLED_APPS = [
     'vol.apps.VolConfig',
