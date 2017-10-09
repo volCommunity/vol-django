@@ -11,6 +11,9 @@ class Labels(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ['id']
+
 
 class Organisation(models.Model):
     name = models.CharField(max_length=200)
@@ -24,6 +27,9 @@ class Organisation(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ['id']
+
 
 class Site(models.Model):
     name = models.CharField(max_length=200)
@@ -33,6 +39,9 @@ class Site(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+       ordering = ['id']
 
 
 class Job(models.Model):
@@ -51,3 +60,6 @@ class Job(models.Model):
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        ordering = ['id']
