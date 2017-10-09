@@ -7,6 +7,7 @@ from .models import Job, Labels, Site, Organisation
 
 class JobTestCase(TestCase):
     def setUp(self):
+        # TODO: use factory boy
         Organisation.objects.create(name="The nappy changers",
                                     country="New Zealand",
                                     city="Wellington",
@@ -23,12 +24,12 @@ class JobTestCase(TestCase):
         Labels.objects.create(name="nature")
 
         Site.objects.create(name="Do Gooders",
-                            url="www.exapmple.com/dogooders/jobs")
+                            url="www.example.com/dogooders/jobs")
 
         Site.objects.create(name="Green as Grass",
-                            url="www.exapmple.com/gag/jobs")
+                            url="www.example.com/gag/jobs")
 
-        self.job1 = Job.objects.create(title="Nappy changer",
+        j = Job.objects.create(title="Nappy changer",
                            text="A create opportunity for a people person",
                            organisation=Organisation.objects.get(name="The nappy changers"),
                            country="NZ",
@@ -39,10 +40,10 @@ class JobTestCase(TestCase):
                            )
 
         # Add one label for *_one tests
-        self.job1.labels.add(Labels.objects.get(name="nature"))
-        self.job1.sites.add(Site.objects.get(name="Do Gooders"))
+        j.labels.add(Labels.objects.get(name="nature"))
+        j.sites.add(Site.objects.get(name="Do Gooders"))
 
-        self.job2 = Job.objects.create(title="Eternal Gardener",
+        j = Job.objects.create(title="Eternal Gardener",
                            text="for the nature lover",
                            organisation=Organisation.objects.get(name="The Elysium fields"),
                            country="NZ",
@@ -53,16 +54,12 @@ class JobTestCase(TestCase):
                            )
 
         # Add 2 labels for *_many tests
-        self.job2.labels.add(Labels.objects.get(name="people"))
-        self.job2.labels.add(Labels.objects.get(name="nature"))
-        self.job2.sites.add(Site.objects.get(name="Green as Grass"))
+        j.labels.add(Labels.objects.get(name="people"))
+        j.labels.add(Labels.objects.get(name="nature"))
+        j.sites.add(Site.objects.get(name="Green as Grass"))
 
-    # TODO: think of scenarios where we can actually test some added
-    # logic, this just tests standard Django things. If there is nothing
-    # to test, are we doing enough in regards to validation or normalisation
-    # think of things like undercasing, replacing spaces with -, things that
-    # we now do in view but might belong in the models themselves.
-    # See http://www.tangowithdjango.com/book17/chapters/test.html
+    # TODO: does it make sense to create CRUD tests
+    # for these? Too tedious to update?
     def test_find_job_none(self):
         self.assertFalse(Job.objects.filter(labels__name="exorcism").exists())
 
