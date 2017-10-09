@@ -173,5 +173,6 @@ REST_FRAMEWORK = {
     'DEFAULT_VERSION': 'v0.0.1',
     # Other versions will receive a 404 with body "Invalid version in URL path."
     'ALLOWED_VERSIONS': ['v0.0.1'],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10
 }
