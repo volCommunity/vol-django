@@ -6,19 +6,19 @@ from rest_framework import serializers
 class LabelSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Labels
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'created_at', 'updated_at']
 
 
 class OrganisationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Organisation
-        fields = ('id', 'name', 'region', 'city', 'url', 'added')
+        fields = ('id', 'name', 'region', 'city', 'url', 'created_at', 'updated_at')
 
 
 class SiteSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Site
-        fields = ('id', 'name', 'url', 'added')
+        fields = ('id', 'name', 'url', 'created_at', 'updated_at')
 
 
 class JobSerializer(serializers.HyperlinkedModelSerializer):
@@ -67,4 +67,4 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Job
         fields = ('id', 'title', 'text', 'labels', 'organisation_id', 'organisation',
-                  'sites', 'country', 'region', 'added', 'url', 'seen')
+                  'sites', 'country', 'region', 'created_at', 'updated_at', 'url', 'seen')
