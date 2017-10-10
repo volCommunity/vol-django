@@ -1,6 +1,7 @@
 import json
 
 from django.contrib.auth.models import User
+from django.conf import settings
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
@@ -14,9 +15,8 @@ from vol.models import Labels, Organisation, Site, Job
 
 
 class IndexViewTests(APITestCase):
-    # TODO: find version using API, or do support YOLO clients.
     def setUp(self):
-        self.base_url = "/api/%s" % "v0.0.1"
+        self.base_url = "/api/%s" % settings.REST_FRAMEWORK['DEFAULT_VERSION']
         # TODO: don't be lazy and create roles too, and use a less privileged user
         user = User.objects.create_superuser('admin', 'admin@example.com', 'test123')
         self.token = Token.objects.create(user=user)
