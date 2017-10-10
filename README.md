@@ -1,4 +1,5 @@
 [![Build status](https://travis-ci.org/volCommunity/vol-django.svg?branch=master)](https://travis-ci.org/volCommunity/vol-django)
+[![Coverage Status](https://coveralls.io/repos/github/volCommunity/vol-django/badge.svg?branch=master)](https://coveralls.io/github/volCommunity/vol-django?branch=master)
 
 # Vol::Django
 
