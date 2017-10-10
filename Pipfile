@@ -3,6 +3,7 @@ url = "https://pypi.python.org/simple"
 verify_ssl = true
 
 [packages]
+
 django = "*"
 "dj-database-url" = "*"
 gunicorn = "*"
@@ -10,8 +11,10 @@ gunicorn = "*"
 whitenoise = "*"
 "django-analytical" = "*"
 djangorestframework = "*"
+"factory-boy" = "*"
 
 [dev-packages]
+
 pytest = "*"
 "flake8" = "*"
 "pytest-flake8" = "*"

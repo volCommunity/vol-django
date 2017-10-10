@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "55d1a387ae326bb1946242f9c68121abfebf7da5d76ecc09444744dd700a3fa5"
+            "sha256": "5da2842d8810ecc8533aabd2505bc09a1efcc91edc50acf8e6415e52c67c9cc0"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -53,6 +53,20 @@
             ],
             "version": "==3.7.0"
         },
+        "factory-boy": {
+            "hashes": [
+                "sha256:b8334bcc3c5b10af9a83ab5b8786f98cb322638dc1e6d320cad01c7f2b420e87",
+                "sha256:340c602f6fed2d8dd160397f28f2c0219e937f0488460450e8e5bf2add020ed6"
+            ],
+            "version": "==2.9.2"
+        },
+        "faker": {
+            "hashes": [
+                "sha256:ca0f4944b5cbe0f238df13fa7014f415a6b94a9bd3fb66c4338cf846f2681b7f",
+                "sha256:21b18afb9f642738805efee06e831ecbbb23a27fb741ed61512c6021c4c083c9"
+            ],
+            "version": "==0.8.4"
+        },
         "gunicorn": {
             "hashes": [
                 "sha256:75af03c99389535f218cc596c7de74df4763803f7b63eb09d77e92b3956b36c6",
@@ -96,6 +110,13 @@
             ],
             "version": "==2.7.3.1"
         },
+        "python-dateutil": {
+            "hashes": [
+                "sha256:95511bae634d69bc7329ba55e646499a842bc4ec342ad54a8cdb65645a0aad3c",
+                "sha256:891c38b2a02f5bb1be3e4793866c8df49c7d19baabf9c1bad62547e0b4866aca"
+            ],
+            "version": "==2.6.1"
+        },
         "pytz": {
             "hashes": [
                 "sha256:c883c2d6670042c7bc1688645cac73dd2b03193d1f7a6847b6154e96890be06d",
@@ -109,6 +130,13 @@
                 "sha256:f5c056e8f62d45ba8215e5cb8f50dfccb198b4b9fbea8500674f3443e4689589"
             ],
             "version": "==2017.2"
+        },
+        "six": {
+            "hashes": [
+                "sha256:832dc0e10feb1aa2c68dcc57dbb658f1c7e65b9b61af69048abc87a2db00a0eb",
+                "sha256:70e8a77beed4562e7f14fe23a786b54f6296e34344c23bc42f07b15018ff98e9"
+            ],
+            "version": "==1.11.0"
         },
         "whitenoise": {
             "hashes": [
