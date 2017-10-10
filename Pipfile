@@ -11,6 +11,12 @@ gunicorn = "*"
 whitenoise = "*"
 "django-analytical" = "*"
 djangorestframework = "*"
+"factory-boy" = "*"
+
+[dev-packages]
+
 pytest = "*"
 "flake8" = "*"
 "pytest-flake8" = "*"
+coverage = "*"
+coreapi = "*"

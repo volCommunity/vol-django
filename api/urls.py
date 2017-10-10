@@ -16,7 +16,7 @@ urlpatterns = [
     url(r'', include(router.urls)),
 
     # Explicit version for the more discerning clients:
-    url(r'^(?P<version>v[0-9+].[0-9]+.[0-9]+)?/', include(router.urls)),
+    url(r'^/(?P<version>v[0-9+].[0-9]+.[0-9]+)?/', include(router.urls)),
 
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

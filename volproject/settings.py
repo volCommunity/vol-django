@@ -31,6 +31,9 @@ GOOGLE_ANALYTICS_PROPERTY_ID = os.environ.get('GOOGLE_ANALYTICS_PROPERTY_ID')
 GOOGLE_ANALYTICS_DOMAIN = os.environ.get('GOOGLE_ANALYTICS_DOMAIN')
 GOOGLE_ANALYTICS_SITE_SPEED = True
 
+# Do not default to appending slashes to the end of URLs, please
+APPEND_SLASH = False
+
 # Application definition
 INSTALLED_APPS = [
     'vol.apps.VolConfig',
@@ -133,7 +136,7 @@ STATIC_URL = '/static/'
 # Update database configuration with $DATABASE_URL.
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
-DATABASES['default']['TEST'] = {'NAME': DATABASES['default']['NAME']}
+DATABASES['default']['TEST'] = {'NAME': "test_%s" % DATABASES['default']['NAME']}
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -170,5 +173,6 @@ REST_FRAMEWORK = {
     'DEFAULT_VERSION': 'v0.0.1',
     # Other versions will receive a 404 with body "Invalid version in URL path."
     'ALLOWED_VERSIONS': ['v0.0.1'],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10
 }
