@@ -10,6 +10,7 @@ before_script:
 - psql -c 'create database test_db;' -U postgres
 - pipenv run python manage.py collectstatic
 script:
+- pipenv run flake8
 - pipenv run coverage run --source=. --omit manage.py,"*/admin.py","*/migrations/*","*/apps.py",volproject/wsgi.py manage.py test  -v 2
 - coveralls
 services:
