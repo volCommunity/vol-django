@@ -21,8 +21,8 @@ class SiteFactory(factory.django.DjangoModelFactory):
 class OrganisationFactory(factory.django.DjangoModelFactory):
     name = "The nappy changers"
     country = "NZ"
-    city = "Wellington"
-    region = "Wellington"
+    city = "wellington"
+    region = "wellington"
     url = "www.example.com/organisations/nappychangers"
 
     class Meta:
@@ -33,8 +33,8 @@ class JobFactory(factory.django.DjangoModelFactory):
     title = "Nappy changer"
     text = "A create opportunity for a people person"
     country = "NZ"
-    region = "Welington"
-    city = "Wellington"
+    region = "wellington"
+    city = "wellington"
     url = "http://www.example.com/jobs/1"
     seen = 0
 
