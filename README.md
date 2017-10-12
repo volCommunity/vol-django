@@ -1,5 +1,6 @@
 [![Build status](https://travis-ci.org/volCommunity/vol-django.svg?branch=master)](https://travis-ci.org/volCommunity/vol-django)
 [![Coverage Status](https://coveralls.io/repos/github/volCommunity/vol-django/badge.svg?branch=master)](https://coveralls.io/github/volCommunity/vol-django?branch=master)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 # Vol::Django
 
