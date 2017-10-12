@@ -48,6 +48,12 @@ Create the tables needed:
 python manage.py migrate
 ```
 
+Install Javascript dependencies using Yarn:
+
+```shell
+yarn install
+```
+
 ### Running
 #### Locally
 Run the service locally, setting DEBUG to True allows using http instead of https,
@@ -57,6 +63,9 @@ DEBUG=True python manage.py runserver
 ```
 
 ### In Heroku
+_Travis deploys to Heroku on successful builds on master. Use these instructions
+to deploy to another Heroko container._
+
 Assuming you have a Heroku login and installed the CLI, see
 <a href=https://devcenter.heroku.com/articles/getting-started-with-python>Heroku:Getting Started</a> if you have are
 not familiar with Heroku.
