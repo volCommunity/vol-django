@@ -1,6 +1,6 @@
 language: python
 python:
-- '3.6'
+- 3.6
 - 3.6-dev
 - nightly
 install:
@@ -27,3 +27,6 @@ deploy:
     secure: fcV6/ZG6JlPtiaSjbF/CdSTIzmzTQrERBeDbfR5/uOFRpXaS2dSvo0VtOkzFuHEWGGuqAe1qLOJRcdqNMUUq5/aXx/F84k8iOkGgFKwbuvNprnlkHS0pJrrYU5KNfX+fnJezB4+WY/iwpmk7For4C0i1tf8+PiPFrK9RNdQCLHLlq/5uP0h+uu785F2EpN9Mcf6oBB8vl9cjZXc+PPR8rRcLb0TFtHKxOxz0xc20MHbGcFfXqBXxejArpMqXV887YL5sohlCqJFTZl2JMFsYnG5IT0bEOY+Ts5I2/ynIzdrAaiyCO6Min5x9IlrUuTiGZ+1f/Ail1A4Ne463qjr6voBV/U1LlUVonf1PpTdKUNTd71egqTSckO14qmzIjVO2mwbUBvQxr3AzMoNmcT3VavFS6AbcxiR62JwZKVpg47DYRZxe63R0AHmEJNUrTSM2qpSyr+BDH4hevFVJbAUubIpRnaeQxuFOn8pqRg4xpTNrBLxMCZp8BBGMfXT0QiBxVqO40ZMTHU3I8v4adXqMG3fcSLkiA2zbmNmdz5sMiYUqu2HKrCS4hwDXfZRuGoAfxgJM7nwE8qrB7CQLd8rPi99E79tei4UChYhi0M3B2VR40fO6XqfbKvwopZxWOnAiABWp7EoWPDxFF32HqkcYDgBuV03kWPUaFUA+N2AQ5vA=
   skip_cleanup: true
   run: pipenv run python manage.py migrate
+  app: frozen-savannah-95618
+  on:
+    python: 3.6
