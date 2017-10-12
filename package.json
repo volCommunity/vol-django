@@ -2,9 +2,12 @@
   "name": "vol-django",
   "version": "0.0.1",
   "main": "index.js",
-  "repository": "ssh://git@bitbucket.org/xzu/vol-django.git",
+  "repository": "ssh://git@github.com:volCommunity/vol-django.git",
   "author": "Otto Jongerius <otto.jongerius@gmail.com>",
-  "license": "MIT",
+  "licenses": [{
+    "type": "Apache-2.0",
+    "url": "http://www.apache.org/licenses/LICENSE-2.0"
+  }],
   "private": true,
   "dependencies": {
     "bootstrap": "4.0.0-beta",
