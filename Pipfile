@@ -12,6 +12,8 @@ whitenoise = "*"
 "django-analytical" = "*"
 djangorestframework = "*"
 "factory-boy" = "*"
+coreapi = "*"
+"django-rest-swagger" = "*"
 
 [dev-packages]
 
@@ -19,5 +21,4 @@ pytest = "*"
 "flake8" = "*"
 "pytest-flake8" = "*"
 coverage = "*"
-coreapi = "*"
 coveralls = "*"
