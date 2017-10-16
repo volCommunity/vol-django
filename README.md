@@ -102,7 +102,7 @@ Create them using the admin console, which you will be able to access locally at
 
 ## API
 We run <a href=http://www.django-rest-framework.org>DRF</a>, which exposes a browesable API:
-<a href="https://www.vol.community/api/">www.vol.community/api</a>.
+<a href="https://www.vol.community/api/">www.vol.community/api</a>. Alternatively use Swagger/OpenAPI at <a href="https://www.vol.community/api/swagger">www.vol.community/api/swagger</a>
 
 Read only access can be accessed without tokens, mutating requires using basic auth or having
 an API token.
@@ -110,7 +110,7 @@ an API token.
 Pass tokens by adding an Authorization header like so:
 
 ```shell
-curl -X DELETE https://www.vol.community/api/v0.0.1/jobs/1 --header "Content-Type: application/json" -H 'Authorization: Token 9b13d4942b24dc0eb12eb77f3eaf37f23b250175'
+curl -X DELETE https://www.vol.community/api/jobs/1 --header "Content-Type: application/json" -H 'Authorization: Token 9b13d4942b24dc0eb12eb77f3eaf37f23b250175'
 ```
 
 If you are looking for a client, <a href=https://github.com/core-api>core-api</a> clients do
@@ -122,13 +122,13 @@ If you are looking for a client, <a href=https://github.com/core-api>core-api</a
  In [3]: client.get('localhost:8000/api')
  In [4]: client.get('http://localhost:8000/api')
  Out[4]:
- OrderedDict([('labels', 'http://localhost:8000/api/v0.0.1/labels'),
+ OrderedDict([('labels', 'http://localhost:8000/api/labels'),
               ('organisations',
-               'http://localhost:8000/api/v0.0.1/organisations'),
-              ('sites', 'http://localhost:8000/api/v0.0.1/sites'),
-              ('jobs', 'http://localhost:8000/api/v0.0.1/jobs')])
+               'http://localhost:8000/api/organisations'),
+              ('sites', 'http://localhost:8000/api/sites'),
+              ('jobs', 'http://localhost:8000/api/jobs')])
 
- In [5]: client.get('http://localhost:8000/api/v0.0.1/jobs')
+ In [5]: client.get('http://localhost:8000/api/jobs')
  Out[5]:
  OrderedDict([('count', 4),
               ('next', None),
