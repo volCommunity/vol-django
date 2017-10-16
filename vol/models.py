@@ -51,7 +51,7 @@ class Job(models.Model):
     organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE)  # One org per job
     sites = models.ManyToManyField(Site)  # Possibly more sites per job
     country = models.CharField(max_length=70)  # TODO: move to country table?
-    region = models.CharField(max_length=70)  # TODO: move to region table?
+    region = models.CharField(max_length=70, null=True)  # TODO: move to region table?
     city = models.CharField(max_length=70)  # TODO: move to city table?
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

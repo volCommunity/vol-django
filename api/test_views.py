@@ -16,7 +16,7 @@ from vol.models import Labels, Organisation, Site, Job
 
 class IndexViewTests(APITestCase):
     def setUp(self):
-        self.base_url = "/api/%s" % settings.REST_FRAMEWORK['DEFAULT_VERSION']
+        self.base_url = "/api"
         # TODO: don't be lazy and create roles too, and use a less privileged user
         user = User.objects.create_superuser('admin', 'admin@example.com', 'test123')
         self.token = Token.objects.create(user=user)
@@ -42,8 +42,13 @@ class IndexViewTests(APITestCase):
         response = self.client.get('/api', secure=False)
         self.assertEqual(response.status_code, 301)
 
+    # Assert that we will be redirect to "/api" if we hit "/api"
     def test_index_view(self):
         response = self.client.get('/api', secure=True)
+        self.assertEqual(response.status_code, 302)
+
+    def test_index_view_trailing(self):
+        response = self.client.get('/api/', secure=True)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "labels")
 
