@@ -8,7 +8,7 @@ from rest_framework_swagger.renderers import OpenAPIRenderer, SwaggerUIRenderer
 from . import views
 
 schema_view = get_schema_view(title="Vol.community API",
-                                  renderer_classes=[OpenAPIRenderer, SwaggerUIRenderer]
+                              renderer_classes=[OpenAPIRenderer, SwaggerUIRenderer]
                               )
 
 router = routers.DefaultRouter(trailing_slash=False)

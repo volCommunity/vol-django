@@ -52,7 +52,6 @@ class IndexViewTests(APITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "labels")
 
-
     """ Labels CRUD
         Create """
 
