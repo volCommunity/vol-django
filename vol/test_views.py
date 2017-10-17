@@ -66,7 +66,8 @@ class IndexViewTests(TransactionTestCase):
         label = LabelsFactory(name="nature")
         job_one = JobFactory()
         job_one.labels.add(label.id)
-        job_two = JobFactory(title="Butterfly catcher")
+        job_two = JobFactory(title="Butterfly catcher",
+                             url="http://www.example.com/")
         job_two.labels.add(label.id)
 
         response = self.client.get('/results/Wellington/Nature', secure=True)
@@ -81,7 +82,8 @@ class IndexViewTests(TransactionTestCase):
         label = LabelsFactory(name="nature")
         job_one = JobFactory()
         job_one.labels.add(label.id)
-        job_two = JobFactory(title="Butterfly catcher")
+        job_two = JobFactory(title="Butterfly catcher",
+                             url="http://www.example.com/")
         job_two.labels.add(label.id)
 
         response = self.client.get('/results/Wellington/Nature', secure=True)
@@ -94,7 +96,8 @@ class IndexViewTests(TransactionTestCase):
 
     def test_get_results_many_location_only(self):
         JobFactory()
-        JobFactory(title="Butterfly catcher")
+        JobFactory(title="Butterfly catcher",
+                   url="http://www.example.com/")
 
         response = self.client.get('/results/Wellington/Nature', secure=True)
 

@@ -1,7 +1,6 @@
 import json
 
 from django.contrib.auth.models import User
-from django.conf import settings
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
@@ -58,10 +57,8 @@ class IndexViewTests(APITestCase):
     def test_create_label_auth(self):
         client = APIClient()
         client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
-        length = Labels.objects.count()
         response = client.post('%s/labels' % self.base_url, {'name': 'nature'}, format='json', secure=True)
-        length += 1
-        self.assertEqual(Labels.objects.count(), length)
+        self.assertEqual(Labels.objects.count(), 1)
         self.assertEqual(Labels.objects.get(name="nature").name, 'nature')
         r = json.loads(response.content)
         self.assertEqual(r['name'], "nature")
@@ -75,12 +72,12 @@ class IndexViewTests(APITestCase):
     """ Read """
 
     def test_get_labels_one(self):
-        LabelsFactory()
+        label = LabelsFactory()
         client = APIClient()
-        response = client.get('%s/labels/%s' % (self.base_url, Labels.objects.get(name="people").id), format='json',
+        response = client.get('%s/labels/%s' % (self.base_url, label.id), format='json',
                               secure=True)
         r = json.loads(response.content)
-        self.assertEqual(r['name'], "people")
+        self.assertEqual(r['name'], label.name)
         self.assertEqual(response.status_code, 200)
 
     def test_get_labels_many(self):
@@ -107,11 +104,11 @@ class IndexViewTests(APITestCase):
     """ Update """
 
     def test_update_labels(self):
-        LabelsFactory()
+        label = LabelsFactory()
         client = APIClient()
         client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
         data = {'name': 'clowns'}
-        response = client.put('%s/labels/%s' % (self.base_url, Labels.objects.get(name="people").id), data=data,
+        response = client.put('%s/labels/%s' % (self.base_url, label.id), data=data,
                               format='json', secure=True)
         r = json.loads(response.content)
         self.assertEqual(r['name'], "clowns")
@@ -124,27 +121,27 @@ class IndexViewTests(APITestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_update_labels_requires_authentications(self):
-        LabelsFactory()
+        label = LabelsFactory()
         client = APIClient()
-        response = client.put('%s/labels/%s' % (self.base_url, Labels.objects.get(name="people").id),
+        response = client.put('%s/labels/%s' % (self.base_url, label.id),
                               {'name': 'nature'}, format='json', secure=True)
         self.assertEqual(response.status_code, 401)
 
     """ Delete """
 
     def test_delete_labels(self):
-        LabelsFactory()
+        label = LabelsFactory()
         client = APIClient()
         client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
-        response = client.delete('%s/labels/%s' % (self.base_url, Labels.objects.get(name="people").id), format='json',
+        response = client.delete('%s/labels/%s' % (self.base_url, label.id), format='json',
                                  secure=True)
         self.assertEqual(Labels.objects.count(), 0)
         self.assertEqual(response.status_code, 204)
 
     def test_delete_labels_requires_authentications(self):
-        LabelsFactory()
+        label = LabelsFactory()
         client = APIClient()
-        response = client.delete('%s/labels/%s' % (self.base_url, Labels.objects.get(name="people").id), format='json',
+        response = client.delete('%s/labels/%s' % (self.base_url, label.id), format='json',
                                  secure=True)
         self.assertEqual(response.status_code, 401)
 
@@ -174,13 +171,13 @@ class IndexViewTests(APITestCase):
     """ Read """
 
     def test_get_organisation_one(self):
-        OrganisationFactory()
+        organisation = OrganisationFactory()
         client = APIClient()
         response = client.get(
-            '%s/organisations/%s' % (self.base_url, Organisation.objects.get(name="The nappy changers").id),
+            '%s/organisations/%s' % (self.base_url, organisation.id),
             format='json', secure=True)
         r = json.loads(response.content)
-        self.assertEqual(r['name'], "The nappy changers")
+        self.assertEqual(r['name'], organisation.name)
         self.assertEqual(response.status_code, 200)
 
     def test_get_organisation_many(self):
@@ -207,13 +204,13 @@ class IndexViewTests(APITestCase):
     """ Update """
 
     def test_update_organisation(self):
-        OrganisationFactory()
+        organisation = OrganisationFactory()
         client = APIClient()
         client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
         data = self.organisation_json
         data["name"] = "The body snatchers"
         response = client.put(
-            '%s/organisations/%s' % (self.base_url, Organisation.objects.get(name="The nappy changers").id), data=data,
+            '%s/organisations/%s' % (self.base_url, organisation.id), data=data,
             format='json', secure=True)
         r = json.loads(response.content)
         self.assertEqual(r['name'], "The body snatchers")
@@ -227,30 +224,30 @@ class IndexViewTests(APITestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_update_organisation_requires_authentication(self):
-        OrganisationFactory()
+        organisation = OrganisationFactory()
         client = APIClient()
         response = client.put(
-            '%s/organisations/%s' % (self.base_url, Organisation.objects.get(name="The nappy changers").id),
+            '%s/organisations/%s' % (self.base_url, organisation.id),
             self.organisation_json, format='json', secure=True)
         self.assertEqual(response.status_code, 401)
 
     """ Delete """
 
     def test_delete_organisation(self):
-        OrganisationFactory()
+        organisation = OrganisationFactory()
         client = APIClient()
         client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
         response = client.delete(
-            '%s/organisations/%s' % (self.base_url, Organisation.objects.get(name="The nappy changers").id),
+            '%s/organisations/%s' % (self.base_url, organisation.id),
             format='json', secure=True)
         self.assertEqual(Site.objects.count(), 0)
         self.assertEqual(response.status_code, 204)
 
     def test_delete_organisation_requires_authentications(self):
-        OrganisationFactory()
+        organisation = OrganisationFactory()
         client = APIClient()
         response = client.delete(
-            '%s/organisations/%s' % (self.base_url, Organisation.objects.get(name="The nappy changers").id),
+            '%s/organisations/%s' % (self.base_url, organisation.id),
             format='json', secure=True)
         self.assertEqual(response.status_code, 401)
 
@@ -286,12 +283,12 @@ class IndexViewTests(APITestCase):
     """ Read """
 
     def test_get_sites_one(self):
-        SiteFactory()
+        site = SiteFactory()
         client = APIClient()
-        response = client.get('%s/sites/%s' % (self.base_url, Site.objects.get(name="Greenpeace").id), format='json',
+        response = client.get('%s/sites/%s' % (self.base_url, site.id), format='json',
                               secure=True)
         r = json.loads(response.content)
-        self.assertEqual(r['name'], "Greenpeace")
+        self.assertEqual(r['name'], site.name)
         self.assertEqual(response.status_code, 200)
 
     def test_get_sites_many(self):
@@ -318,11 +315,11 @@ class IndexViewTests(APITestCase):
     """ Update """
 
     def test_update_sites(self):
-        SiteFactory()
+        site = SiteFactory()
         client = APIClient()
         client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
         data = {'name': 'Clowns for Justice', 'url': 'www.example.com/dogooders/jobs'}
-        response = client.put('%s/sites/%s' % (self.base_url, Site.objects.get(name="Greenpeace").id), data=data,
+        response = client.put('%s/sites/%s' % (self.base_url, site.id), data=data,
                               format='json', secure=True)
         r = json.loads(response.content)
         self.assertEqual(r['name'], "Clowns for Justice")
@@ -337,9 +334,9 @@ class IndexViewTests(APITestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_update_sites_requires_authentications(self):
-        SiteFactory()
+        site = SiteFactory()
         client = APIClient()
-        response = client.put('%s/sites/%s' % (self.base_url, Site.objects.get(name="Greenpeace").id),
+        response = client.put('%s/sites/%s' % (self.base_url, site.id),
                               {'name': 'Do Gooders', 'url': 'www.example.com/dogooders/jobs'}, format='json',
                               secure=True)
         self.assertEqual(response.status_code, 401)
@@ -347,18 +344,18 @@ class IndexViewTests(APITestCase):
     """ Delete """
 
     def test_delete_site(self):
-        SiteFactory()
+        site = SiteFactory()
         client = APIClient()
         client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
-        response = client.delete('%s/sites/%s' % (self.base_url, Site.objects.get(name="Greenpeace").id), format='json',
+        response = client.delete('%s/sites/%s' % (self.base_url, site.id), format='json',
                                  secure=True)
         self.assertEqual(Site.objects.count(), 0)
         self.assertEqual(response.status_code, 204)
 
     def test_delete_site_requires_authentications(self):
-        SiteFactory()
+        site = SiteFactory()
         client = APIClient()
-        response = client.delete('%s/sites/%s' % (self.base_url, Site.objects.get(name="Greenpeace").id), format='json',
+        response = client.delete('%s/sites/%s' % (self.base_url, site.id), format='json',
                                  secure=True)
         self.assertEqual(response.status_code, 401)
 
@@ -372,14 +369,14 @@ class IndexViewTests(APITestCase):
         Create """
 
     def test_create_job_auth(self):
-        LabelsFactory()
-        OrganisationFactory()
-        SiteFactory()
+        label = LabelsFactory()
+        organisation = OrganisationFactory()
+        site = SiteFactory()
 
         data = self.job_json
-        data['labels'] = [Labels.objects.get(name="people").id]
-        data['sites'] = [Site.objects.get(name="Greenpeace").id]
-        data['organisation_id'] = Organisation.objects.get(name="The nappy changers").id
+        data['labels'] = [label.id]
+        data['sites'] = [site.id]
+        data['organisation_id'] = organisation.id
 
         client = APIClient()
         client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
@@ -400,12 +397,12 @@ class IndexViewTests(APITestCase):
         """ Read """
 
     def test_get_jobs_one(self):
-        JobFactory.create()
+        job = JobFactory.create()
         client = APIClient()
-        response = client.get('%s/jobs/%s' % (self.base_url, Job.objects.get(title="Nappy changer").id), format='json',
+        response = client.get('%s/jobs/%s' % (self.base_url, job.id), format='json',
                               secure=True)
         r = json.loads(response.content)
-        self.assertEqual(r['title'], "Nappy changer")
+        self.assertEqual(r['title'], job.title)
         self.assertEqual(response.status_code, 200)
 
     def test_get_jobs_many(self):
@@ -432,18 +429,18 @@ class IndexViewTests(APITestCase):
     """ Update """
 
     def test_update_jobs(self):
-        SiteFactory()
-        LabelsFactory()
-        JobFactory.create()
+        site = SiteFactory()
+        label = LabelsFactory()
+        job = JobFactory.create()
 
         client = APIClient()
         client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
         data = self.job_json  # TODO: currently fails because json referes to org id that is not there
         data["title"] = "Clown"
-        data["organisation_id"] = Organisation.objects.get().id
-        data["sites"] = [Site.objects.get(name="Greenpeace").id]
-        data["labels"] = [Labels.objects.get(name="people").id]
-        response = client.put('%s/jobs/%s' % (self.base_url, Job.objects.get(title="Nappy changer").id), data=data,
+        data["organisation_id"] = job.organisation_id
+        data["sites"] = [site.id]
+        data["labels"] = [label.id]
+        response = client.put('%s/jobs/%s' % (self.base_url, job.id), data=data,
                               format='json', secure=True)
         r = json.loads(response.content)
         self.assertEqual(r['title'], "Clown")
@@ -456,30 +453,30 @@ class IndexViewTests(APITestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_update_jobs_requires_authentications(self):
-        JobFactory.create()
+        job = JobFactory.create()
         client = APIClient()
         data = self.job_json
-        response = client.put('%s/jobs/%s' % (self.base_url, Job.objects.get(title="Nappy changer").id), data=data,
+        response = client.put('%s/jobs/%s' % (self.base_url, job.id), data=data,
                               format='json', secure=True)
         self.assertEqual(response.status_code, 401)
 
     """ Delete """
 
     def test_delete_jobs(self):
-        JobFactory.create()
+        job = JobFactory.create()
         client = APIClient()
         client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
         length = Job.objects.count()
-        response = client.delete('%s/jobs/%s' % (self.base_url, Job.objects.get(title="Nappy changer").id),
+        response = client.delete('%s/jobs/%s' % (self.base_url, job.id),
                                  format='json', secure=True)
         length -= 1
         self.assertEqual(Job.objects.count(), length)
         self.assertEqual(response.status_code, 204)
 
     def test_delete_jobs_requires_authentications(self):
-        JobFactory.create()
+        job = JobFactory.create()
         client = APIClient()
-        response = client.delete('%s/jobs/%s' % (self.base_url, Job.objects.get(title="Nappy changer").id),
+        response = client.delete('%s/jobs/%s' % (self.base_url, job.id),
                                  format='json', secure=True)
         self.assertEqual(response.status_code, 401)
 

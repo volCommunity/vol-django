@@ -4,7 +4,7 @@ from django.db import models
 # Create your models here.
 
 class Labels(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -16,7 +16,7 @@ class Labels(models.Model):
 
 
 class Organisation(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, unique=True)
     country = models.CharField(max_length=70)
     region = models.CharField(max_length=70)
     city = models.CharField(max_length=70)
@@ -33,7 +33,7 @@ class Organisation(models.Model):
 
 class Site(models.Model):
     name = models.CharField(max_length=200)
-    url = models.CharField(max_length=200)
+    url = models.CharField(max_length=200, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -45,17 +45,18 @@ class Site(models.Model):
 
 
 class Job(models.Model):
-    title = models.CharField(max_length=200)
-    text = models.CharField(max_length=1000)
+    title = models.CharField(max_length=200, unique=True)
+    text = models.CharField(max_length=2000)
     labels = models.ManyToManyField(Labels)
     organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE)  # One org per job
     sites = models.ManyToManyField(Site)  # Possibly more sites per job
     country = models.CharField(max_length=70)  # TODO: move to country table?
-    region = models.CharField(max_length=70, null=True)  # TODO: move to region table?
+    region = models.CharField(max_length=70, null=True)  # TODO: move to region table? TODO: don't use null for char
+    # see https://docs.djangoproject.com/en/1.11/ref/models/fields/
     city = models.CharField(max_length=70)  # TODO: move to city table?
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    url = models.CharField(max_length=200)
+    url = models.CharField(max_length=200, unique=True)
     seen = models.IntegerField(default=0)  # How often someone has looked at job
 
     def __str__(self):

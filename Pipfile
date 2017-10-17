@@ -4,16 +4,17 @@ verify_ssl = true
 
 [packages]
 
-django = "*"
+Django = "*"
 "dj-database-url" = "*"
 gunicorn = "*"
 "psycopg2" = "*"
 whitenoise = "*"
 "django-analytical" = "*"
 djangorestframework = "*"
-"factory-boy" = "*"
+"factory_boy" = "*"
 coreapi = "*"
 "django-rest-swagger" = "*"
+"django-filter" = "*"
 
 [dev-packages]
 
