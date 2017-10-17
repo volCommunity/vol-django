@@ -3,8 +3,14 @@ html {
     min-height: 100%;
 }
 
-body {
-    padding-top: 10rem;
+.vol-warning {
+    padding-top: 5rem;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+}
+
+.vol-template {
+    padding-top: 0rem;
     /* Margin bottom by footer height */
     margin-bottom: 60px;
 }
@@ -37,6 +43,10 @@ body {
     line-height: 60px; /* Vertically center the text there */
     padding-right: 15px;
     padding-left: 15px;
+}
+
+.nav-pills li {
+    margin-left: 5px;
 }
 
 /* From https://github.com/bassjobsen/typeahead.js-bootstrap4-css/blob/master/typeaheadjs.css */
