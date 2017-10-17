@@ -67,4 +67,4 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Job
         fields = ('id', 'title', 'text', 'labels', 'organisation_id', 'organisation',
-                  'sites', 'country', 'region', 'created_at', 'updated_at', 'url', 'seen')
+                  'sites', 'country', 'city', 'region', 'created_at', 'updated_at', 'url', 'seen')
