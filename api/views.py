@@ -39,7 +39,7 @@ class JobViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows Jobs to be viewed or edited.
     """
-    filter_fields = ('title', 'text', 'labels', 'organisations', 'sites',
+    filter_fields = ('title', 'text', 'labels', 'organisation', 'sites',
                      'country', 'region', 'city', 'created_at', 'updated_at',
                      'url', 'seen')
 
