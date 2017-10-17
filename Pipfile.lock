@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "2f80df450ee1e6f8ef7235544e9e0d17ae44640ee415774e237ffd9ce7a630f4"
+            "sha256": "c29361300e95e4078504e1436bd08f6762f8d4cebdc9ef181169bc3fa8ff972f"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -74,6 +74,13 @@
             ],
             "version": "==2.2.2"
         },
+        "django-filter": {
+            "hashes": [
+                "sha256:6ef1611aeacfda8f13a075a992ff65687afbd5cc8fcb0f3f1563a9ad4fe2d1b0",
+                "sha256:e44620d4e707beaff7396ac8df765dc015a07467df813b9c1663fe4017934b58"
+            ],
+            "version": "==1.0.4"
+        },
         "django-rest-swagger": {
             "hashes": [
                 "sha256:3471e6c21a3e97751fa6f7b81b66e916e40fa645cac36be1594c0efed810d247",
@@ -83,10 +90,10 @@
         },
         "djangorestframework": {
             "hashes": [
-                "sha256:1fef387752b204fc3f8dbd1e4091f4a896a90fec812f92a87c45d35c307d7c7e",
-                "sha256:8ba4908d9fe4d78a8459fe86922e434006d491d4486086d23b19cd0975a3dba5"
+                "sha256:cd7f0f678d63e2be561834ff2049eef6d9fd6fb85c63bea7e94597b36c015bf4",
+                "sha256:305b2c6564ca46d3b558ba21110ed717135c467adf1a6dfd192bd85f4bb04d50"
             ],
-            "version": "==3.7.0"
+            "version": "==3.7.1"
         },
         "factory-boy": {
             "hashes": [
@@ -97,10 +104,10 @@
         },
         "faker": {
             "hashes": [
-                "sha256:d846e75a3afcf0ded240c7652b1ffa7efd90bd25758a1d6f078e9a07d44054d3",
-                "sha256:c8bf7423ce097216b998479ff5df2278008fa0206f46470a96cf2672de52f9a0"
+                "sha256:f2d7f4b0956bd610645aa7c62ae6a30fc323936b6298e521847410509236f389",
+                "sha256:3c98dd04bba667ecfddb77fcd0dfd19b376b258d21beeaf5b95578826e275a83"
             ],
-            "version": "==0.8.5"
+            "version": "==0.8.6"
         },
         "gunicorn": {
             "hashes": [
@@ -234,12 +241,12 @@
             ],
             "version": "==1.11.0"
         },
-        "unidecode": {
+        "text-unidecode": {
             "hashes": [
-                "sha256:61f807220eda0203a774a09f84b4304a3f93b5944110cc132af29ddb81366883",
-                "sha256:280a6ab88e1f2eb5af79edff450021a0d3f0448952847cd79677e55e58bad051"
+                "sha256:b7a515d2b14d476b35f7701ceac9872737cbb7a8b2cd07431f3cd73837b97a18",
+                "sha256:1943a4bfb52f2b5068c8da25cdcfcf28c64c41d891dff70c662927c18ac58052"
             ],
-            "version": "==0.4.21"
+            "version": "==1.0"
         },
         "uritemplate": {
             "hashes": [

@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'analytical',
     'rest_framework',
     'rest_framework.authtoken',
-    'rest_framework_swagger'
+    'rest_framework_swagger',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -175,5 +176,6 @@ REST_FRAMEWORK = {
     # Other versions will receive a 404 with body "Invalid version in URL path."
     'ALLOWED_VERSIONS': ['v0.0.1'],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
 }
