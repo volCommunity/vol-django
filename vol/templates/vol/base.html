@@ -28,36 +28,48 @@
 </head>
 <body>
 {% analytical_body_top %}
-<nav class="navbar navbar-dark fixed-top" style="background-color: #2c3e50;">
-    <div class="container">
-        <a class="navbar-brand" href="/" aria-label="Navigate home"><i class="fa fa-mail-reply" aria-hidden="true" title="Navigate home"></i></a>
+<nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: #2c3e50;">
+    <a class="navbar-brand" href="#"><i class="fa fa-mail-reply" aria-hidden="true"></i></a>
 
-        <ul class="nav nav-pills">
-            <li class="nav-item">
-                <a href="https://github.com/volCommunity/vol-django/issues" target="_blank">
-                    <button class="btn btn-secondary my-2 my-sm-0" type="button">
-                        <span class="badge">Raise an issue <i class="fa fa-github" aria-hidden="true"> </i></span>
-                    </button>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="https://github.com/volCommunity/vol-django/issues" target="_blank">
+                    <span> Raise an issue <i class="fa fa-github" aria-hidden="true"> </i></span>
                 </a>
             </li>
-            <li class="nav-item">
-                <form class="form-inline my-2 my-lg-0" action="https://8070.us5.list-manage.com/subscribe/post?u=ead9b54352694f8b72a002ed0&amp;id=766489f95c" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" target="_blank">
-                    <div class="input-group">
-                        <input type="email" value="" name="EMAIL" id="mce-EMAIL" required="required" class="form-control mr-sm-2">
-                        <span class="input-group-btn">
-                    <button class="btn btn-secondary my-2 my-sm-0" type="submit"><span class ="badge">Subscribe <i class="fa fa-send"></i></span></button>
-                </span>
-                    </div>
-                    <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_97f1bc02efa56031b67a2b00f_fc7b4ce646" tabindex="-1" value=""></div>
-                </form>
-            </li>
         </ul>
+        <form class="form-inline my-2 my-lg-0"
+              action="https://8070.us5.list-manage.com/subscribe/post?u=ead9b54352694f8b72a002ed0&amp;id=766489f95c"
+              method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" target="_blank">
+            <div class="input-group">
+                <input type="email" value="" name="EMAIL" id="mce-EMAIL" required="required"
+                       class="form-control mr-sm-2">
+                <span class="input-group-btn">
+                    <button class="btn btn-secondary my-2 my-sm-0" type="submit"><span class="badge">Subscribe <i
+                            class="fa fa-send"></i></span></button>
+                </span>
+            </div>
+            <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text"
+                                                                                      name="b_97f1bc02efa56031b67a2b00f_fc7b4ce646"
+                                                                                      tabindex="-1" value=""></div>
+        </form>
+
     </div>
 </nav>
 
 <div class="container vol-warning">
-    <div class="alert alert-secondary"  role="alert">
-        <i class="fa fa-gears" aria-hidden="true"> </i> This is still a prototype! Please raise an issue if you have suggestions. Or subscribe to our mailinglist to get updates about progress.
+    <div class="alert alert-secondary" role="alert">
+        <i class="fa fa-gears" aria-hidden="true"> </i> This is still a prototype! Please raise an issue if you have
+        suggestions. Or subscribe to our mailinglist to get updates about progress.
     </div>
 
 </div>
@@ -68,7 +80,11 @@
 </div>
 
 
-<script type="text/javascript" src="//downloads.mailchimp.com/js/signup-forms/popup/embed.js" data-dojo-config="usePlainJson: true, isDebug: false"></script><script type="text/javascript">require(["mojo/signup-forms/Loader"], function(L) { L.start({"baseUrl":"mc.us5.list-manage.com","uuid":"ead9b54352694f8b72a002ed0","lid":"766489f95c"}) })</script>
+<script type="text/javascript" src="//downloads.mailchimp.com/js/signup-forms/popup/embed.js"
+        data-dojo-config="usePlainJson: true, isDebug: false"></script>
+<script type="text/javascript">require(["mojo/signup-forms/Loader"], function (L) {
+    L.start({"baseUrl": "mc.us5.list-manage.com", "uuid": "ead9b54352694f8b72a002ed0", "lid": "766489f95c"})
+})</script>
 
 {% include "vol/footer.html" %}
 
