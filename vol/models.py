@@ -17,6 +17,7 @@ class Labels(models.Model):
 
 class Organisation(models.Model):
     name = models.CharField(max_length=200, unique=True)
+    description = models.CharField(max_length=2000)
     country = models.CharField(max_length=70)
     region = models.CharField(max_length=70)
     city = models.CharField(max_length=70)

@@ -30,6 +30,7 @@ class IndexViewTests(APITestCase):
 
         self.organisation_json = {
             "name": "The nappy changers",
+            "description": "We change nappies",
             "country": "New Zealand",
             "city": "Wellington",
             "region": "Wellington",

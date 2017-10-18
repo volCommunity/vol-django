@@ -19,7 +19,7 @@ class OrganisationViewSet(viewsets.ModelViewSet):
         API endpoint that allows Organisations to be viewed or edited.
 
     """
-    filter_fields = ('name', 'country', 'region', 'city', 'url', 'created_at', 'updated_at')
+    filter_fields = ('name', 'description', 'country', 'region', 'city', 'url', 'created_at', 'updated_at')
 
     queryset = Organisation.objects.all()
     serializer_class = OrganisationSerializer
