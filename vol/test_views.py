@@ -28,7 +28,7 @@ class IndexViewTests(TransactionTestCase):
         job = JobFactory()
         job.labels.add(label.id)
 
-        response = self.client.get('/results/Wellington/Nature', secure=True)
+        response = self.client.get('/results/wellington/nature', secure=True)
 
         self.assertEqual(response.context[0]['job_count'], 1)
         self.assertEqual(response.context[0]['matched_intersection'], 1)
@@ -41,7 +41,7 @@ class IndexViewTests(TransactionTestCase):
         job = JobFactory()
         job.labels.add(label.id)
 
-        response = self.client.get('/results/Wellington/Nature', secure=True)
+        response = self.client.get('/results/wellington/Nature', secure=True)
 
         self.assertEqual(response.context[0]['job_count'], 1)
         self.assertEqual(response.context[0]['matched_intersection'], 0)
@@ -54,7 +54,7 @@ class IndexViewTests(TransactionTestCase):
         job = JobFactory(city="Dunedin")
         job.labels.add(label.id)
 
-        response = self.client.get('/results/Wellington/Nature', secure=True)
+        response = self.client.get('/results/wellington/nature', secure=True)
 
         self.assertEqual(response.context[0]['job_count'], 1)
         self.assertEqual(response.context[0]['matched_intersection'], 0)
@@ -70,7 +70,7 @@ class IndexViewTests(TransactionTestCase):
                              url="http://www.example.com/")
         job_two.labels.add(label.id)
 
-        response = self.client.get('/results/Wellington/Nature', secure=True)
+        response = self.client.get('/results/wellington/nature', secure=True)
 
         self.assertEqual(response.context[0]['job_count'], 2)
         self.assertEqual(response.context[0]['matched_intersection'], 2)
@@ -86,7 +86,7 @@ class IndexViewTests(TransactionTestCase):
                              url="http://www.example.com/")
         job_two.labels.add(label.id)
 
-        response = self.client.get('/results/Wellington/Nature', secure=True)
+        response = self.client.get('/results/wellington/nature', secure=True)
 
         self.assertEqual(response.context[0]['job_count'], 2)
         self.assertEqual(response.context[0]['matched_intersection'], 2)
@@ -99,7 +99,7 @@ class IndexViewTests(TransactionTestCase):
         JobFactory(title="Butterfly catcher",
                    url="http://www.example.com/")
 
-        response = self.client.get('/results/Wellington/Nature', secure=True)
+        response = self.client.get('/results/wellington/nature', secure=True)
 
         self.assertEqual(response.context[0]['job_count'], 2)
         self.assertEqual(response.context[0]['matched_intersection'], 0)
@@ -115,7 +115,7 @@ class IndexViewTests(TransactionTestCase):
                              city="Amsterdam")
         job_two.labels.add(label.id)
 
-        response = self.client.get('/results/Wellington/Nature', secure=True)
+        response = self.client.get('/results/wellington/nature', secure=True)
 
         self.assertEqual(response.context[0]['job_count'], 2)
         self.assertEqual(response.context[0]['matched_intersection'], 0)
