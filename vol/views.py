@@ -20,10 +20,7 @@ def results(request, location, interests):
     # matched *most* tags
     jobs = Job.objects.filter()
     interests_list = interests.split('+')
-    interests_list = [interest.lower() for interest in interests_list]
-
     locations = location.split('+')
-    locations = [location.lower() for location in locations]
 
     matched_interests = []
     unmatched_interests = []
