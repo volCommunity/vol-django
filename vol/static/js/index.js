@@ -26,7 +26,8 @@ $(document).ready(function () {
     function interestsWithDefaults(q, sync) {
         if (q === '') {
             //  console.log(interests.get('Nature', 'People', 'Animals')); // Should return ["Nature"]
-            sync(interests.get('Nature', 'People', 'Animals'));
+            sync(interests.get("Youth", "Animal Welfare", "Community Service"));
+
         } else {
             interests.search(q, sync);
         }
@@ -67,7 +68,7 @@ $(document).ready(function () {
         var interestsInput = $("#interestsInput").val();
         var locationInput = $("#locationInput").val();
 
-        if (interestsInput == "") interestsInput = "Nature";   // Same values, but less descriptive than the placeholder
+        if (interestsInput == "") interestsInput = "Youth";   // Same values, but less descriptive than the placeholder
         if (locationInput == "") locationInput = "Wellington"; // TODO: get default location from browser
 
         target = '/results/' + locationInput + '/' + interestsInput;
