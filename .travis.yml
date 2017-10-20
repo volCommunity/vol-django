@@ -30,3 +30,5 @@ deploy:
   app: frozen-savannah-95618
   on:
     python: 3.6
+notifications:
+  irc: "chat.freenode.net#vol.community"
