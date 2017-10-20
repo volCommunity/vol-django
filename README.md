@@ -14,8 +14,15 @@ How you could help:
 ## Development
 We serve everything from Django, static assets too, using Whitenoise. If speed becomes an issue moving static assets
 to a CDN would be a quick win.
-The current tech stack currently consists of Python, Django 1.11, Bootstrap 4, Django REST Framework, Django analytics and PostgreSQL. All these things
+The current tech stack currently consists of Python 3, Django 1.11, Bootstrap 4, Django REST Framework, Django analytics and PostgreSQL. All these things
 could change any moment as this is in prototyping stage.
+
+Make your life easier by installing the flake8 pre-commit hook, if flake8 fails, so will the Travis build.
+
+```shell
+flake8 --install-hook git            # Install the hook
+git config --bool flake8.strict true # Prevent commit creation
+```
 
 ### Installation
 We use the amazing <a href=https://github.com/kennethreitz/pipenv>Pipenv</a> to manage <a href=http://docs.python-guide.org/en/latest/dev/virtualenvs/>virtualenvs:</a>
