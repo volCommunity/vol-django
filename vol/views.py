@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -52,7 +53,21 @@ def results(request, location, interests):
             if len(matched_interests) > 0:  # This is a little ghetto
                 matched_intersection = len(jobs)
 
-    context = {
+    paginator = Paginator(jobs, 25)  # Show 25 contacts per page
+
+    page = request.GET.get('page')
+
+    try:
+        jobs = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        jobs = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        jobs = paginator.page(paginator.num_pages)
+
+    return render(request, 'vol/results.html', {
+        'jobs': jobs,
         'locations': location,
         'interests': interests,
         'location_matches': location_matches,
@@ -62,7 +77,5 @@ def results(request, location, interests):
         'unmatched_interests': unmatched_interests,
         'matched_intersection': matched_intersection,
         'matches': matches,
-        'job_count': len(jobs),
-        'jobs': jobs
-    }
-    return HttpResponse(render(request, 'vol/results.html', context))
+        'job_count': len(jobs)
+    })
