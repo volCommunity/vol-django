@@ -12,7 +12,7 @@ class Labels(models.Model):
         return self.name
 
     class Meta:
-        ordering = ['id']
+        ordering = ['created_at']
 
 
 class Organisation(models.Model):
@@ -29,7 +29,7 @@ class Organisation(models.Model):
         return self.name
 
     class Meta:
-        ordering = ['id']
+        ordering = ['created_at']
 
 
 class Site(models.Model):
@@ -42,7 +42,7 @@ class Site(models.Model):
         return self.name
 
     class Meta:
-        ordering = ['id']
+        ordering = ['created_at']
 
 
 class Job(models.Model):
@@ -64,4 +64,4 @@ class Job(models.Model):
         return self.title
 
     class Meta:
-        ordering = ['id']
+        ordering = ['created_at']
