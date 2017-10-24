@@ -2,34 +2,34 @@
 {% block title %}Vol results{% endblock %}
 {% block content %}
     <div class="container">
-    <div class="vol-results-intro">
-        {% if locations == "all" %}
-            <p> Showing all jobs matching interests for <strong>all</strong> locations.</p>
-        {% elif interests == "all" %}
-            <p> Showing all jobs for all interests matching locations.</p>
-        {% elif matched_intersection == 0 %}
-            <p>
-                {% if matched_interests_count == 0 and locationmatches == 0 %}
-                    <strong> No matches were found! </strong>
-                    Showing you all jobs instead.
-                {% else %}
-                    <strong> No complete matches were found! </strong>
-                    Showing you all jobs matching  {% if matched_interests_count > 0 %} your interests {% else %}
-                    your areas instead. {% endif %}
-                {% endif %}
-            </p>
-        {% else %}
+        <div class="vol-results-intro">
+            {% if locations == "all" %}
+                <p> Showing all jobs matching interests for <strong>all</strong> locations.</p>
+            {% elif interests == "all" %}
+                <p> Showing all jobs for all interests matching locations.</p>
+            {% elif matched_intersection == 0 %}
+                <p>
+                    {% if matched_interests_count == 0 and locationmatches == 0 %}
+                        <strong> No matches were found! </strong>
+                        Showing you all jobs instead.
+                    {% else %}
+                        <strong> No complete matches were found! </strong>
+                        Showing you all jobs matching  {% if matched_interests_count > 0 %} your interests {% else %}
+                        your areas instead. {% endif %}
+                    {% endif %}
+                </p>
+            {% else %}
 
-            <p>
-                Showing {{ job_count }} {% if job_count > 1 %} jobs that match {% else %} job that
-                matches{% endif %} {% if unmatched_interests_count != 0 %} {{ matched_interests_count }} {% else %}
-                all {% endif %}
-                interests and locations.
-            </p>
-        {% endif %}
-        <p><i>Not the result you were hoping for? Use the location and interest results below to fine tune
-            results.</i></p>
-    </div>
+                <p>
+                    Showing {{ job_count }} {% if job_count > 1 %} jobs that match {% else %} job that
+                    matches{% endif %} {% if unmatched_interests_count != 0 %} {{ matched_interests_count }} {% else %}
+                    all {% endif %}
+                    interests and locations.
+                </p>
+            {% endif %}
+            <p><i>Not the result you were hoping for? Use the location and interest results below to fine tune
+                results.</i></p>
+        </div>
         <div class="row">
             <div class="col-sm-6 d-flex  align-self-stretch">
                 <div class="card border-info mb-3">
@@ -71,7 +71,6 @@
                 </div>
             </div>
         </div>
-
         <div class="vol-results-results">
             {% for job in jobs %}
                 <div class="card border-info mb-3">
@@ -80,17 +79,35 @@
                         <strong>URL</strong>: <a href="{{ job.url }}">{{ job.url }}</a><br>
                         <strong>Original URL</strong>: {% for v in job.site.values %}
                         <a href="{{ v.url }}">{{ v.url }}</a> {% endfor %} <br> <!-- Surely a better way to do this-->
-                        <strong>Organisation</strong> <a href="{{ job.organisation.url }}">{{ job.organisation }}</a> <br>
+                        <strong>Organisation</strong> <a href="{{ job.organisation.url }}">{{ job.organisation }}</a>
+                        <br>
                         <!-- Include link and logo -->
                         <strong>City</strong> {{ job.city }}
                     </div>
-                <div class="card-body">
-<p class="card-text text-dark">
-                    {{ job.text }}
-                    </p>
-                </div>
+                    <div class="card-body">
+                        <p class="card-text text-dark">
+                            {{ job.text }}
+                        </p>
+                    </div>
                 </div>
             {% endfor %}
         </div>
+        <div class="pagination">
+    <span class="step-links">
+        {% if jobs.has_previous %}
+            <a href="?page={{ jobs.previous_page_number }}" class="btn btn-outline-info">Previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ jobs.number }} of {{ jobs.paginator.num_pages }}.
+        </span>
+
+        {% if jobs.has_next %}
+            <a href="?page={{ jobs.next_page_number }}" class="btn btn-outline-info">Next</a>
+        {% endif %}
+
+    </span>
+        </div>
     </div>
+
 {% endblock %}
