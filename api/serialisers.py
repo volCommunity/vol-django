@@ -12,7 +12,7 @@ class LabelSerializer(serializers.HyperlinkedModelSerializer):
 class OrganisationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Organisation
-        fields = ('id', 'name', 'description', 'region', 'city', 'url', 'created_at', 'updated_at')
+        fields = ('id', 'name', 'description', 'country', 'region', 'city', 'url', 'created_at', 'updated_at')
 
 
 class SiteSerializer(serializers.HyperlinkedModelSerializer):
