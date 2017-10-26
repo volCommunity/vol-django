@@ -67,7 +67,7 @@ yarn install
 Run the service locally, setting DEBUG to True allows using http instead of https,
 and provides extra debugging output:
 ```shell
-DEBUG=True python manage.py runserver
+DJANGO_SECRET_KEY=YourSecretKey DEBUG=True python manage.py runserver
 ```
 
 ### In Heroku
