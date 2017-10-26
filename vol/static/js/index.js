@@ -26,7 +26,7 @@ $(document).ready(function () {
     function interestsWithDefaults(q, sync) {
         if (q === '') {
             //  console.log(interests.get('Nature', 'People', 'Animals')); // Should return ["Nature"]
-            sync(interests.get("Youth", "Animal Welfare", "Community Service"));
+            sync(interests.get("Youth", "Animal Welfare", "Community Service", "Mental Health", "IT"));
 
         } else {
             interests.search(q, sync);
@@ -36,7 +36,7 @@ $(document).ready(function () {
     function locationsWithDefaults(q, sync) {
         if (q === '') {
             //  console.log(locations.get('Wellington', 'ChristChurch', 'Auckland')); // Should return ["Wellington"]
-            sync(locations.get('Wellington', 'ChristChurch', 'Auckland'));
+            sync(locations.get('Wellington', 'London', 'Auckland'));
         } else {
             locations.search(q, sync);
         }
