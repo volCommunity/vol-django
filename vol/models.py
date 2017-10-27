@@ -47,7 +47,7 @@ class Site(models.Model):
 
 class Job(models.Model):
     title = models.CharField(max_length=200, unique=True)
-    text = models.CharField(max_length=4000)
+    text = models.TextField()
     labels = models.ManyToManyField(Labels)
     organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE)  # One org per job
     sites = models.ManyToManyField(Site)  # Possibly more sites per job
