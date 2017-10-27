@@ -3,9 +3,6 @@
 
 {% block title %} Vol, find volunteering opportunities, globally{% endblock %}
 {% block content %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/bloodhound.min.js"></script>
-    <script src="{% static "js/index.js" %}"></script>
     <div class="container">
         <p><strong>Welcome</strong></p>
         Let's try to find you a volunteering opportunity in your area...
@@ -29,9 +26,8 @@
             <button type="submit" class="btn btn-outline-info" id="submit">Submit</button>
         </form>
     </div>
-    <script>
 
-
-    </script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/bloodhound.min.js"></script>
+    <script src="{% static "js/index.js" %}"></script>
 {% endblock %}
