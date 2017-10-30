@@ -4,29 +4,24 @@
     <div class="container">
         <div class="vol-results-intro">
             {% if locations == "all" %}
-                <p> Showing all jobs matching interests for <strong>all</strong> locations.</p>
+                <p> Showing jobs matching interests for <strong>all</strong> locations.</p>
             {% elif interests == "all" %}
-                <p> Showing all jobs for all interests matching locations.</p>
-            {% elif matched_intersection == 0 %}
-                <p>
-                    {% if matched_interests_count == 0 and locationmatches == 0 %}
-                        <strong> No matches were found! </strong>
-                        Showing you all jobs instead.
-                    {% else %}
-                        <strong> No complete matches were found! </strong>
-                        Showing you all jobs matching  {% if matched_interests_count > 0 %} your interests {% else %}
-                        your areas instead. {% endif %}
-                    {% endif %}
-                </p>
+                <p> Showing jobs for all interests matched on your locations.</p>
             {% else %}
-
-                <p>
-                    Showing {{ job_count }} {% if job_count > 1 %} jobs that match {% else %} job that
-                    matches{% endif %} {% if unmatched_interests_count != 0 %} {{ matched_interests_count }} {% else %}
-                    all {% endif %}
-                    interests and locations.
-                </p>
+                {% if location_matches_count == 0 and interests_matches_count == 0 %}
+                    <p><strong> No matches were found! </strong></p>
+                    Showing you all jobs instead.
+                {% else %}
+                    <p><strong> No complete matches were found! </strong></p>
+                    Currently displaying all jobs matching {% if location_matches_count > 0 %} your area.. {% else %}
+                    your interests instead. {% endif %}
+                {% endif %}
             {% endif %}
+
+            Showing {{ match_count_on_page }} job{% if match_count > 1 %}s{% endif %}
+            out of {{ match_count }} matches from a global total of {{ total_job_count }}.
+            </p>
+
             <p><i>Not the result you were hoping for? Use the location and interest results below to fine tune
                 results.</i></p>
         </div>
@@ -36,20 +31,22 @@
                     <div class="card-header">Interests</div>
                     <div class="card-body">
                         <p class="card-text text-info">
-                            {% if matched_interests_count != 0 %}
-                                Found {{ matched_interests_count }} matched interests in all locations.
-                                {#                                {% for matched_interest in matched_interests %}#}
-                                {#                                    <li> {{ matched_interest }} </li>#}
-                                {#                                {% endfor %}#}
-                            {% elif unmatched_interests_count != 0 %}
-                                Amount of unmatched interests, in all areas: {{ unmatched_interests_count }}.
-                                {#                                {% for unmatched_interest in unmatched_interests %}#}
-                                {#                                    <li>  {{ unmatched_interest }}</li>#}
-                                {#                                {% endfor %}#}
+                            {% if interests == "all" %}
+                                You looked for <b>all</b> interests, nothing interesting to see here!
+                            {% else %}
+                                {% if interests_matches_count != 0 %}
+                                    Found {{ interests_matches_count }} interest matches in <strong>all</strong>
+                                    locations.
+                                {% else %}
+                                    No interests matched, globally, sad panda.
+                                {% endif %}
+                                </p>
+                                {% if locations != "all" %}
+                                    <a href="/results/all/{{ interests }}" class="btn btn-secondary">Show interest
+                                        matches,
+                                        globally</a>
+                                {% endif %}
                             {% endif %}
-                        </p>
-                        <a href="/results/all/{{ interests }}" class="btn btn-secondary">Show interest matches,
-                            globally</a>
                     </div>
                 </div>
             </div>
@@ -58,13 +55,19 @@
                     <div class="card-header">Locations</div>
                     <div class="card-body">
                         <p class="card-text text-info">
-                            {% if location_matches != 0 %}
-                                Found a total of {{ location_matches }} matches in your location.
+                            {% if location_matches_count != 0 %}
+                                Found a total of {{ location_matches_count }} matches in your location.
                                 </p>
-                                <a href="/results/{{ locations }}/all" class="btn btn-secondary">Show all
-                                    matches in my location</a>
+                                {% if interests != "all" %}
+                                    <a href="/results/{{ locations }}/all" class="btn btn-secondary">Show all
+                                        matches in my location</a>
+                                {% endif %}
                             {% else %}
-                                No jobs found for your location, try widening your search area. Sorry!
+                                {% if locations == "all" %}
+                                    You looked for <b>all</b> locations, nothing interesting to see here.
+                                {% else %}
+                                    No jobs found for your location, try widening your search area. Sorry!
+                                {% endif %}
                                 </p>
                             {% endif %}
                     </div>
