@@ -15,67 +15,66 @@ def about(request):
 
 
 def results(request, location, interests):
-    # Keep filtering down until all interests have been met, this won't be awesome if we
-    # have a lot of data
-    # TODO: another approach, one that we should probably take it to order by things that
-    # matched *most* tags
+    interests_queries = Q()
+    for i in interests.split('+'):
+        interests_queries |= Q(labels__name=i)
+
+    locations_queries = Q()
+    for l in location.split('+'):
+        locations_queries |= Q(city=l)
+
+    only_location_matches = False
+
+    # All jobs
     jobs = Job.objects.filter()
-    interests_list = interests.split('+')
-    locations = location.split('+')
+    # TODO: assert we get any results
 
-    matched_interests = []
-    unmatched_interests = []
-    matched_intersection = 0
+    # TODO: get rid of these ugly "all" workarounds
+    if location == "all":
+        matches = jobs.filter(interests_queries)
+    elif interests == "all":
+        matches = jobs.filter(locations_queries)
 
-    while interests_list:
-        # See which interests matches and which did not..
-        interest = interests_list.pop()
-        if jobs.filter(labels__name=interest):
-            matched_interests.append(interest)
-            jobs = jobs.filter(labels__name=interest)
-        else:
-            unmatched_interests.append(interest)
+    else:
+        # Give us all jobs that matched one or more of the locations AND one or more of the interests
+        matches = jobs.filter(locations_queries & interests_queries)
+        if len(matches) < 1:
+            # Prefer location over interest
+            # No matches for both locations and interests? Show location matches only
+            only_location_matches = True
+            matches = jobs.filter(locations_queries)
+            # TODO assert there are any matches here
 
-    matches = len(jobs)
-
-    # Locations are a little different I guess, we want jobs for all the locations instead of
-    # filtering down
-    q_objects = Q()
-    while locations:
-        q_objects |= Q(city=locations.pop())
-
-    location_matches = len(Job.objects.filter(q_objects))
+    location_matches = jobs.filter(locations_queries)
+    interest_matches = jobs.filter(interests_queries)
 
     # Filter further down on results to find on location
-    if len(jobs) > 0:
-        if jobs.filter(q_objects):  # There is an intersection, store it
-            jobs = jobs.filter(q_objects)
-            if len(matched_interests) > 0:  # This is a little ghetto
-                matched_intersection = len(jobs)
+    paginator = Paginator(matches, 25)  # Show 25 contacts per page
 
-    paginator = Paginator(jobs, 25)  # Show 25 contacts per page
+    match_count = len(matches)
 
     page = request.GET.get('page')
 
     try:
-        jobs = paginator.page(page)
+        matches = paginator.page(page)
     except PageNotAnInteger:
         # If page is not an integer, deliver first page.
-        jobs = paginator.page(1)
+        matches = paginator.page(1)
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
-        jobs = paginator.page(paginator.num_pages)
+        matches = paginator.page(paginator.num_pages)
 
     return render(request, 'vol/results.html', {
-        'jobs': jobs,
+        'jobs': matches,
         'locations': location,
         'interests': interests,
         'location_matches': location_matches,
-        'matched_interests_count': len(matched_interests),
-        'matched_interests': matched_interests,
-        'unmatched_interests_count': len(unmatched_interests),
-        'unmatched_interests': unmatched_interests,
-        'matched_intersection': matched_intersection,
+        'location_matches_count': len(location_matches),
+        'interest_matches': interest_matches,
+        'interests_matches_count': len(interest_matches),
         'matches': matches,
-        'job_count': len(jobs)
+        'match_count': match_count,
+        'match_count_on_page': len(matches),
+        'only_location_matches': only_location_matches,
+        'total_job_count': len(jobs)
     })

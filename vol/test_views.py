@@ -17,10 +17,10 @@ class IndexViewTests(TransactionTestCase):
     def test_get_results_none(self):
         response = self.client.get('/results/Nonesense/Nonesense', secure=True)
 
-        self.assertEqual(response.context[0]['job_count'], 0)
-        self.assertEqual(response.context[0]['matched_intersection'], 0)
-        self.assertEqual(response.context[0]['matched_interests_count'], 0)
-        self.assertEqual(response.context[0]['location_matches'], 0)
+        self.assertEqual(response.context[0]['total_job_count'], 0)
+        self.assertEqual(response.context[0]['match_count'], 0)
+        self.assertEqual(response.context[0]['interests_matches_count'], 0)
+        self.assertEqual(response.context[0]['location_matches_count'], 0)
         self.assertEqual(response.status_code, 200)
 
     def test_get_results_one_complete_match(self):
@@ -30,10 +30,10 @@ class IndexViewTests(TransactionTestCase):
 
         response = self.client.get('/results/wellington/nature', secure=True)
 
-        self.assertEqual(response.context[0]['job_count'], 1)
-        self.assertEqual(response.context[0]['matched_intersection'], 1)
-        self.assertEqual(response.context[0]['matched_interests_count'], 1)
-        self.assertEqual(response.context[0]['location_matches'], 1)
+        self.assertEqual(response.context[0]['total_job_count'], 1)
+        self.assertEqual(response.context[0]['match_count'], 1)
+        self.assertEqual(response.context[0]['interests_matches_count'], 1)
+        self.assertEqual(response.context[0]['location_matches_count'], 1)
         self.assertEqual(response.status_code, 200)
 
     def test_get_results_one_location_only(self):
@@ -43,10 +43,10 @@ class IndexViewTests(TransactionTestCase):
 
         response = self.client.get('/results/wellington/Nature', secure=True)
 
-        self.assertEqual(response.context[0]['job_count'], 1)
-        self.assertEqual(response.context[0]['matched_intersection'], 0)
-        self.assertEqual(response.context[0]['matched_interests_count'], 0)
-        self.assertEqual(response.context[0]['location_matches'], 1)
+        self.assertEqual(response.context[0]['total_job_count'], 1)
+        self.assertEqual(response.context[0]['match_count'], 1)
+        self.assertEqual(response.context[0]['interests_matches_count'], 0)
+        self.assertEqual(response.context[0]['location_matches_count'], 1)
         self.assertEqual(response.status_code, 200)
 
     def test_get_results_one_label_only(self):
@@ -56,10 +56,10 @@ class IndexViewTests(TransactionTestCase):
 
         response = self.client.get('/results/wellington/nature', secure=True)
 
-        self.assertEqual(response.context[0]['job_count'], 1)
-        self.assertEqual(response.context[0]['matched_intersection'], 0)
-        self.assertEqual(response.context[0]['matched_interests_count'], 1)
-        self.assertEqual(response.context[0]['location_matches'], 0)
+        self.assertEqual(response.context[0]['total_job_count'], 1)
+        self.assertEqual(response.context[0]['match_count'], 0)
+        self.assertEqual(response.context[0]['interests_matches_count'], 1)
+        self.assertEqual(response.context[0]['location_matches_count'], 0)
         self.assertEqual(response.status_code, 200)
 
     def test_get_results_many(self):
@@ -72,10 +72,10 @@ class IndexViewTests(TransactionTestCase):
 
         response = self.client.get('/results/wellington/nature', secure=True)
 
-        self.assertEqual(response.context[0]['job_count'], 2)
-        self.assertEqual(response.context[0]['matched_intersection'], 2)
-        self.assertEqual(response.context[0]['matched_interests_count'], 1)
-        self.assertEqual(response.context[0]['location_matches'], 2)
+        self.assertEqual(response.context[0]['total_job_count'], 2)
+        self.assertEqual(response.context[0]['match_count'], 2)
+        self.assertEqual(response.context[0]['interests_matches_count'], 2)
+        self.assertEqual(response.context[0]['location_matches_count'], 2)
         self.assertEqual(response.status_code, 200)
 
     def test_get_results_many_complete_match(self):
@@ -88,10 +88,10 @@ class IndexViewTests(TransactionTestCase):
 
         response = self.client.get('/results/wellington/nature', secure=True)
 
-        self.assertEqual(response.context[0]['job_count'], 2)
-        self.assertEqual(response.context[0]['matched_intersection'], 2)
-        self.assertEqual(response.context[0]['matched_interests_count'], 1)
-        self.assertEqual(response.context[0]['location_matches'], 2)
+        self.assertEqual(response.context[0]['total_job_count'], 2)
+        self.assertEqual(response.context[0]['match_count'], 2)
+        self.assertEqual(response.context[0]['interests_matches_count'], 2)
+        self.assertEqual(response.context[0]['location_matches_count'], 2)
         self.assertEqual(response.status_code, 200)
 
     def test_get_results_many_location_only(self):
@@ -101,10 +101,10 @@ class IndexViewTests(TransactionTestCase):
 
         response = self.client.get('/results/wellington/nature', secure=True)
 
-        self.assertEqual(response.context[0]['job_count'], 2)
-        self.assertEqual(response.context[0]['matched_intersection'], 0)
-        self.assertEqual(response.context[0]['matched_interests_count'], 0)
-        self.assertEqual(response.context[0]['location_matches'], 2)
+        self.assertEqual(response.context[0]['total_job_count'], 2)
+        self.assertEqual(response.context[0]['match_count'], 2)
+        self.assertEqual(response.context[0]['interests_matches_count'], 0)
+        self.assertEqual(response.context[0]['location_matches_count'], 2)
         self.assertEqual(response.status_code, 200)
 
     def test_get_results_many_label_only(self):
@@ -117,8 +117,8 @@ class IndexViewTests(TransactionTestCase):
 
         response = self.client.get('/results/wellington/nature', secure=True)
 
-        self.assertEqual(response.context[0]['job_count'], 2)
-        self.assertEqual(response.context[0]['matched_intersection'], 0)
-        self.assertEqual(response.context[0]['matched_interests_count'], 1)
-        self.assertEqual(response.context[0]['location_matches'], 0)
+        self.assertEqual(response.context[0]['total_job_count'], 2)
+        self.assertEqual(response.context[0]['match_count'], 0)
+        self.assertEqual(response.context[0]['interests_matches_count'], 2)
+        self.assertEqual(response.context[0]['location_matches_count'], 0)
         self.assertEqual(response.status_code, 200)
