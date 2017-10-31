@@ -99,12 +99,6 @@ Create the tables needed:
 python manage.py migrate
 ```
 
-Install Javascript dependencies using Yarn:
-
-```shell
-yarn install
-```
-
 ## Running
 ### Locally
 Run the service locally, setting DEBUG to True allows using http instead of https,
