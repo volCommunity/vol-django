@@ -77,7 +77,8 @@ pip install pipenv
 
 When Pipenv is available we spawn a shell and install the projects dependencies in our Virtualenv:
 ```shell
-pipenv shell && pipenv install
+pipenv shell
+pipenv install
 ```
 
 We use PostgreSQL. Run the Docker image if you do not wish to install it locally:
