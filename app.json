@@ -2,7 +2,7 @@
   "name": "Vol",
   "description": "Vol, a simpler way to find volunteering opportunities.",
   "image": "heroku/python",
-  "repository": "https://github.com/ojongerius/vol",
+  "repository": "https://github.com/volCommunity/vol-django",
   "keywords": ["volunteering"],
   "addons": ["heroku-postgresql"],
   "environments": {
