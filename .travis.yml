@@ -8,7 +8,6 @@ install:
 - pipenv install --dev
 before_script:
 - psql -c 'create database test_db;' -U postgres
-- yarn install
 - pipenv run python manage.py collectstatic
 script:
 - pipenv run flake8
