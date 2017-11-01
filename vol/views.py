@@ -1,7 +1,7 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from .models import Job
 
@@ -81,7 +81,6 @@ def results(request, location, interests):
 
 
 def job(request, id):
-    job = Job.objects.get(id=id)
+    job = get_object_or_404(Job, pk=id)
 
-    print("Job: %s" % job)
     return render(request, 'vol/job.html', {'job': job})
