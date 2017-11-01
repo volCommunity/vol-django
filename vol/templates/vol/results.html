@@ -76,22 +76,7 @@
         </div>
         <div class="vol-results-results">
             {% for job in jobs %}
-                <div class="card border-info mb-3">
-                    <div class="card-header"><h4 class="card-title">{{ job.title }}</h4></div>
-                    <div class="card-header">
-                        <strong>Permalink</strong> <a href="/job/{{  job.id }}">/job/{{ job.id }}</a><br>
-                        <strong>URL</strong>: <a href="{{ job.url }}">{{ job.url }}</a><br>
-                        <strong>Organisation</strong> <a href="{{ job.organisation.url }}">{{ job.organisation }}</a>
-                        <br>
-                        <!-- Include link and logo -->
-                        <strong>City</strong> {{ job.city }}
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text text-dark">
-                            {{ job.text }}
-                        </p>
-                    </div>
-                </div>
+                {% include "vol/jobcard.html" %}
             {% endfor %}
         </div>
         <div class="pagination">
