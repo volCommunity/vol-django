@@ -82,7 +82,6 @@ def results(request, location, interests):
 
 def job(request, id):
     job = Job.objects.get(id=id)
-    # TODO: assert we get any results
 
     print("Job: %s" % job)
     return render(request, 'vol/job.html', {'job': job})
