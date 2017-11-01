@@ -1,70 +1,111 @@
-from vol.models import Labels, Organisation, Site, Job
-
 from rest_framework import serializers
+
+from vol.models import Labels, Organisation, Site, Job
 
 
 class LabelSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Labels
-        fields = ['id', 'name', 'created_at', 'updated_at']
+        fields = ['uuid', 'name', 'created_at', 'updated_at']
+        lookup_field = 'uuid'
 
 
 class OrganisationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Organisation
-        fields = ('id', 'name', 'description', 'country', 'region', 'city', 'url', 'created_at', 'updated_at')
+        fields = ('uuid', 'name', 'description', 'country', 'region', 'city', 'url', 'created_at', 'updated_at')
+        lookup_field = 'uuid'
 
 
 class SiteSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Site
-        fields = ('id', 'name', 'url', 'created_at', 'updated_at')
+        fields = ('uuid', 'name', 'url', 'created_at', 'updated_at')
+        lookup_field = 'uuid'
 
 
 class JobSerializer(serializers.HyperlinkedModelSerializer):
+    """ JobSerialiser serializes Job objects. It includes a few nested serialisers to allow
+        writing of nested objects.
+
+        These nested serialisers have validators disabled. Removing the validator allows us
+        to do create and update operations on Jobs, while including Labels, Organisations and
+         Sites that may or may not exist.
     """
-    Allows GETting and POSTing of jobs, but will display labels and site flat
-    ie:
-    ▶ curl -X GET http://localhost:8000/api/v0.0.1/jobs/4
-        {"id":4,"title":"Nappy changer",
-        "text":"This is a great opportunity for young and old",
-        "labels":[5],"organisation":{"id":1,
-        "name":"Volunteer Wellington","region":"wellington","city":"wellington",
-        "url":"https://www.volunteerwellington.org.nz/","added":"2017-09-19"},
-        "sites":[2],"country":"new zealand","region":"otago","added":"2017-09-19",
-        "url":"https://dogoodjobs.co.nz/nappy-changer","seen":0}
 
-        While we want to expand sites and labels, looking like so:
-        {"id":4,"title":"Nappy changer",
-        "text":"This is a great opportunity for young and old",
-        "labels":[{"id":5,"name":"people"}],"organisation":{"id":1,
-            "name":"Volunteer Wellington",
-            "region":"wellington",
-            "city":"wellington",
-            "url":"https://www.volunteerwellington.org.nz/",
-            "added":"2017-09-19"},
-        "sites":[{"id":2,
-            "name":"Do Good Jobs",
-            "url":"https://dogoodjobs.co.nz",
-            "added":"2017-07-03"}],
-        "country":"new zealand","region":"otago","added":"2017-09-19",
-        "url":"https://dogoodjobs.co.nz/nappy-changer","seen":0}
+    class NestedLabelSerializer(LabelSerializer):
+        class Meta(LabelSerializer.Meta):
+            extra_kwargs = {
+                'name': {
+                    'validators': []
+                }
+            }
 
-    The challenge is to use `LabelSerializer(read_only=True, many=True)` for reads and
-    `serializers.PrimaryKeyRelatedField(
-        queryset=Labels.objects.all(), many=True)` for updates.
-    """
-    organisation = OrganisationSerializer(read_only=True)
+    class NestedOrganisationSerializer(OrganisationSerializer):
+        class Meta(OrganisationSerializer.Meta):
+            extra_kwargs = {
+                'name': {
+                    'validators': []
+                }
+            }
 
-    labels = serializers.PrimaryKeyRelatedField(
-        queryset=Labels.objects.all(), many=True)
-    sites = serializers.PrimaryKeyRelatedField(
-        queryset=Site.objects.all(), many=True)
+    class NestedSiteSerializer(SiteSerializer):
+        class Meta(SiteSerializer.Meta):
+            extra_kwargs = {
+                'url': {
+                    'validators': []
+                }
+            }
 
-    organisation_id = serializers.PrimaryKeyRelatedField(
-        queryset=Organisation.objects.all(), source='organisation', write_only=True)
+    organisation = NestedOrganisationSerializer()
+    labels = NestedLabelSerializer(many=True)
+    sites = NestedSiteSerializer(many=True)
 
     class Meta:
         model = Job
-        fields = ('id', 'title', 'text', 'labels', 'organisation_id', 'organisation',
+        fields = ('uuid', 'title', 'text', 'labels', 'organisation',
                   'sites', 'country', 'city', 'region', 'created_at', 'updated_at', 'url', 'seen')
+        lookup_field = 'uuid'
+
+    def create(self, validated_data):
+        """
+        Override create() and handle nested objects manually.
+
+        :param validated_data:
+        :return Job:
+        """
+        organisation = validated_data.pop('organisation')
+        labels = validated_data.pop('labels')
+        sites = validated_data.pop('sites')
+
+        org, created = Organisation.objects.get_or_create(**organisation)
+
+        created_labels = []
+        for label in labels:
+            l, created = Labels.objects.get_or_create(name=label['name'])
+            created_labels.append(l)
+
+        created_sites = []
+        for site in sites:
+            s, created = Site.objects.get_or_create(name=site['name'],
+                                                    url=site['url'])
+        created_sites.append(s)
+
+        # Create the Job object and provide it with the organisation ID we got or created before
+        j = Job.objects.create(organisation_id=org.id, **validated_data)
+
+        # Job done, now that we have the IDs of both side of the many 2 many relationship we can finally establish it.
+        j.labels = created_labels
+        j.sites = created_sites
+
+        return j
+
+    def update(self, instance, validated_data):
+        """
+        Override update() and handle nested objects manually.
+
+        :param instance:
+        :param validated_data:
+        :return Job:
+        """
+        pass
