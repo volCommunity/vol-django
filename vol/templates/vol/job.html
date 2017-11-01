@@ -1,13 +1,25 @@
-<ul>
-    <li> Link: <a href="/job/{{ job.id }}">This page</a></li>
-    <li> Title: {{ job.title }} </li>
-    <li> Text: {{ job.text }} </li>
-    <li> Country: {{ job.country }} </li>
-    <li> Region: {{ job.region }} </li>
-    <li> City: {{ job.city }} </li>
-    <li> labels: {{ job.labels }} </li> <!--  TODO handle none -->
-    <li> URL: {{ job.url }} </li>
-    <li> Added: {{ job.added }} </li>
-    <li> Seen: {{ job.seen }} </li>
+{% extends "vol/base.html" %}
+{% block title %}Job description{% endblock %}
+{% block content %}
 
-</ul>
+    <div class="container">
+        <div class="card border-info mb-3">
+            <div class="card-header"><h4 class="card-title">{{ job.title }}</h4></div>
+            <div class="card-header">
+                <strong>Permalink</strong> <a href="/job/{{  job.id }}">/job/{{ job.id }}</a><br>
+                <strong>URL</strong> <a href="{{ job.url }}">{{ job.url }}</a><br>
+                <strong>Organisation</strong> <a href="{{ job.organisation.url }}">{{ job.organisation }}</a>
+                <br>
+                <!-- Include link and logo -->
+                <strong>City</strong> {{ job.city }}
+            </div>
+            <div class="card-body">
+                <p class="card-text text-dark">
+                    {{ job.text }}
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

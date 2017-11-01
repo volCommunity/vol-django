@@ -78,3 +78,11 @@ def results(request, location, interests):
         'only_location_matches': only_location_matches,
         'total_job_count': len(jobs)
     })
+
+
+def job(request, id):
+    job = Job.objects.get(id=id)
+    # TODO: assert we get any results
+
+    print("Job: %s" % job)
+    return render(request, 'vol/job.html', {'job': job})
