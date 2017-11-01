@@ -14,6 +14,8 @@ class IndexViewTests(TransactionTestCase):
         response = self.client.get(reverse('index'), secure=True)
         self.assertEqual(response.status_code, 200)
 
+
+class ResultsViewTests(TransactionTestCase):
     def test_get_results_none(self):
         response = self.client.get('/results/Nonesense/Nonesense', secure=True)
 
@@ -122,3 +124,14 @@ class IndexViewTests(TransactionTestCase):
         self.assertEqual(response.context[0]['interests_matches_count'], 2)
         self.assertEqual(response.context[0]['location_matches_count'], 0)
         self.assertEqual(response.status_code, 200)
+
+
+class JobViewTests(TransactionTestCase):
+    def test_get_job_none(self):
+        response = self.client.get('/job/12345', secure=True)
+        self.assertEqual(response.status_code, 404)
+
+    def test_get_job_one(self):
+        job = JobFactory()
+        response = self.client.get('/job/{}'.format(job.id), secure=True)
+        self.assertEqual(response.context[0]['job'], job)

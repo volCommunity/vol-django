@@ -79,9 +79,8 @@
                 <div class="card border-info mb-3">
                     <div class="card-header"><h4 class="card-title">{{ job.title }}</h4></div>
                     <div class="card-header">
+                        <strong>Permalink</strong> <a href="/job/{{  job.id }}">/job/{{ job.id }}</a><br>
                         <strong>URL</strong>: <a href="{{ job.url }}">{{ job.url }}</a><br>
-                        <strong>Original URL</strong>: {% for v in job.site.values %}
-                        <a href="{{ v.url }}">{{ v.url }}</a> {% endfor %} <br> <!-- Surely a better way to do this-->
                         <strong>Organisation</strong> <a href="{{ job.organisation.url }}">{{ job.organisation }}</a>
                         <br>
                         <!-- Include link and logo -->

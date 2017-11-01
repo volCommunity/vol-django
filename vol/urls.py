@@ -8,6 +8,6 @@ urlpatterns = [
     url(r'^favicon.ico$', RedirectView.as_view(url='static/favicon.ico',
                                                permanent=False), name='favicon'),
     url('about', views.about, name='about'),
-    url(r'^results/(?P<location>[\w\s+]+)/(?P<interests>[\w\s+]+)', views.results,
-        name='results'),
+    url(r'^results/(?P<location>[\w\s+]+)/(?P<interests>[\w\s+]+)', views.results, name='results'),
+    url(r'^job/(?P<id>[\d]+)', views.job, name='job')  # TODO: should this be a nice name (SEO etc)
 ]
