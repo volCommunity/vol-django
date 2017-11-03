@@ -374,27 +374,21 @@ class IndexViewTests(APITestCase):
         organisation = OrganisationFactory()
         site = SiteFactory()
 
-        # TODO: DRY, see test_update_jobs
         data = self.job_json
-        data['labels'] = [{'name': label.name}]
-        data['sites'] = [{'name': site.name,
-                          'url': site.url}]
-        data['organisation'] = {'name': organisation.name,
-                                'description': organisation.description,
-                                'city': organisation.city,
-                                'region': organisation.region,
-                                'country': organisation.country,
-                                'url': organisation.url}
+        data['labels'] = [label.uuid]
+        data['sites'] = [site.uuid]
+        data['organisation_uuid'] = organisation.uuid
 
         client = APIClient()
         client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
 
         response = client.post('%s/jobs' % self.base_url, data=data, format='json', secure=True)
         r = json.loads(response.content)
+        print("Response test_create_job_auth: %s" % r)
         self.assertEqual(r['title'], "Eternal Gardener")
         self.assertEqual(r['text'], "for the nature lover")
-        self.assertEqual(r['sites'][0]['name'], data['sites'][0]['name'])
-        self.assertEqual(r['labels'][0]['name'], data['labels'][0]['name'])
+        self.assertEqual(r['sites'], data['sites'])
+        self.assertEqual(r['labels'], data['labels'])
         self.assertEqual(response.status_code, 201)
 
     def test_create_job_no_auth(self):
@@ -437,47 +431,23 @@ class IndexViewTests(APITestCase):
     """ Update """
 
     def test_update_jobs(self):
-        """
-        TODO: if we are going to stay with nested updates it's pretty important we test a few things,
-              including nested updates
-        :return:
-        """
         site = SiteFactory()
         label = LabelsFactory()
-        organisation = OrganisationFactory()
         job = JobFactory.create()
-
-        # TODO: subtle bug: organisation creates an org, jobfactory creates nother one.
-        # Doing this post, accidentally updated the org ID to the first org created
 
         client = APIClient()
         client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
-        data = self.job_json
+        data = self.job_json  # TODO: currently fails because json referes to org id that is not there
         data["title"] = "Clown"
-
-        # TODO: DRY, see test_create_auth
-        data['labels'] = [{'name': label.name},
-                          {'name': "a new label"}]
-        data['sites'] = [{'name': site.name,
-                          'url': site.url},
-                         {'name': 'a new site',
-                          'url': '127.0.0.0'}]
-        # print("Data sites: %s" % data['sites'])
-
-        data['organisation'] = {'name': organisation.name,
-                                'description': organisation.description,
-                                'city': organisation.city,
-                                'region': organisation.region,
-                                'country': organisation.country,
-                                'url': organisation.url}
-
+        data["organisation_uuid"] = job.organisation.uuid
+        data["sites"] = [site.uuid]
+        data["labels"] = [label.uuid]
         response = client.put('%s/jobs/%s' % (self.base_url, job.uuid), data=data,
                               format='json', secure=True)
+
         r = json.loads(response.content)
-        self.assertEqual(len(r['labels']), 2)
-        self.assertEqual(len(r['sites']), 2)
+        print("Response test_update_jobs: %s" % r)
         self.assertEqual(r['title'], "Clown")
-        self.assertEqual(r['organisation']['uuid'], str(organisation.uuid))
         self.assertEqual(response.status_code, 200)
 
     def test_update_jobs_four_oh_fours(self):
