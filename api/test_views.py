@@ -370,6 +370,13 @@ class IndexViewTests(APITestCase):
         Create """
 
     def test_create_job_auth(self):
+        """
+        TODO: Remove factory created items from this and possibly other tests,
+        the whole point now that we really create the things instead of
+        referring to objects created by factories
+
+        :return:
+        """
         label = LabelsFactory()
         organisation = OrganisationFactory()
         site = SiteFactory()
@@ -396,6 +403,62 @@ class IndexViewTests(APITestCase):
         self.assertEqual(r['sites'][0]['name'], data['sites'][0]['name'])
         self.assertEqual(r['labels'][0]['name'], data['labels'][0]['name'])
         self.assertEqual(response.status_code, 201)
+
+    def test_create_jobs_conflicting_site_should_400(self):
+        """
+        """
+        label = LabelsFactory()
+        organisation = OrganisationFactory()
+        site = SiteFactory()
+
+        # TODO: DRY, see test_update_jobs
+        data = self.job_json
+        data['labels'] = [{'name': label.name}]
+        data['sites'] = [{'name': "Different name than the prexisting site",
+                          'url': site.url}]
+
+        data['organisation'] = {'name': organisation.name,
+                                'description': organisation.description,
+                                'city': organisation.city,
+                                'region': organisation.region,
+                                'country': organisation.country,
+                                'url': organisation.url}
+
+        client = APIClient()
+        client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
+
+        response = client.post('%s/jobs' % self.base_url, data=data, format='json', secure=True)
+        r = json.loads(response.content)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(r[0], "I'm afraid I can't do that, Dave")
+
+    def test_create_jobs_conflicting_organisation_should_400(self):
+        """
+        """
+        label = LabelsFactory()
+        organisation = OrganisationFactory()
+        site = SiteFactory()
+
+        # TODO: DRY, see test_update_jobs
+        data = self.job_json
+        data['labels'] = [{'name': label.name}]
+        data['sites'] = [{'name': site.name,
+                          'url': site.url}]
+
+        data['organisation'] = {'name': organisation.name,
+                                'description': organisation.description,
+                                'city': organisation.city,
+                                'region': organisation.region,
+                                'country': "If it's a different country maybe it should be a different org",
+                                'url': organisation.url}
+
+        client = APIClient()
+        client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
+
+        response = client.post('%s/jobs' % self.base_url, data=data, format='json', secure=True)
+        r = json.loads(response.content)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(r[0], "I'm afraid I can't do that, Dave")
 
     def test_create_job_no_auth(self):
         client = APIClient()
@@ -436,6 +499,8 @@ class IndexViewTests(APITestCase):
 
     """ Update """
 
+    # TODO: add test for conflicting objects, for each job_update test, to test the
+    # custom validation steps in update()
     def test_update_jobs(self):
         label = LabelsFactory()
         site = SiteFactory()

@@ -78,9 +78,13 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
         labels_data = validated_data.pop('labels')
         sites_data = validated_data.pop('sites')
 
+        o = Organisation.objects.get(name=organisation_data['name'])
+        # TODO: handle the other fields too, add short doco
+        if o and o.country != organisation_data['country']:
+            # TODO: be more helpful
+            raise serializers.ValidationError("I'm afraid I can't do that, Dave")
         organisation, _ = Organisation.objects.get_or_create(**organisation_data)
 
-        # TODO: this may be buggy if labels are in a different order!
         labels = []
         for label_data_item in labels_data:
             label, _ = Labels.objects.get_or_create(name=label_data_item['name'])
@@ -88,9 +92,19 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
 
         sites = []
         for site_data_item in sites_data:
+            """ Search on the unique key: url, if we get it,
+                check if the name matches, if it does not, we have to
+                inform our users that this can never work out (or we
+                will receive a nice foreign key constraint from our
+                database
+            """
+            s = Site.objects.get(url=site_data_item['url'])
+            if s and s.name != site_data_item['name']:
+                # TODO: be more helpful
+                raise serializers.ValidationError("I'm afraid I can't do that, Dave")
             site, _ = Site.objects.get_or_create(name=site_data_item['name'],
                                                  url=site_data_item['url'])
-        sites.append(site)
+            sites.append(site)
 
         # Create the Job object and provide it with the organisation ID we got or created before
         j = Job.objects.create(organisation_id=organisation.id, **validated_data)
@@ -123,6 +137,9 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
         instance.url = validated_data.get('url', instance.url)
         instance.seen = validated_data.get('seen', instance.seen)
 
+        # TODO: how to we interpret updates? deletion; no
+        # updating; could raise, but would that be expected?
+
         labels = []
         # Get to work on the labels
         for label in labels_data:
@@ -131,6 +148,7 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
         # Next sites
         sites = []
         for site in sites_data:
+            # TODO: add validator and corresponding validator test
             s, _ = Site.objects.update_or_create(name=site['name'],
                                                  url=site['url'])
             sites.append(s)
@@ -138,6 +156,7 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
         instance.labels = labels
         instance.sites = sites
 
+        # TODO: add validator and corresponding validator test
         instance.organisation, _ = Organisation.objects.update_or_create(
             name=organisation_data.get('name', instance.organisation.name),
             description=organisation_data.get('description', instance.organisation.description),
