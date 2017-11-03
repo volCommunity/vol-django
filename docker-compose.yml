@@ -1,0 +1,18 @@
+version: '3'
+services:
+  web:
+    build: .
+    volumes:
+     - .:/app
+    ports:
+     - "8000:8000"
+    environment:
+      - DJANGO_SECRET_KEY=secret_key
+      - DEBUG=True
+      - DATABASE_URL=postgres://postgres@postgres/postgres
+    links:
+      - postgres
+  postgres:
+    image: "postgres:latest"
+    volumes:
+     - ./data:/var/lib/postgresql/data
