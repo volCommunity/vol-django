@@ -80,6 +80,7 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
 
         organisation, _ = Organisation.objects.get_or_create(**organisation_data)
 
+        # TODO: this may be buggy if labels are in a different order!
         labels = []
         for label_data_item in labels_data:
             label, _ = Labels.objects.get_or_create(name=label_data_item['name'])
@@ -124,8 +125,45 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
         instance.url = validated_data.get('url', instance.url)
         instance.seen = validated_data.get('seen', instance.seen)
 
-        # TODO: * consider when things are removed
-        labels = []  # TODO: what if order is reversed?
+        """ Consider a job with existing labels:
+            labels":[{"uuid":"7de6ede8-9052-4b15-87b3-8a64bd14b0b6",
+                      "name":"Family Support",
+                      "created_at":"2017-11-02T09:26:38.246960Z",
+                      "updated_at":"2017-11-02T09:26:38.246987Z"
+                      },
+                      {uuid":"7e80c5be-dda1-4197-874d-775d4b52d876",
+                      "name":"Save the planet",
+                      "created_at":"2017-10-02T08:26:38.246960Z",
+                      "updated_at":"2017-11-02T09:11:38.246987Z"
+                      },]
+
+            Now consider the following label structure nested in a job
+            update:
+
+            labels":[{""name":"Save the planet",
+                      "created_at":"2017-11-02T09:26:38.246960Z",
+                      "updated_at":"2017-11-02T09:26:38.246987Z"
+                      },
+                      {"name":"Family Support",
+                      "created_at":"2017-10-02T08:26:38.246960Z",
+                      "updated_at":"2017-11-02T09:11:38.246987Z"
+                      },]
+
+            Looping through the data could update label with
+            UUID 7de6ede8-9052-4b15-87b3-8a64bd14b0b6 get the name
+            "Save the planet".
+
+            Now all other Jobs that are linked to UUID  7de6ede8-9052-4b15-87b3-8a64bd14b0b6
+            and are related to "Family Support" now get category "Save the Planet".
+
+            Not desirable...
+
+            One could change labels using the REST API, but if writes happen to a different
+            endpoint it will at least be clear what it is the client talks about.
+            It will be much harder to reason about changes when they are made implicitly
+            by including them in a nested way.
+        """
+        labels = []
         for label in labels_data:
             l, _ = Labels.objects.update_or_create(name=label['name'])
             labels.append(l)
