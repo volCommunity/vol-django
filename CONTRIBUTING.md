@@ -67,7 +67,22 @@ flake8 --install-hook git            # Install the hook
 git config --bool flake8.strict true # Prevent commit creation
 ```
 
-## Installation
+## Setup With Docker
+
+The easiest way to spin up a fully-functioning development environment is to use [docker-compose](https://docs.docker.com/compose/overview/).
+
+First, make sure that you have [docker-compose installed](https://docs.docker.com/compose/install/).
+
+Then, just run the following command to bring up the entire project (the first run will take a while, but don't worry, subsequent runs will be really fast):
+
+    docker-compose up
+
+Once you see log output from postgres and django, you can just open the url "http://localhost:8000" and get started right ahead.
+
+There's no need to restart the server when you make changes - just modify the python files and reload the page.
+
+
+## Setup Without Docker
 We use the amazing <a href=https://github.com/kennethreitz/pipenv>Pipenv</a> to manage <a href=http://docs.python-guide.org/en/latest/dev/virtualenvs/>virtualenvs:</a>
 
 Install Pipenv to manage virtualenvs, if you do not have it installed:
@@ -99,15 +114,15 @@ Create the tables needed:
 python manage.py migrate
 ```
 
-## Running
-### Locally
+### Running
 Run the service locally, setting DEBUG to True allows using http instead of https,
 and provides extra debugging output:
 ```shell
 DJANGO_SECRET_KEY=YourSecretKey DEBUG=True python manage.py runserver
 ```
 
-## In Heroku
+
+## Running In Heroku
 _Travis deploys to Heroku on successful builds on master. Use these instructions
 to deploy to another Heroko container._
 
