@@ -6,7 +6,7 @@ from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
 
 from vol.factories import LabelsFactory, OrganisationFactory, SiteFactory, JobFactory
-from vol.models import Labels, Organisation, Site, Job
+from vol.models import Labels, Site, Job
 
 """ Create tests for:
  get, create (verify only auth), update (verify only auth), delete (verify only auth)
@@ -437,33 +437,44 @@ class IndexViewTests(APITestCase):
     """ Update """
 
     def test_update_jobs(self):
-        """
-        TODO: if we are going to stay with nested updates it's pretty important we test a few things,
-              including nested updates
-        :return:
-        """
-        site = SiteFactory()
         label = LabelsFactory()
-        organisation = OrganisationFactory()
+        site = SiteFactory()
         job = JobFactory.create()
-
-        # TODO: subtle bug: organisation creates an org, jobfactory creates nother one.
-        # Doing this post, accidentally updated the org ID to the first org created
 
         client = APIClient()
         client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
         data = self.job_json
         data["title"] = "Clown"
-
-        # TODO: DRY, see test_create_auth
-        data['labels'] = [{'name': label.name},
-                          {'name': "a new label"}]
+        data['labels'] = [{'name': label.name}]
         data['sites'] = [{'name': site.name,
-                          'url': site.url},
-                         {'name': 'a new site',
-                          'url': '127.0.0.0'}]
-        # print("Data sites: %s" % data['sites'])
+                          'url': site.url}]
+        data['organisation'] = {'name': job.organisation.name,
+                                'description': job.organisation.description,
+                                'city': job.organisation.city,
+                                'region': job.organisation.region,
+                                'country': job.organisation.country,
+                                'url': job.organisation.url}
 
+        response = client.put('%s/jobs/%s' % (self.base_url, job.uuid), data=data,
+                              format='json', secure=True)
+
+        r = json.loads(response.content)
+        self.assertEqual(r['title'], "Clown")
+        self.assertEqual(response.status_code, 200)
+
+    def test_update_jobs_organisation(self):
+        organisation = OrganisationFactory()
+
+        label = LabelsFactory()
+        site = SiteFactory()
+        job = JobFactory.create()
+
+        client = APIClient()
+        client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
+        data = self.job_json
+        data['labels'] = [{'name': label.name}]
+        data['sites'] = [{'name': site.name,
+                          'url': site.url}]
         data['organisation'] = {'name': organisation.name,
                                 'description': organisation.description,
                                 'city': organisation.city,
@@ -474,10 +485,60 @@ class IndexViewTests(APITestCase):
         response = client.put('%s/jobs/%s' % (self.base_url, job.uuid), data=data,
                               format='json', secure=True)
         r = json.loads(response.content)
-        self.assertEqual(len(r['labels']), 2)
-        self.assertEqual(len(r['sites']), 2)
-        self.assertEqual(r['title'], "Clown")
         self.assertEqual(r['organisation']['uuid'], str(organisation.uuid))
+        self.assertEqual(response.status_code, 200)
+
+    def test_update_jobs_labels(self):
+        label = LabelsFactory()
+
+        site = SiteFactory()
+        job = JobFactory.create()
+
+        client = APIClient()
+        client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
+        data = self.job_json
+        data['labels'] = [{'name': label.name},
+                          {'name': "a new label"}]
+        data['sites'] = [{'name': site.name,
+                          'url': site.url}]
+        data['organisation'] = {'name': job.organisation.name,
+                                'description': job.organisation.description,
+                                'city': job.organisation.city,
+                                'region': job.organisation.region,
+                                'country': job.organisation.country,
+                                'url': job.organisation.url}
+
+        response = client.put('%s/jobs/%s' % (self.base_url, job.uuid), data=data,
+                              format='json', secure=True)
+        r = json.loads(response.content)
+        self.assertEqual(len(r['labels']), 2)
+        self.assertEqual(response.status_code, 200)
+
+    def test_update_jobs_sites(self):
+        site = SiteFactory()
+
+        label = LabelsFactory()
+        job = JobFactory.create()
+
+        client = APIClient()
+        client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
+        data = self.job_json
+        data['labels'] = [{'name': label.name}]
+        data['sites'] = [{'name': site.name,
+                          'url': site.url},
+                         {'name': 'a new site',
+                          'url': '127.0.0.0'}]
+        data['organisation'] = {'name': job.organisation.name,
+                                'description': job.organisation.description,
+                                'city': job.organisation.city,
+                                'region': job.organisation.region,
+                                'country': job.organisation.country,
+                                'url': job.organisation.url}
+
+        response = client.put('%s/jobs/%s' % (self.base_url, job.uuid), data=data,
+                              format='json', secure=True)
+        r = json.loads(response.content)
+        self.assertEqual(len(r['sites']), 2)
         self.assertEqual(response.status_code, 200)
 
     def test_update_jobs_four_oh_fours(self):
