@@ -74,29 +74,29 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
         :param validated_data:
         :return Job:
         """
-        organisation = validated_data.pop('organisation')
-        labels = validated_data.pop('labels')
-        sites = validated_data.pop('sites')
+        organisation_data = validated_data.pop('organisation')
+        labels_data = validated_data.pop('labels')
+        sites_data = validated_data.pop('sites')
 
-        org, created = Organisation.objects.get_or_create(**organisation)
+        organisation, _ = Organisation.objects.get_or_create(**organisation_data)
 
-        created_labels = []
-        for label in labels:
-            l, created = Labels.objects.get_or_create(name=label['name'])
-            created_labels.append(l)
+        labels = []
+        for label_data_item in labels_data:
+            label, _ = Labels.objects.get_or_create(name=label_data_item['name'])
+            labels.append(label)
 
-        created_sites = []
-        for site in sites:
-            s, created = Site.objects.get_or_create(name=site['name'],
-                                                    url=site['url'])
-        created_sites.append(s)
+        sites = []
+        for site_data_item in sites_data:
+            site, _ = Site.objects.get_or_create(name=site_data_item['name'],
+                                                 url=site_data_item['url'])
+        sites.append(site)
 
         # Create the Job object and provide it with the organisation ID we got or created before
-        j = Job.objects.create(organisation_id=org.id, **validated_data)
+        j = Job.objects.create(organisation_id=organisation.id, **validated_data)
 
         # Job done, now that we have the IDs of both side of the many 2 many relationship we can finally establish it.
-        j.labels = created_labels
-        j.sites = created_sites
+        j.labels = labels
+        j.sites = sites
 
         return j
 
@@ -108,4 +108,87 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
         :param validated_data:
         :return Job:
         """
-        pass
+
+        organisation_data = validated_data.pop('organisation')
+        # print("Org received data: %s" % organisation_data)
+        # print("Org existing data: %s" % organisation)
+        labels_data = validated_data.pop('labels')
+        sites_data = validated_data.pop('sites')
+
+        # Update the existing Job object
+        instance.title = validated_data.get('title', instance.title)
+        instance.text = validated_data.get('text', instance.text)
+        instance.country = validated_data.get('country', instance.country)
+        instance.region = validated_data.get('country', instance.region)
+        instance.city = validated_data.get('city', instance.city)
+        instance.url = validated_data.get('url', instance.url)
+        instance.seen = validated_data.get('seen', instance.seen)
+
+        # TODO: * consider when things are removed
+        labels = []  # TODO: what if order is reversed?
+        for label in labels_data:
+            l, _ = Labels.objects.update_or_create(name=label['name'])
+            labels.append(l)
+
+        sites = []
+        for site in sites_data:
+            s, _ = Site.objects.update_or_create(name=site['name'],
+                                                 url=site['url'])
+            sites.append(s)
+
+        instance.labels = labels
+        instance.sites = sites
+
+        instance.organisation, _ = Organisation.objects.update_or_create(
+            name=organisation_data.get('name', instance.organisation.name),
+            description=organisation_data.get('description', instance.organisation.description),
+            country=organisation_data.get('country', instance.organisation.country),
+            region=organisation_data.get('region', instance.organisation.region),
+            city=organisation_data.get('city', instance.organisation.city),
+            url=organisation_data.get('url', instance.organisation.url),
+        )
+
+        instance.organisation.save()
+
+        # new_name = Organisation.objects.get(name=organisation_data.get('name'))
+        # if new_name:
+        #     print("Found an org object matching name of PUT data")
+        #     # If it exists, if the id is different, if it is, we need to change to it, depending
+        #     # on your philosophy..
+        #     if organisation.uuid != new_name.uuid:
+        #         print("Org object matching PUT data is different to the one we are linked to!\n"
+        #               "updating our org id to this and considering our work done")
+        #         # There is an object with this name, but it is different than the current
+        #         # org we are linked to, should we update to that one, what happens to the other data?
+        #         # instance.organisation.id = new_name.id # fuck this is not what we want at all.
+        #         instance.organisation = new_name # Did this create a new copy?
+        #         organisation.save()
+        #         print("Org name after save: %s" % instance.organisation.name)
+        # else:
+        #     instance.organisation, created = Organisation.objects.update_or_create(
+        #         name=organisation_data.get('name', instance.organisation.name),
+        #         description=organisation_data.get('description', instance.organisation.description),
+        #         country=organisation_data.get('country', instance.organisation.country),
+        #         region=organisation_data.get('region', instance.organisation.region),
+        #         city=organisation_data.get('city', instance.organisation.city),
+        #         url=organisation_data.get('url', instance.organisation.url),
+        #     )
+        #
+        #     if created:
+        #         print("Created new org object")
+        #     # Otherwise update all the things
+        #     # organisation.name = organisation_data.get('name', organisation.name)
+        #     # organisation.description = organisation_data.get('description', organisation.description)
+        #     # organisation.country = organisation_data.get('country', organisation.country)
+        #     # organisation.region = organisation_data.get('region', organisation.region)
+        #     # organisation.city = organisation_data.get('city', organisation.city)
+        #     # organisation.url = organisation_data.get('url', organisation.url)
+        #
+        #     instance.organisation.save()
+
+        # instance.organisation = organisation # Connect it to our inst
+        instance.save()
+
+        # print("Organisation now %s" % instance.organisation)
+
+        return instance

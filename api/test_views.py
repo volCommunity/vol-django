@@ -389,7 +389,6 @@ class IndexViewTests(APITestCase):
         client = APIClient()
         client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
 
-        print("Going to post: %s" % data)
         response = client.post('%s/jobs' % self.base_url, data=data, format='json', secure=True)
         r = json.loads(response.content)
         self.assertEqual(r['title'], "Eternal Gardener")
@@ -438,10 +437,18 @@ class IndexViewTests(APITestCase):
     """ Update """
 
     def test_update_jobs(self):
+        """
+        TODO: if we are going to stay with nested updates it's pretty important we test a few things,
+              including nested updates
+        :return:
+        """
         site = SiteFactory()
         label = LabelsFactory()
         organisation = OrganisationFactory()
         job = JobFactory.create()
+
+        # TODO: subtle bug: organisation creates an org, jobfactory creates nother one.
+        # Doing this post, accidentally updated the org ID to the first org created
 
         client = APIClient()
         client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
@@ -449,9 +456,14 @@ class IndexViewTests(APITestCase):
         data["title"] = "Clown"
 
         # TODO: DRY, see test_create_auth
-        data['labels'] = [{'name': label.name}]
+        data['labels'] = [{'name': label.name},
+                          {'name': "a new label"}]
         data['sites'] = [{'name': site.name,
-                          'url': site.url}]
+                          'url': site.url},
+                         {'name': 'a new site',
+                          'url': '127.0.0.0'}]
+        # print("Data sites: %s" % data['sites'])
+
         data['organisation'] = {'name': organisation.name,
                                 'description': organisation.description,
                                 'city': organisation.city,
@@ -462,7 +474,10 @@ class IndexViewTests(APITestCase):
         response = client.put('%s/jobs/%s' % (self.base_url, job.uuid), data=data,
                               format='json', secure=True)
         r = json.loads(response.content)
+        self.assertEqual(len(r['labels']), 2)
+        self.assertEqual(len(r['sites']), 2)
         self.assertEqual(r['title'], "Clown")
+        self.assertEqual(r['organisation']['uuid'], str(organisation.uuid))
         self.assertEqual(response.status_code, 200)
 
     def test_update_jobs_four_oh_fours(self):
