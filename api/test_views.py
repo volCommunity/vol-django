@@ -433,6 +433,26 @@ class IndexViewTests(APITestCase):
         self.assertEqual(r[0], "Site failed to pass validation")
         self.assertEqual(response.status_code, 400)
 
+    def test_create_jobs_organisation_required(self):
+        """
+        """
+        label = LabelsFactory()
+        site = SiteFactory()
+
+        # TODO: DRY, see test_update_jobs
+        data = self.job_json
+        data['labels'] = [{'name': label.name}]
+        data['sites'] = [{'name': site.name,
+                          'url': site.url}]
+
+        client = APIClient()
+        client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
+
+        response = client.post('%s/jobs' % self.base_url, data=data, format='json', secure=True)
+        r = json.loads(response.content)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(r['organisation'][0], 'This field is required.')
+
     def test_create_jobs_conflicting_organisation_should_400(self):
         """
         """
