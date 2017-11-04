@@ -128,10 +128,10 @@ class ResultsViewTests(TransactionTestCase):
 
 class JobViewTests(TransactionTestCase):
     def test_get_job_none(self):
-        response = self.client.get('/job/12345', secure=True)
+        response = self.client.get('/jobs/12345', secure=True)
         self.assertEqual(response.status_code, 404)
 
     def test_get_job_one(self):
         job = JobFactory()
-        response = self.client.get('/job/{}'.format(job.id), secure=True)
+        response = self.client.get('/jobs/{}'.format(job.id), secure=True)
         self.assertEqual(response.context[0]['job'], job)
