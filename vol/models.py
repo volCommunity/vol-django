@@ -1,9 +1,11 @@
+import uuid
 from django.db import models
 
 
 # Create your models here.
 
 class Labels(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     name = models.CharField(max_length=200, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -16,6 +18,7 @@ class Labels(models.Model):
 
 
 class Organisation(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     name = models.CharField(max_length=200, unique=True)
     description = models.CharField(max_length=4000)
     country = models.CharField(max_length=70)
@@ -33,6 +36,7 @@ class Organisation(models.Model):
 
 
 class Site(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     name = models.CharField(max_length=200)
     url = models.CharField(max_length=200, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -46,6 +50,7 @@ class Site(models.Model):
 
 
 class Job(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     title = models.CharField(max_length=200, unique=True)
     text = models.TextField()
     labels = models.ManyToManyField(Labels)
