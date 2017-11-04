@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 
 from vol.models import Labels, Organisation, Site, Job
@@ -78,11 +79,18 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
         labels_data = validated_data.pop('labels')
         sites_data = validated_data.pop('sites')
 
+        # Update organisation reference. If an organisation with the
+        # same name exists, we need to make sure that it is the same.
+        # updating the organisation is beyond our scope.
+        # TODO: refactor validator for re-use in create
         o = Organisation.objects.get(name=organisation_data['name'])
-        # TODO: handle the other fields too, add short doco
-        if o and o.country != organisation_data['country']:
-            # TODO: be more helpful
-            raise serializers.ValidationError("I'm afraid I can't do that, Dave")
+        field_list = ['description', 'country', 'region', 'city', 'url']  # TODO: can we generate this?
+        if o:
+            for field in field_list:
+                if getattr(o, field) != organisation_data.get(field):
+                    # TODO: pass data why it failed validation
+                    raise serializers.ValidationError("Organisation failed to pass validation")
+
         organisation, _ = Organisation.objects.get_or_create(**organisation_data)
 
         labels = []
@@ -90,18 +98,20 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
             label, _ = Labels.objects.get_or_create(name=label_data_item['name'])
             labels.append(label)
 
+        # Updates sites will replace the existing sites by removing all if
+        # the input is empty, or the new set of sites.
+        # TODO: consider if we really want to create during PATCH or PUT
+        # TODO: make sure this behavior is documented!
         sites = []
         for site_data_item in sites_data:
-            """ Search on the unique key: url, if we get it,
-                check if the name matches, if it does not, we have to
-                inform our users that this can never work out (or we
-                will receive a nice foreign key constraint from our
-                database
-            """
-            s = Site.objects.get(url=site_data_item['url'])
-            if s and s.name != site_data_item['name']:
-                # TODO: be more helpful
-                raise serializers.ValidationError("I'm afraid I can't do that, Dave")
+            try:
+                site = Site.objects.get(url=site_data_item['url'])
+                if site.name != site_data_item['name']:
+                    # TODO: pass data why it failed validation
+                    raise serializers.ValidationError("Site failed to pass validation")
+            except ObjectDoesNotExist:
+                pass
+
             site, _ = Site.objects.get_or_create(name=site_data_item['name'],
                                                  url=site_data_item['url'])
             sites.append(site)
@@ -137,27 +147,48 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
         instance.url = validated_data.get('url', instance.url)
         instance.seen = validated_data.get('seen', instance.seen)
 
-        # TODO: how to we interpret updates? deletion; no
-        # updating; could raise, but would that be expected?
-
+        # Updating labels will replace the existing labels by removing all if
+        # the input is empty, or the new set of labels.
+        # TODO: consider if we really want to create during PATCH or PUT
+        #  TODO: make sure this behavior is documented!
         labels = []
-        # Get to work on the labels
         for label in labels_data:
-            l, _ = Labels.objects.update_or_create(name=label['name'])
+            l, _ = Labels.objects.get_or_create(name=label['name'])
             labels.append(l)
-        # Next sites
-        sites = []
-        for site in sites_data:
-            # TODO: add validator and corresponding validator test
-            s, _ = Site.objects.update_or_create(name=site['name'],
-                                                 url=site['url'])
-            sites.append(s)
 
         instance.labels = labels
+
+        # Updates sites will replace the existing sites by removing all if
+        # the input is empty, or the new set of sites.
+        # TODO: consider if we really want to create during PATCH or PUT
+        # TODO: make sure this behavior is documented!
+        sites = []
+        for site_data_item in sites_data:
+            try:
+                site = Site.objects.get(url=site_data_item['url'])
+                if site.name != site_data_item['name']:
+                    raise serializers.ValidationError("Site failed to pass validation")
+            except ObjectDoesNotExist:
+                pass
+
+            site, _ = Site.objects.get_or_create(name=site_data_item['name'],
+                                                 url=site_data_item['url'])
+            sites.append(site)
+
         instance.sites = sites
 
-        # TODO: add validator and corresponding validator test
-        instance.organisation, _ = Organisation.objects.update_or_create(
+        # Update organisation reference. If an organisation with the
+        # same name exists, we need to make sure that it is the same.
+        # updating the organisation is beyond our scope.
+        # TODO: refactor validator for re-use in create
+        o = Organisation.objects.get(name=organisation_data['name'])
+        field_list = ['description', 'country', 'region', 'city', 'url']  # TODO: can we generate this?
+        if o:
+            for field in field_list:
+                if getattr(o, field) != organisation_data.get(field):
+                    raise serializers.ValidationError("Organisation failed to pass validation")
+
+        instance.organisation, _ = Organisation.objects.get_or_create(
             name=organisation_data.get('name', instance.organisation.name),
             description=organisation_data.get('description', instance.organisation.description),
             country=organisation_data.get('country', instance.organisation.country),
@@ -166,7 +197,6 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
             url=organisation_data.get('url', instance.organisation.url),
         )
 
-        instance.organisation.save()
         instance.save()
 
         return instance
