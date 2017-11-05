@@ -26,10 +26,10 @@ class SiteSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class JobSerializer(serializers.HyperlinkedModelSerializer):
-    """ JobSerialiser serializes Job objects. It includes a few nested serialisers to allow
-        writing of nested objects.
+    """ JobSerializer serializes Job objects. It includes a few nested serializers to allow
+        writing of nested objects, and overridden create and update methods to allow writing.
 
-        These nested serialisers have validators disabled. Removing the validator allows us
+        These nested serializers have validators disabled. Removing the validator allows us
         to do create and update operations on Jobs, while including Labels, Organisations and
          Sites that may or may not exist.
     """
@@ -79,51 +79,21 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
         labels_data = validated_data.pop('labels')
         sites_data = validated_data.pop('sites')
 
-        # Update organisation reference. If an organisation with the
-        # same name exists, we need to make sure that it is the same.
-        # updating the organisation is beyond our scope.
-        # TODO: refactor validator for re-use in create
-        o = Organisation.objects.get(name=organisation_data['name'])
-        field_list = ['description', 'country', 'region', 'city', 'url']  # TODO: can we generate this?
-        if o:
-            for field in field_list:
-                if getattr(o, field) != organisation_data.get(field):
-                    # TODO: pass data why it failed validation
-                    raise serializers.ValidationError("Organisation failed to pass validation")
-
+        validate_organisation(organisation_data)
         organisation, _ = Organisation.objects.get_or_create(**organisation_data)
 
-        labels = []
-        for label_data_item in labels_data:
-            label, _ = Labels.objects.get_or_create(name=label_data_item['name'])
-            labels.append(label)
+        labels = process_labels(labels_data)
+        sites = process_sites(sites_data)
 
-        # Updates sites will replace the existing sites by removing all if
-        # the input is empty, or the new set of sites.
-        # TODO: consider if we really want to create during PATCH or PUT
-        # TODO: make sure this behavior is documented!
-        sites = []
-        for site_data_item in sites_data:
-            try:
-                site = Site.objects.get(url=site_data_item['url'])
-                if site.name != site_data_item['name']:
-                    # TODO: pass data why it failed validation
-                    raise serializers.ValidationError("Site failed to pass validation")
-            except ObjectDoesNotExist:
-                pass
+        # Create job, providing the ID of the organisation we got or created
+        job = Job.objects.create(organisation_id=organisation.id, **validated_data)
 
-            site, _ = Site.objects.get_or_create(name=site_data_item['name'],
-                                                 url=site_data_item['url'])
-            sites.append(site)
+        # Establish many 2 many relationships now that both side of the relationships
+        # have been created and have an ID.
+        job.labels = labels
+        job.sites = sites
 
-        # Create the Job object and provide it with the organisation ID we got or created before
-        j = Job.objects.create(organisation_id=organisation.id, **validated_data)
-
-        # Job done, now that we have the IDs of both side of the many 2 many relationship we can finally establish it.
-        j.labels = labels
-        j.sites = sites
-
-        return j
+        return job
 
     def update(self, instance, validated_data):
         """
@@ -147,47 +117,10 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
         instance.url = validated_data.get('url', instance.url)
         instance.seen = validated_data.get('seen', instance.seen)
 
-        # Updating labels will replace the existing labels by removing all if
-        # the input is empty, or the new set of labels.
-        # TODO: consider if we really want to create during PATCH or PUT
-        #  TODO: make sure this behavior is documented!
-        labels = []
-        for label in labels_data:
-            l, _ = Labels.objects.get_or_create(name=label['name'])
-            labels.append(l)
+        instance.labels = process_labels(labels_data)
+        instance.sites = process_sites(sites_data)
 
-        instance.labels = labels
-
-        # Updates sites will replace the existing sites by removing all if
-        # the input is empty, or the new set of sites.
-        # TODO: consider if we really want to create during PATCH or PUT
-        # TODO: make sure this behavior is documented!
-        sites = []
-        for site_data_item in sites_data:
-            try:
-                site = Site.objects.get(url=site_data_item['url'])
-                if site.name != site_data_item['name']:
-                    raise serializers.ValidationError("Site failed to pass validation")
-            except ObjectDoesNotExist:
-                pass
-
-            site, _ = Site.objects.get_or_create(name=site_data_item['name'],
-                                                 url=site_data_item['url'])
-            sites.append(site)
-
-        instance.sites = sites
-
-        # Update organisation reference. If an organisation with the
-        # same name exists, we need to make sure that it is the same.
-        # updating the organisation is beyond our scope.
-        # TODO: refactor validator for re-use in create
-        o = Organisation.objects.get(name=organisation_data['name'])
-        field_list = ['description', 'country', 'region', 'city', 'url']  # TODO: can we generate this?
-        if o:
-            for field in field_list:
-                if getattr(o, field) != organisation_data.get(field):
-                    raise serializers.ValidationError("Organisation failed to pass validation")
-
+        validate_organisation(organisation_data)
         instance.organisation, _ = Organisation.objects.get_or_create(
             name=organisation_data.get('name', instance.organisation.name),
             description=organisation_data.get('description', instance.organisation.description),
@@ -200,3 +133,66 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
         instance.save()
 
         return instance
+
+
+def validate_organisation(organisation_data):
+    """
+    Creates a new, or gets an existing, organisation. If an organisation with an identical name exists,
+    we need to make sure that it the same; updating the organisation is beyond our scope.
+
+    :param organisation_data:
+    :raises ValidationError:
+    """
+    organisation_object = Organisation.objects.get(name=organisation_data['name'])
+
+    field_list = ['description', 'country', 'region', 'city', 'url']  # TODO: can we generate this?
+    if organisation_object:
+        for field in field_list:
+            if getattr(organisation_object, field) != organisation_data.get(field):
+                raise serializers.ValidationError(
+                    "Organisation failed to pass validation: different organisation with identical name found")
+
+
+def process_sites(sites_data):
+    """
+    Generate a list of sites, if any, that are valid. Valid means that there is no
+    pre-existing resource with an identical name, as that has a unique key constraint.
+
+    We need to implement this as the automatically generated validator for the Site model was
+    disabled in NestedOrganisationSerializer for nested serializers to work
+
+    :param sites_data:
+    :raises ValidationError:
+    :return list of validated Site objects:
+    """
+    sites = []
+    for site_data_item in sites_data:
+        try:
+            site = Site.objects.get(url=site_data_item['url'])
+            if site.name != site_data_item['name']:
+                raise serializers.ValidationError(
+                    "Site failed to pass validation: different site with identical name found")
+        except ObjectDoesNotExist:
+            pass
+
+        site, _ = Site.objects.get_or_create(name=site_data_item['name'],
+                                             url=site_data_item['url'])
+        sites.append(site)
+
+    return sites
+
+
+def process_labels(labels_data):
+    """
+    Return a list of labels, if any, that were pre-existing or will be created.
+
+    :param label_data:
+    :return list of Labels objects:
+    """
+
+    labels = []
+    for label_item in labels_data:
+        label, _ = Labels.objects.get_or_create(name=label_item['name'])
+        labels.append(label)
+
+    return labels
