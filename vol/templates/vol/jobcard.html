@@ -3,7 +3,7 @@
     <div class="card-header">
         <strong>Permalink</strong> <a href="/jobs/{{  job.id }}">/jobs/{{ job.id }}</a><br>
         <strong>URL</strong> <a href="{{ job.url }}">{{ job.url }}</a><br>
-        <strong>Organisation</strong> <a href="{{ job.organisation.url }}">{{ job.organisation }}</a>
+        {%  if job.organisation %}<strong>Organisation</strong> <a href="{{ job.organisation.url }}">{{ job.organisation }}</a>{% endif %}
         <br>
         <!-- Include link and logo -->
         <strong>City</strong> {{ job.city }}
