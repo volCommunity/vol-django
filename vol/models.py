@@ -54,12 +54,11 @@ class Job(models.Model):
     title = models.CharField(max_length=200, unique=True)
     text = models.TextField()
     labels = models.ManyToManyField(Labels)
-    organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE)  # One org per job
+    organisation = models.ForeignKey(Organisation, on_delete=models.SET_NULL, null=True)  # Not all jobs have a known org
     sites = models.ManyToManyField(Site)  # Possibly more sites per job
-    country = models.CharField(max_length=70)  # TODO: move to country table?
+    country = models.CharField(max_length=70)  # TODO: move to country table
     region = models.CharField(max_length=70, null=True)  # TODO: move to region table? TODO: don't use null for char
-    # see https://docs.djangoproject.com/en/1.11/ref/models/fields/
-    city = models.CharField(max_length=70)  # TODO: move to city table?
+    city = models.CharField(max_length=70)  # TODO: move to city table
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     url = models.CharField(max_length=200, unique=True)
