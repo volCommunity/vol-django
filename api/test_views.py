@@ -404,7 +404,7 @@ class IndexViewTests(APITestCase):
         self.assertEqual(r['sites'][0]['name'], data['sites'][0]['name'])
         self.assertEqual(r['labels'][0]['name'], data['labels'][0]['name'])
 
-    def test_create_jobs_conflicting_site_should_400(self):
+    def test_create_jobs_conflicting_site_validation_error(self):
         """
         """
         label = LabelsFactory()
@@ -429,8 +429,7 @@ class IndexViewTests(APITestCase):
 
         response = client.post('%s/jobs' % self.base_url, data=data, format='json', secure=True)
         r = json.loads(response.content)
-        # TODO: parse reason?
-        self.assertEqual(r[0], "Site failed to pass validation")
+        self.assertEqual(r[0], "Site failed to pass validation: different site with identical name found")
         self.assertEqual(response.status_code, 400)
 
     def test_create_jobs_organisation_required(self):
@@ -453,7 +452,7 @@ class IndexViewTests(APITestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(r['organisation'][0], 'This field is required.')
 
-    def test_create_jobs_conflicting_organisation_should_400(self):
+    def test_create_jobs_conflicting_organisation_validation_error(self):
         """
         """
         label = LabelsFactory()
@@ -479,8 +478,8 @@ class IndexViewTests(APITestCase):
         response = client.post('%s/jobs' % self.base_url, data=data, format='json', secure=True)
         r = json.loads(response.content)
         self.assertEqual(response.status_code, 400)
-        # TODO: parse reason?
-        self.assertEqual(r[0], "Organisation failed to pass validation")
+        self.assertEqual(r[0],
+                         "Organisation failed to pass validation: different organisation with identical name found")
 
     def test_create_job_no_auth(self):
         client = APIClient()
@@ -575,8 +574,7 @@ class IndexViewTests(APITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(r['organisation']['uuid'], str(organisation.uuid))
 
-    # TODO: rename shoud_400 to something like validation_error?
-    def test_update_jobs_organisation_should_400(self):
+    def test_update_jobs_organisation_validation_error(self):
         organisation = OrganisationFactory()
 
         label = LabelsFactory()
@@ -600,8 +598,8 @@ class IndexViewTests(APITestCase):
                               format='json', secure=True)
         r = json.loads(response.content)
         self.assertEqual(response.status_code, 400)
-        # TODO: parse reason?
-        self.assertEqual(r[0], "Organisation failed to pass validation")
+        self.assertEqual(r[0],
+                         "Organisation failed to pass validation: different organisation with identical name found")
 
     def test_update_jobs_labels(self):
         label = LabelsFactory()
@@ -656,7 +654,7 @@ class IndexViewTests(APITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(r['sites']), 2)
 
-    def test_update_jobs_sites_should_400(self):
+    def test_update_jobs_sites_should_validation_error(self):
         site = SiteFactory()
 
         label = LabelsFactory()
@@ -679,8 +677,7 @@ class IndexViewTests(APITestCase):
                               format='json', secure=True)
         r = json.loads(response.content)
         self.assertEqual(response.status_code, 400)
-        # TODO: parse reason?
-        self.assertEqual(r[0], "Site failed to pass validation")
+        self.assertEqual(r[0], "Site failed to pass validation: different site with identical name found")
 
     def test_update_jobs_four_oh_fours(self):
         client = APIClient()
