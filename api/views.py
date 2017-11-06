@@ -13,7 +13,7 @@ class LabelViewSet(viewsets.ModelViewSet):
     API endpoint that creates a new label resource.
 
     partial_update:
-    Not implemented.
+    API endpoint that partially updates an existing label resource.
 
     update:
     API endpoint that  updates an existing label resource.
@@ -37,7 +37,7 @@ class OrganisationViewSet(viewsets.ModelViewSet):
     API endpoint that creates a new organisation resource.
 
     partial_update:
-    Not implemented.
+    API endpoint that partially updates an existing organisation resource.
 
     update:
     API endpoint that  updates an existing organisation resource.
@@ -61,7 +61,7 @@ class SiteViewSet(viewsets.ModelViewSet):
     API endpoint that creates a new site resource.
 
     partial_update:
-    Not implemented.
+    API endpoint that partially updates an existing site resource.
 
     update:
     API endpoint that  updates an existing site resource.
@@ -85,7 +85,7 @@ class JobViewSet(viewsets.ModelViewSet):
     API endpoint that creates a new job resource.
 
     partial_update:
-    Not implemented.
+    API endpoint that partially updates an existing job resource.
 
     update:
     API endpoint that  updates an existing job resource.

@@ -109,8 +109,10 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
         instance.url = validated_data.get('url', instance.url)
         instance.seen = validated_data.get('seen', instance.seen)
 
-        instance.labels = process_labels(validated_data.pop('labels'))
-        instance.sites = process_sites(validated_data.pop('sites'))
+        if "labels" in validated_data:
+            instance.labels = process_labels(validated_data.pop('labels'))
+        if "sites" in validated_data:
+            instance.sites = process_sites(validated_data.pop('sites'))
         if "organisation" in validated_data:
             instance.organisation = self.process_organisation(validated_data.pop('organisation'), action='update')
 
