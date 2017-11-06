@@ -51,7 +51,7 @@ class Site(models.Model):
 
 class Job(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    title = models.CharField(max_length=200, unique=True)
+    title = models.CharField(max_length=200)
     text = models.TextField()
     labels = models.ManyToManyField(Labels)
     organisation = models.ForeignKey(Organisation, on_delete=models.SET_NULL, null=True)  # Not all jobs have a known org
