@@ -1,14 +1,14 @@
 import uuid
 from django.db import models
+from autoslug import AutoSlugField
 
-
-# Create your models here.
 
 class Labels(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     name = models.CharField(max_length=200, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    slug = AutoSlugField(unique=True, populate_from='name', default=None, null=True, editable=False)
 
     def __str__(self):
         return self.name
@@ -27,6 +27,7 @@ class Organisation(models.Model):
     url = models.CharField(max_length=2083)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    slug = AutoSlugField(unique=True, populate_from='name', default=None, null=True, editable=False)
 
     def __str__(self):
         return self.name
@@ -41,6 +42,7 @@ class Site(models.Model):
     url = models.CharField(max_length=2083, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    slug = AutoSlugField(unique=True, populate_from='name', default=None, null=True, editable=False)
 
     def __str__(self):
         return self.name
@@ -63,6 +65,7 @@ class Job(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     url = models.CharField(max_length=2083, unique=True)
     seen = models.IntegerField(default=0)  # How often someone has looked at job
+    slug = AutoSlugField(unique=True, populate_from='title', default=None, null=True, editable=False)
 
     def __str__(self):
         return self.title

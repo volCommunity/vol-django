@@ -11,10 +11,11 @@ gunicorn = "*"
 whitenoise = "*"
 "django-analytical" = "*"
 djangorestframework = "*"
-"factory_boy" = "*"
+"factory-boy" = "*"
 coreapi = "*"
 "django-rest-swagger" = "*"
 "django-filter" = "*"
+"django-autoslug" = "*"
 
 [dev-packages]
 

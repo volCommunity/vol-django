@@ -81,6 +81,12 @@ Once you see log output from postgres and django, you can just open the url "htt
 
 There's no need to restart the server when you make changes - just modify the python files and reload the page.
 
+Updating Python dependencies in Docker requires running:
+
+```shell
+docker-compose build
+```
+
 
 ## Setup Without Docker
 We use the amazing <a href=https://github.com/kennethreitz/pipenv>Pipenv</a> to manage <a href=http://docs.python-guide.org/en/latest/dev/virtualenvs/>virtualenvs:</a>

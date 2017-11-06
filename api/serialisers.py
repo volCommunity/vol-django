@@ -7,7 +7,7 @@ from vol.models import Labels, Organisation, Site, Job
 class LabelSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Labels
-        fields = ['uuid', 'name', 'created_at', 'updated_at']
+        fields = ['uuid', 'name', 'created_at', 'updated_at', 'slug']
         lookup_field = 'uuid'
 
 
@@ -16,14 +16,14 @@ class OrganisationSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Organisation
-        fields = ('uuid', 'name', 'description', 'country', 'region', 'city', 'url', 'created_at', 'updated_at')
+        fields = ('uuid', 'name', 'description', 'country', 'region', 'city', 'url', 'created_at', 'updated_at', 'slug')
         lookup_field = 'uuid'
 
 
 class SiteSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Site
-        fields = ('uuid', 'name', 'url', 'created_at', 'updated_at')
+        fields = ('uuid', 'name', 'url', 'created_at', 'updated_at', 'slug')
         lookup_field = 'uuid'
 
 
@@ -69,7 +69,7 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Job
         fields = ('uuid', 'title', 'text', 'labels', 'organisation',
-                  'sites', 'country', 'city', 'region', 'created_at', 'updated_at', 'url', 'seen')
+                  'sites', 'country', 'city', 'region', 'created_at', 'updated_at', 'url', 'seen', 'slug')
         lookup_field = 'uuid'
 
     def create(self, validated_data):
@@ -154,12 +154,14 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
 def validate_organisation_if_there(organisation_data):
     try:
         organisation_object = Organisation.objects.get(name=organisation_data['name'])
-        field_list = ['description', 'country', 'region', 'city', 'url']  # TODO: can we generate this?
+        field_list = ['description', 'country', 'region', 'city', 'url', 'slug']  # TODO: can we generate this?
         if organisation_object:
             for field in field_list:
                 if getattr(organisation_object, field) != organisation_data.get(field):
                     raise serializers.ValidationError(
-                        "Organisation failed to pass validation: different organisation with identical name found")
+                        "Organisation failed to pass validation: organisation with the same name but " +
+                        "different %s found (%s vs %s)" % (field, getattr(organisation_object, field),
+                                                           organisation_data.get(field)))
     except ObjectDoesNotExist:
         pass
 
