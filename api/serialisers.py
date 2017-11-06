@@ -127,14 +127,7 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
         :param action:
         :raises ValidationError:
         """
-        organisation_object = Organisation.objects.get(name=organisation_data['name'])
-
-        field_list = ['description', 'country', 'region', 'city', 'url']  # TODO: can we generate this?
-        if organisation_object:
-            for field in field_list:
-                if getattr(organisation_object, field) != organisation_data.get(field):
-                    raise serializers.ValidationError(
-                        "Organisation failed to pass validation: different organisation with identical name found")
+        validate_organisation_if_there(organisation_data)
 
         if action == "create":
             organisation, _ = Organisation.objects.get_or_create(**organisation_data)
@@ -150,6 +143,19 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
                 url=organisation_data.get('url', self.instance.organisation.url),
             )
             return self.instance.organisation
+
+
+def validate_organisation_if_there(organisation_data):
+    try:
+        organisation_object = Organisation.objects.get(name=organisation_data['name'])
+        field_list = ['description', 'country', 'region', 'city', 'url']  # TODO: can we generate this?
+        if organisation_object:
+            for field in field_list:
+                if getattr(organisation_object, field) != organisation_data.get(field):
+                    raise serializers.ValidationError(
+                        "Organisation failed to pass validation: different organisation with identical name found")
+    except ObjectDoesNotExist:
+        pass
 
 
 def process_sites(sites_data):
