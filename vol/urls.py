@@ -9,5 +9,5 @@ urlpatterns = [
                                                permanent=False), name='favicon'),
     url('about', views.about, name='about'),
     url(r'^results/(?P<location>[\w\s+]+)/(?P<interests>[\w\s+]+)', views.results, name='results'),
-    url(r'^jobs/(?P<id>[\d]+)', views.job, name='job')  # TODO: should this be a nice name (SEO etc)
+    url(r'^jobs/(?P<uuid>[\d\w-]+)', views.job, name='job')  # TODO: should this be a nice name (SEO etc)
 ]

@@ -25,6 +25,7 @@ class OrganisationFactory(factory.django.DjangoModelFactory):
     country = "NZ"
     city = "wellington"
     region = "wellington"
+    description = "some org"
     url = factory.Sequence(lambda n: 'http://www.{0}.org'.format(n))
 
     class Meta:
