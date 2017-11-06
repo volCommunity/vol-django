@@ -58,7 +58,7 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
                 }
             }
 
-    organisation = NestedOrganisationSerializer()
+    organisation = NestedOrganisationSerializer(required=False)
     labels = NestedLabelSerializer(many=True)
     sites = NestedSiteSerializer(many=True)
 
@@ -75,18 +75,14 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
         :param validated_data:
         :return Job:
         """
-        organisation_data = validated_data.pop('organisation')
-        labels_data = validated_data.pop('labels')
-        sites_data = validated_data.pop('sites')
+        labels = process_labels(validated_data.pop('labels'))
+        sites = process_sites(validated_data.pop('sites'))
 
-        validate_organisation(organisation_data)
-        organisation, _ = Organisation.objects.get_or_create(**organisation_data)
+        if "organisation" in validated_data:
+            organisation = self.process_organisation(validated_data.pop('organisation'), action='create')
+            validated_data['organisation_id'] = organisation.id
 
-        labels = process_labels(labels_data)
-        sites = process_sites(sites_data)
-
-        # Create job, providing the ID of the organisation we got or created
-        job = Job.objects.create(organisation_id=organisation.id, **validated_data)
+        job = Job.objects.create(**validated_data)
 
         # Establish many 2 many relationships now that both side of the relationships
         # have been created and have an ID.
@@ -104,10 +100,6 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
         :return Job:
         """
 
-        organisation_data = validated_data.pop('organisation')
-        labels_data = validated_data.pop('labels')
-        sites_data = validated_data.pop('sites')
-
         # Update existing Job object
         instance.title = validated_data.get('title', instance.title)
         instance.text = validated_data.get('text', instance.text)
@@ -117,40 +109,47 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
         instance.url = validated_data.get('url', instance.url)
         instance.seen = validated_data.get('seen', instance.seen)
 
-        instance.labels = process_labels(labels_data)
-        instance.sites = process_sites(sites_data)
-
-        validate_organisation(organisation_data)
-        instance.organisation, _ = Organisation.objects.get_or_create(
-            name=organisation_data.get('name', instance.organisation.name),
-            description=organisation_data.get('description', instance.organisation.description),
-            country=organisation_data.get('country', instance.organisation.country),
-            region=organisation_data.get('region', instance.organisation.region),
-            city=organisation_data.get('city', instance.organisation.city),
-            url=organisation_data.get('url', instance.organisation.url),
-        )
+        instance.labels = process_labels(validated_data.pop('labels'))
+        instance.sites = process_sites(validated_data.pop('sites'))
+        if "organisation" in validated_data:
+            instance.organisation = self.process_organisation(validated_data.pop('organisation'), action='update')
 
         instance.save()
 
         return instance
 
+    def process_organisation(self, organisation_data, action=create):
+        """
+        Validates if an organisation with an identical name exists, if it does we assert it the same;
+        updating the organisation is beyond our scope. Return organisation data if validation succeeeds.
 
-def validate_organisation(organisation_data):
-    """
-    Creates a new, or gets an existing, organisation. If an organisation with an identical name exists,
-    we need to make sure that it the same; updating the organisation is beyond our scope.
+        :param organisation_data:
+        :param action:
+        :raises ValidationError:
+        """
+        organisation_object = Organisation.objects.get(name=organisation_data['name'])
 
-    :param organisation_data:
-    :raises ValidationError:
-    """
-    organisation_object = Organisation.objects.get(name=organisation_data['name'])
+        field_list = ['description', 'country', 'region', 'city', 'url']  # TODO: can we generate this?
+        if organisation_object:
+            for field in field_list:
+                if getattr(organisation_object, field) != organisation_data.get(field):
+                    raise serializers.ValidationError(
+                        "Organisation failed to pass validation: different organisation with identical name found")
 
-    field_list = ['description', 'country', 'region', 'city', 'url']  # TODO: can we generate this?
-    if organisation_object:
-        for field in field_list:
-            if getattr(organisation_object, field) != organisation_data.get(field):
-                raise serializers.ValidationError(
-                    "Organisation failed to pass validation: different organisation with identical name found")
+        if action == "create":
+            organisation, _ = Organisation.objects.get_or_create(**organisation_data)
+            return organisation
+
+        if action == "update":
+            self.instance.organisation, _ = Organisation.objects.get_or_create(
+                name=organisation_data.get('name', self.instance.organisation.name),
+                description=organisation_data.get('description', self.instance.organisation.description),
+                country=organisation_data.get('country', self.instance.organisation.country),
+                region=organisation_data.get('region', self.instance.organisation.region),
+                city=organisation_data.get('city', self.instance.organisation.city),
+                url=organisation_data.get('url', self.instance.organisation.url),
+            )
+            return self.instance.organisation
 
 
 def process_sites(sites_data):
