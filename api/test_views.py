@@ -432,6 +432,31 @@ class IndexViewTests(APITestCase):
         self.assertEqual(r[0], "Site failed to pass validation: different site with identical name found")
         self.assertEqual(response.status_code, 400)
 
+    def test_create_jobs_organisation_empty_description_ok(self):
+        """
+        """
+        label = LabelsFactory()
+        site = SiteFactory()
+
+        # TODO: DRY, see test_update_jobs
+        data = self.job_json
+        data['labels'] = [{'name': label.name}]
+        data['sites'] = [{'name': site.name,
+                          'url': site.url}]
+
+        data['organisation'] = {'name': "An org",
+                                'description': "",
+                                'city': "A city",
+                                'region': "A region",
+                                'country': "A country",
+                                'url': "A URL"}
+
+        client = APIClient()
+        client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
+
+        response = client.post('%s/jobs' % self.base_url, data=data, format='json', secure=True)
+        self.assertEqual(response.status_code, 201)
+
     def test_create_jobs_organisation_not_required(self):
         """
         """

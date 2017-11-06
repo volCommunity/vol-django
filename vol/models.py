@@ -20,11 +20,11 @@ class Labels(models.Model):
 class Organisation(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     name = models.CharField(max_length=200, unique=True)
-    description = models.CharField(max_length=4000)
+    description = models.CharField(max_length=4000, blank=True)
     country = models.CharField(max_length=70)
     region = models.CharField(max_length=70)
     city = models.CharField(max_length=70)
-    url = models.CharField(max_length=200)
+    url = models.CharField(max_length=2083)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -38,7 +38,7 @@ class Organisation(models.Model):
 class Site(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     name = models.CharField(max_length=200)
-    url = models.CharField(max_length=200, unique=True)
+    url = models.CharField(max_length=2083, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -61,7 +61,7 @@ class Job(models.Model):
     city = models.CharField(max_length=70)  # TODO: move to city table
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    url = models.CharField(max_length=200, unique=True)
+    url = models.CharField(max_length=2083, unique=True)
     seen = models.IntegerField(default=0)  # How often someone has looked at job
 
     def __str__(self):

@@ -12,6 +12,8 @@ class LabelSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class OrganisationSerializer(serializers.HyperlinkedModelSerializer):
+    description = serializers.CharField(required=False, allow_blank=True)
+
     class Meta:
         model = Organisation
         fields = ('uuid', 'name', 'description', 'country', 'region', 'city', 'url', 'created_at', 'updated_at')
@@ -43,6 +45,8 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
             }
 
     class NestedOrganisationSerializer(OrganisationSerializer):
+        description = serializers.CharField(required=False, allow_blank=True)
+
         class Meta(OrganisationSerializer.Meta):
             extra_kwargs = {
                 'name': {
