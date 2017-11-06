@@ -21,7 +21,7 @@ class LabelViewSet(viewsets.ModelViewSet):
     delete:
     API endpoint that deletes a label resource.
     """
-    filter_fields = ('uuid', 'name', 'created_at', 'updated_at')
+    filter_fields = ('uuid', 'name', 'created_at', 'updated_at', 'slug')
 
     queryset = Labels.objects.all()
     serializer_class = LabelSerializer
@@ -45,7 +45,8 @@ class OrganisationViewSet(viewsets.ModelViewSet):
     delete:
     API endpoint that deletes a organisation resource.
     """
-    filter_fields = ('uuid', 'name', 'description', 'country', 'region', 'city', 'url', 'created_at', 'updated_at')
+    filter_fields = ('uuid', 'name', 'description', 'country', 'region', 'city', 'url', 'created_at', 'updated_at',
+                     'slug')
 
     queryset = Organisation.objects.all()
     serializer_class = OrganisationSerializer
@@ -69,7 +70,7 @@ class SiteViewSet(viewsets.ModelViewSet):
     delete:
     API endpoint that deletes a site resource.
     """
-    filter_fields = ('uuid', 'name', 'url', 'created_at', 'updated_at')
+    filter_fields = ('uuid', 'name', 'url', 'created_at', 'updated_at', 'slug')
 
     queryset = Site.objects.all()
     serializer_class = SiteSerializer
@@ -105,7 +106,7 @@ class JobViewSet(viewsets.ModelViewSet):
     """
     filter_fields = ('uuid', 'title', 'text', 'labels', 'organisation', 'sites',
                      'country', 'region', 'city', 'created_at', 'updated_at',
-                     'url', 'seen')
+                     'url', 'seen', 'slug')
 
     queryset = Job.objects.all()
     serializer_class = JobSerializer
