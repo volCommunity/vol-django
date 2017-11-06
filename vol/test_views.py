@@ -133,5 +133,5 @@ class JobViewTests(TransactionTestCase):
 
     def test_get_job_one(self):
         job = JobFactory()
-        response = self.client.get('/jobs/{}'.format(job.uuid), secure=True)
+        response = self.client.get('/jobs/{}'.format(job.slug), secure=True)
         self.assertEqual(response.context[0]['job'], job)

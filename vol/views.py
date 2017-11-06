@@ -80,7 +80,7 @@ def results(request, location, interests):
     })
 
 
-def job(request, uuid):
-    job = get_object_or_404(Job, uuid=uuid)
+def job(request, slug):
+    job = get_object_or_404(Job, slug=slug)
 
     return render(request, 'vol/job.html', {'job': job})
