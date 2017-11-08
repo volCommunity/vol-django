@@ -155,8 +155,8 @@ def validate_organisation_if_there(organisation_data):
     try:
         organisation_object = Organisation.objects.get(name=organisation_data['name'])
         field_list = ['description', 'country', 'region', 'city', 'url', 'slug']  # TODO: can we generate this?
-        if organisation_object:
-            for field in field_list:
+        for field in field_list:
+            if organisation_data.get(field) is not None:
                 if getattr(organisation_object, field) != organisation_data.get(field):
                     raise serializers.ValidationError(
                         "Organisation failed to pass validation: organisation with the same name but " +
