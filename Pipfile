@@ -4,7 +4,7 @@ verify_ssl = true
 
 [packages]
 
-Django = "*"
+django = "*"
 "dj-database-url" = "*"
 gunicorn = "*"
 "psycopg2" = "*"
@@ -16,6 +16,7 @@ coreapi = "*"
 "django-rest-swagger" = "*"
 "django-filter" = "*"
 "django-autoslug" = "*"
+"social-auth-app-django" = "*"
 
 [dev-packages]
 
