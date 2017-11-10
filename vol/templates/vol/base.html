@@ -18,7 +18,6 @@
 </head>
 <body>
 
-
 {% analytical_body_top %}
 <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: #2c3e50;">
     <a class="navbar-brand" href="#"><i class="fa fa-mail-reply" aria-hidden="true"></i></a>
@@ -50,12 +49,13 @@
                     </a>
 
                 {% else %}
-                    <a class="nav-link" href="/login">
+                    <a href="#loginModal" class="nav-link" data-toggle="modal" data-target="#loginModal">
                         <span>Login</span>
                     </a>
                 {% endif %}
             </li>
         </ul>
+
         <form class="form-inline my-2 my-lg-0"
               action="https://8070.us5.list-manage.com/subscribe/post?u=ead9b54352694f8b72a002ed0&amp;id=766489f95c"
               method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" target="_blank">
@@ -93,6 +93,40 @@
 
 </div>
 
+<div class="container">
+
+<!-- Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+            </div>
+            <div class="modal-body">
+{#                <form method="post">#}
+{#                    {% csrf_token %}#}
+{#                    {{ form.as_p }}#}
+{#                    <button type="submit">Login</button>#}
+{#                </form>#}
+                <a href="{% url 'social:begin' 'github' %}">Login with GitHub</a><br>
+                <a href="{% url 'social:begin' 'twitter' %}">Login with Twitter</a><br>
+                <a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a><br>
+                <a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a><br>
+
+{#                <button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
+{#                    <span aria-hidden="true">&times;</span>#}
+{#                </button>#}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+{#                <button type="button" class="btn btn-primary">Save changes</button>#}
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
 <div class="vol-template" id="content">
 
     {% block content %}{% endblock %}
@@ -103,5 +137,6 @@
 
 </div>
 {% analytical_body_bottom %}
+
 </body>
 </html>

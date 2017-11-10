@@ -142,8 +142,10 @@ SOCIAL_AUTH_FACEBOOK_SECRET = os.environ.get('SOCIAL_AUTH_FACEBOOK_SECRET', '')
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY', '')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET', '')
 
+# TODO: set some sane values here:
 SOCIAL_AUTH_LOGIN_ERROR_URL = '/settings'
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/settings'
+# A redirect to /settings it not what the
+# SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/settings'
 SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 
 # Internationalization
