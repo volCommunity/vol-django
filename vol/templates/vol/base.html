@@ -14,6 +14,7 @@
 
     <link rel="shortcut icon" href="{% static "favicon.ico" %}">
     <link href="{% static "css/vol.css" %}" rel="stylesheet">
+    <link href="{% static "css/loginmodal.css" %}" rel="stylesheet">
     {% analytical_head_bottom %}
 </head>
 <body>
@@ -99,19 +100,16 @@
 <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Login</h5>
-            </div>
+{#            <div class="modal-header">#}
+{#                <h5 class="modal-title" id="exampleModalLabel">Login</h5>#}
+{#            </div>#}
             <div class="modal-body">
-{#                <form method="post">#}
-{#                    {% csrf_token %}#}
-{#                    {{ form.as_p }}#}
-{#                    <button type="submit">Login</button>#}
-{#                </form>#}
-                <a href="{% url 'social:begin' 'github' %}">Login with GitHub</a><br>
-                <a href="{% url 'social:begin' 'twitter' %}">Login with Twitter</a><br>
-                <a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a><br>
-                <a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a><br>
+
+{#                <a href="{% url 'social:begin' 'github' %}">Login with GitHub</a><br>#}
+{#                <a href="{% url 'social:begin' 'twitter' %}">Login with Twitter</a><br>#}
+{#                <a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a><br>#}
+{#                <a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a><br>#}
+                {% include "vol/loginmodal.html" %}
 
 {#                <button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
 {#                    <span aria-hidden="true">&times;</span>#}
