@@ -9,3 +9,6 @@ lint:
 
 run:
 	docker-compose up
+
+list-flags:
+	docker-compose run web pipenv run python manage.py waffle_flag -l
