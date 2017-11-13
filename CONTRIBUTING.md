@@ -195,3 +195,37 @@ And specify the version once we support multiple versions in the Accept header:
 ```shell
 Accept: application/json; version=0.0.1
 ```
+
+# Adding features
+Workflow is as follows:
+* Raise an issue proposing it
+* Work on a proof of concept (POC)
+* Write tests to proof your POC works.
+* Once you are happy with your POC and are ready to share it, put it behind a feature flag. This will allow us
+test it for a smaller group, do gradual rollouts and even quickly switch it on or off should there be any issues.
+* When the feature is rolled out and considered stable, after a cool off period, remove the checks for the feature flag,
+before you remove the flag -it will default to false.
+ 
+## Using feature flags
+We use [Waffle](http://waffle.readthedocs.io) for feature flagging. Flags, Switches and Samples can be created
+using the CLI or Django admin. Use the flags (or switches, or samples) where ever you want to, a simple example
+is in a template like so, but see the documentation for more details
+
+```djangotemplate
+{% load waffle_tags %}
+<SNIP>
+{% flag "show_login" %}
+<li class="nav-item active">
+    {% if user.is_authenticated %}
+        <li class="nav-item active">
+        <a class="nav-link" href="/logout">
+            <span>Logout</span>
+        </a>
+
+    {% else %}
+        <a href="#loginModal" class="nav-link" data-toggle="modal" data-target="#loginModal">
+            <span>Login</span>
+        </a>
+    {% endif %}
+{%  endflag %}
+```

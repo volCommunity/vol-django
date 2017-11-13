@@ -1,5 +1,6 @@
 {% load static %}
 {% load analytical %}
+{% load waffle_tags %}
 
 <!DOCTYPE html>
 <html>
@@ -32,6 +33,7 @@
             <li class="nav-item active">
                 <a class="nav-link" href="/">Home</a>
             </li>
+            {% flag "show_login" %}
             <li class="nav-item active">
                 {% if user.is_authenticated %}
                     <li class="nav-item active">
@@ -44,6 +46,7 @@
                         <span>Login</span>
                     </a>
                 {% endif %}
+            {%  endflag %}
             </li>
         </ul>
 

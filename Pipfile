@@ -6,19 +6,20 @@ verify_ssl = true
 
 [packages]
 
-Django = "*"
+django = "*"
 dj-database-url = "*"
 gunicorn = "*"
 "psycopg2" = "*"
 whitenoise = "*"
 django-analytical = "*"
 djangorestframework = "*"
-factory_boy = "*"
+factory-boy = "*"
 coreapi = "*"
 django-rest-swagger = "*"
 django-filter = "*"
 django-autoslug = "*"
 social-auth-app-django = "*"
+django-waffle = "*"
 
 
 [dev-packages]

@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
     'django_filters',
     'social_django',
+    'waffle',
 ]
 
 MIDDLEWARE = [
@@ -68,6 +69,7 @@ MIDDLEWARE = [
     # https://warehouse.python.org/project/whitenoise/
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
+    'waffle.middleware.WaffleMiddleware',
 ]
 
 ROOT_URLCONF = 'volproject.urls'
