@@ -10,9 +10,9 @@ services:
       - DJANGO_SECRET_KEY=secret_key
       - DEBUG=True
       - DATABASE_URL=postgres://postgres@postgres/postgres
-    links:
-      - postgres
-  postgres:
+    depends_on:
+      - db
+  db:
     image: "postgres:latest"
     volumes:
      - ./data:/var/lib/postgresql/data
