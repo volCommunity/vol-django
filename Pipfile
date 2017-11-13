@@ -1,21 +1,25 @@
 [[source]]
+
 url = "https://pypi.python.org/simple"
 verify_ssl = true
+
 
 [packages]
 
 Django = "*"
-"dj-database-url" = "*"
+dj-database-url = "*"
 gunicorn = "*"
 "psycopg2" = "*"
 whitenoise = "*"
-"django-analytical" = "*"
+django-analytical = "*"
 djangorestframework = "*"
-"factory-boy" = "*"
+factory_boy = "*"
 coreapi = "*"
-"django-rest-swagger" = "*"
-"django-filter" = "*"
-"django-autoslug" = "*"
+django-rest-swagger = "*"
+django-filter = "*"
+django-autoslug = "*"
+social-auth-app-django = "*"
+
 
 [dev-packages]
 

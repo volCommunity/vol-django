@@ -87,6 +87,10 @@ Updating Python dependencies in Docker requires running:
 docker-compose build
 ```
 
+Tests can be run with (yes we could do with a Makefile):
+```shell
+docker-compose run -e DEBUG="" web scripts/wait-for-it.sh db:5432 -- pipenv run python manage.py test```
+
 
 ## Setup Without Docker
 We use the amazing <a href=https://github.com/kennethreitz/pipenv>Pipenv</a> to manage <a href=http://docs.python-guide.org/en/latest/dev/virtualenvs/>virtualenvs:</a>
@@ -162,6 +166,11 @@ Or start a console:
 ```shell
 heroku run python manage.py shell
 ```
+## Creating API keys for "social" logins
+To test social logins you will have to create keys at the services you would like to test. The keys default to blank.
+Exporting them to your shell will pick them up automatically, we currently use the following providers, but use the
+variables SOCIAL_AUTH* in [settings.py](https://github.com/volCommunity/vol-django/blob/master/volproject/settings.py)
+as the canonical reference.
 
 ## Creating tokens
 Create them using the admin console, which you will be able to access locally at  <a href=http://localhost:8000/admin/authtoken>localhost:8000/admin/authtoken</a>.

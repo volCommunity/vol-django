@@ -112,3 +112,29 @@ span.twitter-typeahead {
     display: block !important; }
 .input-group span.twitter-typeahead .tt-menu {
     top: 2.375rem !important; }
+
+/* Login modal */
+
+@media (min-width: 768px) {
+    .vol-row-sm-offset-3 div:first-child[class*="col-"] {
+        margin-left: 25%;
+    }
+}
+
+.vol-login .vol-authTitle {
+    text-align: center;
+    line-height: 300%;
+}
+
+.vol-login .vol-socialButtons a {
+    color: white; // In yourUse @body-bg
+opacity:0.9;
+}
+.vol-login .vol-socialButtons a:hover {
+    color: white;
+    opacity:1;
+}
+.vol-login .vol-socialButtons .vol-btn-facebook {background: #3b5998;}
+.vol-login .vol-socialButtons .vol-btn-twitter {background: #00aced;}
+.vol-login .vol-socialButtons .vol-btn-google {background: #c32f10;}
+.vol-login .vol-socialButtons .vol-btn-github {background: #999;}

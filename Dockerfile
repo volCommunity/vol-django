@@ -13,4 +13,4 @@ RUN pipenv install
 COPY . /app
 
 EXPOSE 8000
-CMD scripts/wait-for-it.sh db:5432 -- pipenv run python manage.py migrate && pipenv run python manage.py runserver 0.0.0.0:8000
+CMD pipenv run python manage.py collectstatic --noinput && scripts/wait-for-it.sh db:5432 -- pipenv run python manage.py migrate && pipenv run python manage.py runserver 0.0.0.0:8000

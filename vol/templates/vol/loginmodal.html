@@ -1,0 +1,20 @@
+<div class="vol-login">
+    <h6 class="vol-authTitle">Take your pick:</h6>
+    <div class="row vol-row-sm-offset-3 vol-socialButtons">
+        <div class="col-xs-4 col-sm-2">
+            <a href="{% url 'social:begin' 'facebook' %}" class="btn btn-lg btn-block vol-btn-facebook">
+                <i class="fa fa-facebook visible-xs"></i>
+            </a>
+        </div>
+        <div class="col-xs-4 col-sm-2">
+            <a href="{% url 'social:begin' 'twitter' %}" class="btn btn-lg btn-block vol-btn-twitter">
+                <i class="fa fa-twitter visible-xs"></i>
+            </a>
+        </div>
+        <div class="col-xs-4 col-sm-2">
+            <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-lg btn-block vol-btn-google">
+                <i class="fa fa-google-plus visible-xs"></i>
+            </a>
+        </div>
+    </div>
+</div>
