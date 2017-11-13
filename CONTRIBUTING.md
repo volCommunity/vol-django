@@ -162,6 +162,11 @@ Or start a console:
 ```shell
 heroku run python manage.py shell
 ```
+## Creating API keys for "social" logins
+To test social logins you will have to create keys at the services you would like to test. The keys default to blank.
+Exporting them to your shell will pick them up automatically, we currently use the following providers, but use the
+variables SOCIAL_AUTH* in [settings.py](https://github.com/volCommunity/vol-django/blob/master/volproject/settings.py)
+as the canonical reference.
 
 ## Creating tokens
 Create them using the admin console, which you will be able to access locally at  <a href=http://localhost:8000/admin/authtoken>localhost:8000/admin/authtoken</a>.
