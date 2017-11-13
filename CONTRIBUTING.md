@@ -75,7 +75,9 @@ First, make sure that you have [docker-compose installed](https://docs.docker.co
 
 Then, just run the following command to bring up the entire project (the first run will take a while, but don't worry, subsequent runs will be really fast):
 
-    docker-compose up
+```shell
+make run
+```
 
 Once you see log output from postgres and django, you can just open the url "http://localhost:8000" and get started right ahead.
 
@@ -84,12 +86,13 @@ There's no need to restart the server when you make changes - just modify the py
 Updating Python dependencies in Docker requires running:
 
 ```shell
-docker-compose build
+make build
 ```
 
 Tests can be run with (yes we could do with a Makefile):
 ```shell
-docker-compose run -e DEBUG="" web scripts/wait-for-it.sh db:5432 -- pipenv run python manage.py test```
+make test
+```
 
 
 ## Setup Without Docker
