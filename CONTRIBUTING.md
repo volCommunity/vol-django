@@ -87,6 +87,10 @@ Updating Python dependencies in Docker requires running:
 docker-compose build
 ```
 
+Tests can be run with (yes we could do with a Makefile):
+```shell
+docker-compose run -e DEBUG="" web scripts/wait-for-it.sh db:5432 -- pipenv run python manage.py test```
+
 
 ## Setup Without Docker
 We use the amazing <a href=https://github.com/kennethreitz/pipenv>Pipenv</a> to manage <a href=http://docs.python-guide.org/en/latest/dev/virtualenvs/>virtualenvs:</a>
