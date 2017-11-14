@@ -208,8 +208,8 @@ before you remove the flag -it will default to false.
  
 ## Using feature flags
 We use [Waffle](http://waffle.readthedocs.io) for feature flagging. Flags, Switches and Samples can be created
-using the CLI or Django admin. Use the flags (or switches, or samples) where ever you want to, a simple example
-is in a template like so, but see the documentation for more details
+using the CLI or Django admin. Use the flags (or switches, or samples) wherever you want to, a simple example
+is in a template like so, but see the documentation for more details.
 
 ```djangotemplate
 {% load waffle_tags %}
@@ -228,4 +228,56 @@ is in a template like so, but see the documentation for more details
         </a>
     {% endif %}
 {%  endflag %}
+```
+
+List all flags locally:
+```shell
+▶ make list-flags-local
+docker-compose run web pipenv run python manage.py waffle_flag -l
+Starting voldjango_db_1 ... done
+Flags:
+NAME: show_login
+SUPERUSERS: False
+EVERYONE: None
+AUTHENTICATED: False
+PERCENT: None
+TESTING: True
+ROLLOUT: False
+STAFF: False
+```
+
+List all flags at Heroku:
+
+```shell
+▶ make list-flags-heroku
+heroku run python manage.py waffle_flag -l
+Running python manage.py waffle_flag -l on ⬢ frozen-savannah-95618... up, run.8670 (Hobby)
+Flags:
+NAME: show_login
+SUPERUSERS: False
+EVERYONE: None
+AUTHENTICATED: False
+PERCENT: None
+TESTING: True
+ROLLOUT: False
+STAFF: False
+```
+
+If you enable testing for your flag, you'll be able to toggle it by passing a query param looking like so:
+
+```shell
+dwft_show_login # Our flag "show_login" prepended with dwft_
+```
+
+Which could in this case make a test requests showing login like so:
+
+```shell
+https://www.vol.community/?dwft_show_login=1
+```
+
+Not setting it will result in the default being used, unless you've used it before and it's stored in a the cookie.
+In this case you can flip behave by forcing it off -or removing or editing the cookie with 
+
+```shell
+https://www.vol.community/?dwft_show_login=0
 ```
