@@ -10,5 +10,8 @@ lint:
 run:
 	docker-compose up
 
-list-flags:
+list-flags-local:
 	docker-compose run web pipenv run python manage.py waffle_flag -l
+
+list-flags-heroku:
+	heroku run python manage.py waffle_flag -l
