@@ -20,6 +20,7 @@ django-filter = "*"
 django-autoslug = "*"
 social-auth-app-django = "*"
 django-waffle = "*"
+django-debug-toolbar = "*"
 
 
 [dev-packages]
