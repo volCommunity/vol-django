@@ -5,6 +5,8 @@
 
 # Vol::Django
 
+_**We've merged with [Collaborate](https://letscollaborate.co.nz), part of the codebase will be merged but this code is currently no longer under development nor maintained.**_
+
 Welcome! This project is in very early and experimental stage, and help in the following areas would be greatly appreciated!
 
 How you could help:
